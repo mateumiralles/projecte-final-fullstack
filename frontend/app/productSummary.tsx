@@ -1,14 +1,17 @@
 import { FaRegBookmark } from "react-icons/fa";
 
-export default function ProductSummary(props: { name: string; price: string, desc: string, colors: Array<string>, sizes: Array<string> }) {
-    
+export default function ProductSummary(props: { name: string; price: any, color: any, desc: string, colors: Array<any> | null, sizes: Array<any> | null }) {
+
     return (
         <div className=" max-w-[35%]">
-            <div className="border-t border-l border-r p-8 flex flex-col justify-between h-[80%]">
+            <div className="border-t border-l border-r border-black p-8 flex flex-col justify-between h-[80%]">
                 <div className="flex flex-row justify-between items-center mb-8">
                     <div>
                         <p className="text-sm">{props.name}</p>
-                        <p className="text-sm">{props.price}</p>
+                        <div>
+                        <p className="text-sm inline">{props.price.price}</p>
+                        <p className="text-sm inline"> {props.price.currency}</p>
+                        </div>
                     </div>
                     <div className="hover:cursor-pointer">
                         <FaRegBookmark />
@@ -20,22 +23,21 @@ export default function ProductSummary(props: { name: string; price: string, des
                     <p className="mt-6 text-[13px]">ENVÍOS, CAMBIOS Y DEVOLUCIONES</p>
                 </div>
             </div>
-            <div className="border-t border-l border-r p-8 flex flex-col justify-between">
+            <div className="border-t border-l border-r border-black p-8 flex flex-col justify-between">
                 <div>
                     <div className="flex flex-row">
-                    <p>Color: Blanco roto </p><p>&nbsp;|&nbsp;</p><p>1716/342</p>
+                    <p>Color: {props.color.text} </p><p>&nbsp;|&nbsp;</p><p>{props.color.code}</p>
                     </div>
                     <div className="flex flex-row mt-6 mb-6">
-                        <div className="bg-gray-200 w-5 h-5 mr-2"></div>
-                        <div className="bg-gray-950 w-5 h-5 ml-2 mr-2"></div>
-                        <div className="bg-orange-300 w-5 h-5 ml-2 mr-2"></div>
-                        <div className="bg-gray-600 w-5 h-5 ml-2"></div>
+                    {props.colors?.map((element, index) => (
+                        <div className={`bg-${element.rgbColor} w-5 h-5 ${index===0 ? `mr-2` : index===props.colors?.length ? `ml-2` : `ml-2 mr-2`}`} key={index}></div>
+                        ))}
                     </div>
                 </div>
                 <div>
                     <div className="grid grid-cols-2 gap-3 w-full">
-                        {props.sizes.map((element, index) => (
-                            <div key={index} className="border flex justify-center p-2 hover:cursor-pointer hover:bg-gray-500 transition-all text-sm">{element}</div>
+                        {props.sizes?.map((element, index) => (
+                            <div key={index} className="border border-black flex justify-center p-2 hover:cursor-pointer hover:bg-gray-500 transition-all text-sm">{element.size.name}</div>
                         ))}
                     </div>
                     <div className="flex flex-row mt-3">
@@ -43,7 +45,7 @@ export default function ProductSummary(props: { name: string; price: string, des
                     </div>
                 </div>
             </div>
-            <div className="border flex items-center justify-center p-2 hover:cursor-pointer hover:text-gray-600 transition-all">
+            <div className="border border-black flex items-center justify-center p-2 hover:cursor-pointer hover:text-gray-600 transition-all">
                 <p>AÑADIR</p>
             </div>
         </div>
