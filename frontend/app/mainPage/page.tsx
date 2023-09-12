@@ -56,7 +56,6 @@ export default function MainPage() {
   console.log(list);
   return (
     <div className=" flex flex-col">
-      <Navbar></Navbar>
       {list === undefined ? (
         <p>Loading</p>
       ) : (

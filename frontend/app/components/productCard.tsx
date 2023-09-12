@@ -12,7 +12,7 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ title, price, image }) => {
   return (
-    <Link href="/">
+    <Link href="/detailPage">
       <div
         className="hover:border w-full p-4 rounded hover:border-black hover:scale-95 justify-center transition duration-500"
    
