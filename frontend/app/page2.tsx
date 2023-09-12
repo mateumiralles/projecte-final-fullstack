@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { useEffect } from 'react'
-import ProductSummary from './productSummary'
+import ProductSummary from './detailPage/productSummary'
 
 const prendaTest = {
   name: "BLAZER BÁSICA",

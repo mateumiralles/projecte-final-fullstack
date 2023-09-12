@@ -157,3 +157,37 @@ export class Article {
       this.availabilityOnlineDate = data.availabilityOnlineDate || 0;
     }
   }
+
+export class ProductGeneral {
+  img: string | undefined;
+  code: string | undefined;
+  price: number | undefined;
+  currency: string | undefined;
+  name: string | undefined;
+  colorRgb: string | undefined;
+  colorName: string | undefined;
+  size: string | undefined;
+  ammount: number;
+
+  constructor(
+    img?: string,
+    code?: string,
+    price?: number,
+    currency?:string,
+    name?: string,
+    colorRgb?: string,
+    colorName?: string,
+    size?: string,
+    ammount: number=1
+  ) {
+    this.img = img;
+    this.code = code;
+    this.price = price;
+    this.currency = currency;
+    this.name = name;
+    this.colorRgb = colorRgb;
+    this.colorName = colorName;
+    this.size = size;
+    this.ammount = ammount;
+  }
+}

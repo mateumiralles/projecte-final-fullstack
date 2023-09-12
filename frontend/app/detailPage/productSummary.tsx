@@ -1,6 +1,16 @@
+import { SetStateAction } from "react";
 import { FaRegBookmark } from "react-icons/fa";
+import config from "@/tailwind.config";
+import { ProductGeneral } from "../classes";
+export default function ProductSummary(props: { name: string; price: any, color: any, desc: string, colors: Array<any> | null, sizes: Array<any>, productToAdd: ProductGeneral,   setProductToAdd: React.Dispatch<React.SetStateAction<any>>;
+}) {
 
-export default function ProductSummary(props: { name: string; price: any, color: any, desc: string, colors: Array<any> | null, sizes: Array<any> | null }) {
+    const updateProduct = (size: string | undefined) => {
+        props.setProductToAdd((prevProduct: any) => ({
+            ...prevProduct, // Mantén las propiedades existentes
+            size: size
+        }));
+    }
 
     return (
         <div className=" max-w-[35%]">
@@ -30,14 +40,14 @@ export default function ProductSummary(props: { name: string; price: any, color:
                     </div>
                     <div className="flex flex-row mt-6 mb-6">
                     {props.colors?.map((element, index) => (
-                        <div className={`bg-${element.rgbColor} w-5 h-5 ${index===0 ? `mr-2` : index===props.colors?.length ? `ml-2` : `ml-2 mr-2`}`} key={index}></div>
+                        <div style={{backgroundColor: element.rgbColor}} className={`w-5 h-5 ${index===0 ? `mr-2` : index===props.colors?.length ? `ml-2` : `ml-2 mr-2`}`} key={index}></div>
                         ))}
                     </div>
                 </div>
                 <div>
-                    <div className="grid grid-cols-2 gap-3 w-full">
+                    <div className={`grid grid-cols-${props.sizes?.length>6 ? `3` : `2`} gap-3 w-full`}>
                         {props.sizes?.map((element, index) => (
-                            <div key={index} className="border border-black flex justify-center p-2 hover:cursor-pointer hover:bg-gray-500 transition-all text-sm">{element.size.name}</div>
+                            <div key={index} onClick={() => props.productToAdd.size===element.size.name ? updateProduct(undefined) : updateProduct(element.size.name)} className={`${props.productToAdd.size===element.size.name ? `selectedSize` : ``} border border-black flex justify-center p-2 hover:cursor-pointer text-sm`}>{element.size.name}</div>
                         ))}
                     </div>
                     <div className="flex flex-row mt-3">
@@ -45,7 +55,7 @@ export default function ProductSummary(props: { name: string; price: any, color:
                     </div>
                 </div>
             </div>
-            <div className="border border-black flex items-center justify-center p-2 hover:cursor-pointer hover:text-gray-600 transition-all">
+            <div className={`${props.productToAdd.size!==undefined ? `selectedSize` : null} border border-black flex items-center justify-center p-2 hover:cursor-pointer hover:text-gray-600 transition-all`}>
                 <p>AÑADIR</p>
             </div>
         </div>

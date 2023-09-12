@@ -16,6 +16,13 @@
   }
 } */
 
+@layer components {
+  .selectedSize{
+    background-color: black;
+    color: white;
+  }
+}
+
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
