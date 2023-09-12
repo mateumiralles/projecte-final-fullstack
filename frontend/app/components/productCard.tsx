@@ -1,10 +1,7 @@
 "use client";
 
-// components/ProductCard.tsx
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
-import blanco2 from "../../public/blanco1.jpg";
-import blanco1 from "../../public/blanco2.jpg";
 import Link from "next/link";
 
 interface ProductCardProps {
@@ -14,17 +11,14 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ title, price, image }) => {
-  const [cardImg, setCardImg] = useState(blanco1);
-
   return (
     <Link href="/">
       <div
         className="hover:border w-full p-4 rounded hover:border-black hover:scale-95 justify-center transition duration-500"
-        onMouseEnter={() => setCardImg(blanco2)}
-        onMouseLeave={() => setCardImg(blanco1)}
+   
       >
         <Image
-          src={cardImg}
+          src={image}
           width={500}
           height={500}
           alt=""
