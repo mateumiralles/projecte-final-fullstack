@@ -14,8 +14,12 @@ export default function Navbar() {
         <NavbarTile title="Trousers" link="/Trousers" />
       </div>
       <div className="flex-4 flex flex-row mr-14 gap-5 ">
-        <NavbarIconButton svgName="/shoppingBagIcon.svg" />
-        <NavbarIconButton svgName="/userIcon.svg" />
+        <Link href="/basketPage">
+          <NavbarIconButton svgName="/shoppingBagIcon.svg" />
+        </Link>
+        <Link href="/usersPage">
+          <NavbarIconButton svgName="/userIcon.svg" />
+        </Link>
       </div>
     </div>
   );

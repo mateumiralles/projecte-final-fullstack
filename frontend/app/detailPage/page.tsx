@@ -4,7 +4,7 @@ import ProductSummary from "./productSummary";
 import axios from "axios";
 import Image from "next/image";
 import { Article, ProductGeneral } from '../classes';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/Navbar/Navbar';
 import { cursorTo } from 'readline';
 
 export default function detailPage() {

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ProductCard from "../components/productCard";
 import blanco1 from "../public/blanco1.jpg";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Navbar/Navbar";
 
 export default function MainPage() {
   const options = {
