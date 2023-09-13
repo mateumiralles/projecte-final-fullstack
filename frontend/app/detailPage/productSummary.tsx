@@ -13,7 +13,7 @@ export default function ProductSummary(props: { name: string; price: any, color:
     }
 
     return (
-        <div className=" max-w-[35%] border border-black rounded">
+        <div>
             <div className=" p-8 flex flex-col justify-between h-[80%]">
                 <div className="flex flex-row justify-between items-center mb-8">
                     <div>
