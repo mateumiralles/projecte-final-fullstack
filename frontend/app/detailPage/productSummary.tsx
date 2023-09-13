@@ -13,8 +13,8 @@ export default function ProductSummary(props: { name: string; price: any, color:
     }
 
     return (
-        <div className=" max-w-[35%]">
-            <div className="border-t border-l border-r border-black p-8 flex flex-col justify-between h-[80%]">
+        <div className=" max-w-[35%] border border-black rounded">
+            <div className=" p-8 flex flex-col justify-between h-[80%]">
                 <div className="flex flex-row justify-between items-center mb-8">
                     <div>
                         <p className="text-sm">{props.name}</p>
@@ -33,7 +33,7 @@ export default function ProductSummary(props: { name: string; price: any, color:
                     <p className="mt-6 text-[13px]">ENVÍOS, CAMBIOS Y DEVOLUCIONES</p>
                 </div>
             </div>
-            <div className="border-t border-l border-r border-black p-8 flex flex-col justify-between">
+            <div className="border-t  border-black p-8 flex flex-col justify-between">
                 <div>
                     <div className="flex flex-row">
                     <p>Color: {props.color.text} </p><p>&nbsp;|&nbsp;</p><p>{props.color.code}</p>
@@ -47,7 +47,7 @@ export default function ProductSummary(props: { name: string; price: any, color:
                 <div>
                     <div className={`grid grid-cols ${props.sizes?.length>6 ? `grid-cols-3` : `grid-cols-2`} gap-3 w-full`}>
                         {props.sizes?.map((element, index) => (
-                            <div key={index} onClick={() => props.productToAdd.size===element.size.name ? updateProduct(undefined) : updateProduct(element.size.name)} className={`${props.productToAdd.size===element.size.name ? `selectedSize` : ``} border border-black flex justify-center p-2 hover:cursor-pointer text-sm`}>{element.size.name}</div>
+                            <div key={index} onClick={() => props.productToAdd.size===element.size.name ? updateProduct(undefined) : updateProduct(element.size.name)} className={`${props.productToAdd.size===element.size.name ? `selectedSize` : ``} border border-black flex justify-center p-2 hover:cursor-pointer text-sm rounded hover:scale-95 transition duration-100`}>{element.size.name}</div>
                         ))}
                     </div>
                     <div className="flex flex-row mt-3">
@@ -55,7 +55,7 @@ export default function ProductSummary(props: { name: string; price: any, color:
                     </div>
                 </div>
             </div>
-            <div className={`${props.productToAdd.size!==undefined ? `selectedSize` : null} border border-black flex items-center justify-center p-2 hover:cursor-pointer hover:text-gray-600 transition-all`}>
+            <div className={`${props.productToAdd.size!==undefined ? `selectedSize` : null} border-t border-black flex items-center justify-center p-2 hover:cursor-pointer hover:text-gray-600 transition-all`}>
                 <p>AÑADIR</p>
             </div>
         </div>
