@@ -23,9 +23,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ title, price, image }) => {
           height={500}
           alt=""
         />
-        <div className="flex flex-col justify-stretch">
-          <p className="w-full text-gray-500 text-m mb-1 ">{title}</p>
-          <p className="w-full">{price}€</p>
+        <div className="flex flex-col mt-2">
+          <p className="w-full text-gray-500 text-m mb-1 text-center">{title}</p>
+          <p className="w-full text-center">{price}€</p>
         </div>
       </div>
     </Link>
