@@ -7,7 +7,7 @@ interface svgProps {
 
 export default function NavbarIconButton({svgName}:svgProps) {
   return (
-    <button className="group w-7 h-7 flex items-center justify-center rounded-full  hover:border  hover:border-black hover:scale-125 transition duration-200">
+    <button className="group w-7 h-7 flex items-center justify-center rounded-full  hover:border  hover:border-black hover:scale-150 transition duration-200">
       <Image
               src={svgName}
               
