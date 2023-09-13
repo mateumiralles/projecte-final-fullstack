@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useRef, useState } from 'react';
+import { WheelEvent, WheelEventHandler, useEffect, useRef, useState } from 'react';
 import ProductSummary from "./productSummary";
 import axios from "axios";
 import Image from "next/image";
@@ -14,7 +14,8 @@ export default function detailPage() {
     const [productDetails, setProductDetails] = useState<Article>(new Article);
     const [productSizeAndColors, setProductSizeAndColors] = useState<Array<any>>([]);
     const [productToAdd, setProductToAdd] = useState<ProductGeneral>(new ProductGeneral);
-    
+    const [imageScrolling, setImageScrolling] = useState(false);
+
     const options = {
         method: 'GET',
         url: 'https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/detail',
@@ -100,7 +101,6 @@ export default function detailPage() {
                 }
             }
             else{
-                console.log("ES ELSE");
                 setProduct(JSON.parse(storedProduct));
             }
         };
@@ -129,6 +129,8 @@ export default function detailPage() {
         }
     }, [product]);
 
+
+    let currentIndex: number = 0;
     useEffect(() => {
         if(productSizeAndColors.length!==0){
             setProductToAdd((prevProduct) => ({
@@ -142,21 +144,49 @@ export default function detailPage() {
                 colorName: productDetails.color.text,
             }));
         }
+        const images = document.getElementById('images');
+        console.log(images);
+        if (images) {
+            images.addEventListener('wheel', (e) => handleScroll(e, images), { passive: false });
+          }
+      
+          return () => {
+            if (images) {
+              images.removeEventListener('wheel', (e) => handleScroll(e, images));
+            }
+          };
     }, [productSizeAndColors])
 
-    useEffect(() => {
-        console.log(productToAdd);
-    }, [productToAdd])
+
+      
+    const handleScroll = (event: globalThis.WheelEvent, images: HTMLElement) => {
+        if (imageScrolling) {
+            return; // Evitar el scroll mientras se está desplazando
+        }
+        console.log(currentIndex);
+        event.preventDefault();
+        if(event.deltaY>0){
+            currentIndex = (currentIndex + 1) % productDetails.galleryDetails.length;
+        } else if (event.deltaY<0){
+            currentIndex = (currentIndex - 1 + productDetails.galleryDetails.length) % productDetails.galleryDetails.length;
+        }
+        const scrollY: number = currentIndex * (images?.clientHeight || 0);
+        setImageScrolling(true);
+        images?.scrollTo({top: scrollY, behavior: 'smooth'});
+        setTimeout(() => {
+            setImageScrolling(false);
+          }, 500);
+    }
+
 
     return (
         <>
-            <Navbar />
             <main className="flex min-h-screen flex-row items-center justify-center p-24 gap-5">
                 {productSizeAndColors.length == 0 ? <h1>Loading...</h1> :
 
                     product.responseStatusCode === "ok" ?
                         <>
-                                <div className="w-[25%] h-[700px] overflow-x-auto" ref={galleryRef}>
+                                <div id="images" className="w-[25%] h-[616px] overflow-x-auto" ref={galleryRef}>
                                 {productDetails.galleryDetails.map((img, index) => (
                                     <img key={index} src={img.baseUrl} />
                                 ))}

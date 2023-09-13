@@ -45,7 +45,7 @@ export default function ProductSummary(props: { name: string; price: any, color:
                     </div>
                 </div>
                 <div>
-                    <div className={`grid grid-cols-${props.sizes?.length>6 ? `3` : `2`} gap-3 w-full`}>
+                    <div className={`grid grid-cols ${props.sizes?.length>6 ? `grid-cols-3` : `grid-cols-2`} gap-3 w-full`}>
                         {props.sizes?.map((element, index) => (
                             <div key={index} onClick={() => props.productToAdd.size===element.size.name ? updateProduct(undefined) : updateProduct(element.size.name)} className={`${props.productToAdd.size===element.size.name ? `selectedSize` : ``} border border-black flex justify-center p-2 hover:cursor-pointer text-sm`}>{element.size.name}</div>
                         ))}
