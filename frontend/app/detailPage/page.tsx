@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Article, ProductGeneral } from '../classes';
 import Navbar from '../components/Navbar/Navbar';
 import { cursorTo } from 'readline';
+import ProductCard from '../productsList/productCard';
 
 export default function detailPage() {
     const [product, setProduct] = useState<any>();
@@ -13,13 +14,14 @@ export default function detailPage() {
     const [productSizeAndColors, setProductSizeAndColors] = useState<Array<any>>([]);
     const [productToAdd, setProductToAdd] = useState<ProductGeneral>(new ProductGeneral);
     const [currentIndex, setCurrentIndex] = useState(1);
+    const [seeMoreDetail, setSeeMoreDetail] = useState(false);
     const options = {
         method: 'GET',
         url: 'https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/detail',
         params: {
             lang: 'es',
             country: 'es',
-            productcode: '1208692001'
+            productcode: '1183573002'
         },
         headers: {
             'X-RapidAPI-Key': 'ca39b364a4msh5747570dc5634fbp18b7aejsn66c9149fcf5d',
@@ -27,9 +29,28 @@ export default function detailPage() {
         }
     };
 
-    const getProduct = async () => {
+    const styleWithRequest = (code: string) => {
+        const styleWithRequest = {
+            method: 'GET',
+            url: 'https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/detail',
+            params: {
+                lang: 'es',
+                country: 'es',
+                productcode: code
+            },
+            headers: {
+                'X-RapidAPI-Key': 'ca39b364a4msh5747570dc5634fbp18b7aejsn66c9149fcf5d',
+                'X-RapidAPI-Host': 'apidojo-hm-hennes-mauritz-v1.p.rapidapi.com'
+            }
+        }
+        return getProduct(styleWithRequest);
+    }
+
+    console.log(productToAdd);
+
+    const getProduct = async (fetchType: any) => {
         try {
-            const response = await axios.request(options);
+            const response = await axios.request(fetchType);
             return response.data;
         } catch (error) {
             return error;
@@ -47,6 +68,21 @@ export default function detailPage() {
 
         return productInstance ?? new Article();
     };
+
+    const updateColor = (colorRgb: string, colorName: string) => {
+        console.log(colorName);
+        product.product.articlesList.forEach((element: Article) => {
+            if(element.color.rgbColor === colorRgb){
+                setProductDetails(element);
+                setProductToAdd((prevProduct) => ({
+                    ...prevProduct,
+                    colorRgb: colorRgb,
+                    colorName: colorName,
+                }));
+            }
+        });
+    }
+
 
     const getProductSizeAndColors = () => {
         var sizes = null;
@@ -67,7 +103,7 @@ export default function detailPage() {
             const storedProduct = localStorage.getItem('product');
             if(storedProduct==null){
                 try {
-                    const response = await getProduct();
+                    const response = await getProduct(options);
                     setProduct(response);
                     localStorage.setItem('product', JSON.stringify(response))
                 } catch (error) {
@@ -88,11 +124,10 @@ export default function detailPage() {
             setProductSizeAndColors(getProductSizeAndColors());
         }
     }, [product]);
-   
     useEffect(() => {
         if(productSizeAndColors.length!==0){
             setProductToAdd((prevProduct) => ({
-                ...prevProduct, // Mantén las propiedades existentes
+                ...prevProduct,
                 code: productDetails.code,
                 name: productDetails.name,
                 price: productDetails.whitePrice.price,
@@ -105,23 +140,21 @@ export default function detailPage() {
         const images = document.getElementById('images');
         const imageAndScroll = document.getElementById('imageAndScroll')!;
         const productDetail = document.getElementById('productSummary');
-
-        if(imageAndScroll){
-            imageAndScroll.style.height=`${productDetail?.clientHeight}px`;
-        }
-        if (images) {
-            images.addEventListener('wheel', (e) => handleScroll(e, images), { passive: false });
-          }
-      
-          return () => {
+        const productInfo = document.getElementById('productInfo')!;
+        if(imageAndScroll) imageAndScroll.style.height=`${productDetail?.clientHeight}px`;
+        if(productInfo) productInfo.style.maxHeight = `${productDetail?.clientHeight}px`;
+        if (images) images.addEventListener('wheel', (e) => handleScroll(e, images), { passive: false });
+          
+        return () => {
             if (images) {
               images.removeEventListener('wheel', (e) => handleScroll(e, images));
             }
-          };
+        };
     }, [productSizeAndColors])
 
     let isScrollActive = false;
     let currentIndexRealTime: number = 0;
+
     const handleScroll = (event: globalThis.WheelEvent, images: HTMLElement) => {
         event.preventDefault();
         console.log("Current index: "+currentIndex);
@@ -145,14 +178,60 @@ export default function detailPage() {
           }, 500);
     }
 
+    useEffect(() => {
+        const productInfo = document.getElementById('productInfo')!;
+        if(productInfo){
+            if(seeMoreDetail){
+                productInfo.scrollTo({top: 0, behavior: 'smooth'});
+                productInfo.style.height = `${productInfo.clientHeight/2}px`;
+            }
+            else{
+                //console.log(productInfo.scrollTop);
+                productInfo.style.height = `${productInfo.clientHeight*2}px`;
+            }
+        }
+    }, [seeMoreDetail])
+
 
     return (
         <>
-            <main className="flex min-h-screen flex-row items-center justify-center p-24 gap-5">
+            <main className="flex flex-row items-start justify-center p-20 gap-5">
                 {productSizeAndColors.length == 0 ? <h1>Loading...</h1> :
 
                     product.responseStatusCode === "ok" ?
                         <>
+                            <div id='productInfo' className='max-w-xs border rounded border-black p-7 overflow-y-auto self-end transition-all duration-300 no-scrollbar'> 
+                                <h3 className='text-lg'>COMPOSICIÓN, CUIDADOS Y ORIGEN</h3>
+                                <div>
+                                    <p className='text-base mt-5 mb-5'>COMPOSICIÓN</p>
+                                    <div className='mb-2'>
+                                    {productDetails.compositions.map((element, index) => (
+                                        element.materials.map((material, index) => (
+                                            <div>
+                                            <p key={index} className='inline-block text-sm'>{material.percentage}%</p>&nbsp;<p className='inline-block text-sm'>{material.name}</p>
+                                            </div>
+                                        ))
+                                    ))}
+                                    </div>
+                                    {productDetails.materialDetails.map((materialDesc, index) =>(
+                                        <div className='mb-2' key={index}>
+                                            <p className='font-bold text-sm'>{materialDesc.name}:</p>
+                                            <p className='text-sm'>{materialDesc.description}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                                <p className='text-base mt-5 mb-5'>CUIDADOS</p>
+                                <p className='text-sm mb-2'>Cuidar de tus prendas es cuidar del medioambiente</p>
+                                <p className='text-sm mb-3'>Los lavados a bajas temperaturas y los programas de centrifugado suaves son más delicados con las prendas, ayudando a mantener el color, la forma y la estructura del tejido.</p>
+                                <ul>
+                                {productDetails.careInstructions.map((care, index) => (
+                                    <li className='text-sm' key={index}>{care}</li>
+                                ))}
+                                </ul>
+                                <p className='text-base mt-5 mb-5'>ORIGEN</p>
+                                <p className='text-sm mb-5'>Hecho en {productDetails.articleCountryOfProduction}</p>
+                                <p className='underline hover:cursor-pointer' onClick={() => setSeeMoreDetail(!seeMoreDetail)}>{seeMoreDetail ? "Ver más" : "Ver menos"}</p>
+                            </div>
                             <div id="imageAndScroll" className='relative aspect-[5001/7501] rounded'>
                                 <div id="scrollLine" style={{height: `${(currentIndex/productDetails.galleryDetails.length)*100}%`, transition: "0.4s ease-in-out"}} className='absolute z-10 right-0 top-[0] w-[2px] bg-black'></div>
                                 <div id="images" className="w-[100%] h-[100%] overflow-y-auto no-scrollbar relative">
@@ -163,12 +242,17 @@ export default function detailPage() {
                                 </div>
                             </div>
                             <div id="productSummary" className='max-w-[35%] border border-black rounded'>
-                                <ProductSummary name={productDetails.name} price={productDetails.whitePrice} color={productDetails.color} desc={productDetails.description} colors={productSizeAndColors[1]} sizes={productSizeAndColors[0]} productToAdd={productToAdd} setProductToAdd={setProductToAdd} />
+                                <ProductSummary name={productDetails.name} price={productDetails.whitePrice} color={productDetails.color} desc={productDetails.description} colors={productSizeAndColors[1]} sizes={productSizeAndColors[0]} productToAdd={productToAdd} setProductToAdd={setProductToAdd} changeColor={updateColor} />
                             </div>
                         </>
                         : <p>Algo ha salido mal!</p>
                 }
             </main>
+            {/* <section>
+                {productDetails.styleWith.map((product, index) => (
+                     product.code
+                ))}
+            </section> */}
         </>
     );
 }
