@@ -8,47 +8,22 @@ import Navbar from '../components/Navbar/Navbar';
 import { cursorTo } from 'readline';
 
 export default function detailPage() {
-    const galleryRef = useRef<HTMLDivElement | null>(null);
-    const [currentImage, setCurrentImage] = useState(0);
     const [product, setProduct] = useState<any>();
     const [productDetails, setProductDetails] = useState<Article>(new Article);
     const [productSizeAndColors, setProductSizeAndColors] = useState<Array<any>>([]);
     const [productToAdd, setProductToAdd] = useState<ProductGeneral>(new ProductGeneral);
-    const [imageScrolling, setImageScrolling] = useState(false);
-
+    const [currentIndex, setCurrentIndex] = useState(1);
     const options = {
         method: 'GET',
         url: 'https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/detail',
         params: {
             lang: 'es',
             country: 'es',
-            productcode: '0839915011'
+            productcode: '1208692001'
         },
         headers: {
             'X-RapidAPI-Key': 'ca39b364a4msh5747570dc5634fbp18b7aejsn66c9149fcf5d',
             'X-RapidAPI-Host': 'apidojo-hm-hennes-mauritz-v1.p.rapidapi.com'
-        }
-    };
-
-    const scrollToNextImage = () => {
-        const container = galleryRef.current;
-        if (container) {
-            setCurrentImage((prevImage) => {
-            const nextImage = prevImage + 1;
-            if (nextImage < productDetails.galleryDetails.length) {
-                const nextImageElement = container.children[nextImage] as HTMLElement;
-                if (nextImageElement) {
-                container.scrollTo({
-                    top: 0,
-                    left: nextImageElement.offsetLeft,
-                    behavior: 'smooth',
-                });
-                }
-                return nextImage;
-            } else {
-                return prevImage;
-            }
-            });
         }
     };
 
@@ -87,7 +62,6 @@ export default function detailPage() {
         return [sizes, colors];
     }
 
-
     useEffect(() => {
         const fetchData = async () => {
             const storedProduct = localStorage.getItem('product');
@@ -106,21 +80,7 @@ export default function detailPage() {
         };
 
         fetchData();
-        
-        const handleScroll = () => {
-            const container = galleryRef.current;
-            if (container && container.scrollLeft + container.clientWidth >= container.scrollWidth) {
-              scrollToNextImage();
-            }
-          };
-      
-          galleryRef.current?.addEventListener('scroll', handleScroll);
-          return () => {
-            galleryRef.current?.removeEventListener('scroll', handleScroll);
-        };
     }, []); 
-
-
 
     useEffect(() => {
         if(product!==undefined){
@@ -128,9 +88,7 @@ export default function detailPage() {
             setProductSizeAndColors(getProductSizeAndColors());
         }
     }, [product]);
-
-
-    let currentIndex: number = 0;
+   
     useEffect(() => {
         if(productSizeAndColors.length!==0){
             setProductToAdd((prevProduct) => ({
@@ -145,7 +103,12 @@ export default function detailPage() {
             }));
         }
         const images = document.getElementById('images');
-        console.log(images);
+        const imageAndScroll = document.getElementById('imageAndScroll')!;
+        const productDetail = document.getElementById('productSummary');
+
+        if(imageAndScroll){
+            imageAndScroll.style.height=`${productDetail?.clientHeight}px`;
+        }
         if (images) {
             images.addEventListener('wheel', (e) => handleScroll(e, images), { passive: false });
           }
@@ -157,24 +120,28 @@ export default function detailPage() {
           };
     }, [productSizeAndColors])
 
-
-      
+    let isScrollActive = false;
+    let currentIndexRealTime: number = 0;
     const handleScroll = (event: globalThis.WheelEvent, images: HTMLElement) => {
-        if (imageScrolling) {
+        event.preventDefault();
+        console.log("Current index: "+currentIndex);
+        console.log("Current Index real time: "+currentIndexRealTime);
+        if (isScrollActive) {
             return; // Evitar el scroll mientras se está desplazando
         }
-        console.log(currentIndex);
-        event.preventDefault();
+        isScrollActive=true;
         if(event.deltaY>0){
-            currentIndex = (currentIndex + 1) % productDetails.galleryDetails.length;
+            currentIndexRealTime = (currentIndexRealTime + 1) % productDetails.galleryDetails.length;
+            setCurrentIndex(currentIndexRealTime+1);
         } else if (event.deltaY<0){
-            currentIndex = (currentIndex - 1 + productDetails.galleryDetails.length) % productDetails.galleryDetails.length;
+            currentIndexRealTime = (currentIndexRealTime - 1 + productDetails.galleryDetails.length) % productDetails.galleryDetails.length;
+            setCurrentIndex(currentIndexRealTime+1);
         }
-        const scrollY: number = currentIndex * (images?.clientHeight || 0);
-        setImageScrolling(true);
+        const scrollY: number = currentIndexRealTime * (images?.clientHeight || 0);
+
         images?.scrollTo({top: scrollY, behavior: 'smooth'});
         setTimeout(() => {
-            setImageScrolling(false);
+            isScrollActive=false;
           }, 500);
     }
 
@@ -186,12 +153,18 @@ export default function detailPage() {
 
                     product.responseStatusCode === "ok" ?
                         <>
-                                <div id="images" className="w-[25%] h-[616px] overflow-x-auto" ref={galleryRef}>
-                                {productDetails.galleryDetails.map((img, index) => (
-                                    <img key={index} src={img.baseUrl} />
-                                ))}
+                            <div id="imageAndScroll" className='relative aspect-[5001/7501] rounded'>
+                                <div id="scrollLine" style={{height: `${(currentIndex/productDetails.galleryDetails.length)*100}%`, transition: "0.4s ease-in-out"}} className='absolute z-10 right-0 top-[0] w-[2px] bg-black'></div>
+                                <div id="images" className="w-[100%] h-[100%] overflow-y-auto no-scrollbar relative">
+
+                                    {productDetails.galleryDetails.map((img, index) => (
+                                        <img key={index} src={img.baseUrl} />
+                                    ))}
+                                </div>
                             </div>
-                            <ProductSummary name={productDetails.name} price={productDetails.whitePrice} color={productDetails.color} desc={productDetails.description} colors={productSizeAndColors[1]} sizes={productSizeAndColors[0]} productToAdd={productToAdd} setProductToAdd={setProductToAdd} />
+                            <div id="productSummary" className='max-w-[35%] border border-black rounded'>
+                                <ProductSummary name={productDetails.name} price={productDetails.whitePrice} color={productDetails.color} desc={productDetails.description} colors={productSizeAndColors[1]} sizes={productSizeAndColors[0]} productToAdd={productToAdd} setProductToAdd={setProductToAdd} />
+                            </div>
                         </>
                         : <p>Algo ha salido mal!</p>
                 }
