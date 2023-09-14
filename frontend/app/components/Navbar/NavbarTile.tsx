@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-interface NavbarTileProps {
+type NavbarTileProps = {
     title: string;
     link: string;
   }

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import ProductCard from "../components/productCard";
+import ProductCard from "./productCard";
 import blanco1 from "../public/blanco1.jpg";
 import Navbar from "../components/Navbar/Navbar";
 

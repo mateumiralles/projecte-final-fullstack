@@ -1,8 +1,7 @@
 import Image from 'next/image'
 
-interface svgProps {
+type svgProps = {
     svgName: string;
-    
   }
 
 export default function NavbarIconButton({svgName}:svgProps) {
