@@ -7,7 +7,7 @@ export default function LogInContainer({bool}:LogUpContainerProps) {
     <div className={`absolute top-0 h-full left-0 transition ease-in-out duration-500 w-1/2   z-10 ${bool !== true ? "translate-x-full opacity-100":null}`}>
       <form
           // onSubmit={handleLogin}
-          className="max-w-sm mx-auto bg-white p-8 shadow-md rounded border border-black"
+          className="w-2/3 h-full mx-auto bg-white p-8 shadow-none flex flex-col justify-center"
         >
           <p className="text-2xl text-center font-bold mb-4">LOG IN</p>
           <div className="mb-4">
@@ -44,7 +44,7 @@ export default function LogInContainer({bool}:LogUpContainerProps) {
           </div>
           <button
             type="submit"
-            className="w-full text-white bg-black font-bold hover:scale-95 py-2 px-4 border border-black rounded transition duration-300"
+            className="w-full text-white bg-black font-bold hover:scale-95 py-2 px-4 border border-black rounded transition duration-200"
           >
             NEXT!
           </button>
