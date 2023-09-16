@@ -6,17 +6,19 @@ type OverlayProps = {
 export default function OverlayContainer({ bool, a }: OverlayProps) {
   return (
     <div
-      className={`absolute top-0 left-1/2  w-full h-full  transition  duration-500 ease-in-out z-20 ${
+      className={`absolute top-0 left-1/2  w-1/2 h-full overflow-hidden transition  duration-500 ease-in-out z-20 ${
         bool !== true ? "-translate-x-full" : null
       }`}
     >
       <div
-        className={`bg-yellow-400 relative -left-full h-full w-full transition translate-x-0 duration-500 ease-in-out ${
+        className={`bg-yellow-400 relative -left-full h-full w-[200%] transition translate-x-0 duration-500 ease-in-out ${
           bool !== true ? "translate-x-1/2" : null
         }`}
       >
+
+        <div></div>
         {/* -- LEFT OVERLAY PANEL -- */}
-        <div className={`-translate-x-1/4 ${bool !== true ? "translate-x-0" : null}`}>
+        <div className={`absolute flex flex-col top-0 h-full w-1/2 transition duration-500 ease-in-out -translate-x-1/4 ${bool !== true ? "translate-x-0" : null}`}>
           <p>Welcome Back!</p>
           <button
             className="border border-black hover:bg-red-400 "
@@ -27,7 +29,7 @@ export default function OverlayContainer({ bool, a }: OverlayProps) {
         </div>
        
         {/* -- RIGHT OVERLAY PANEL -- */}
-        <div className={`right-0 translate-x-0 ${bool !== true ? "translate-x-1/4" : null}`}>
+        <div className={`absolute flex flex-col top-0 h-full w-1/2 transition duration-500 ease-in-out right-0 translate-x-0 ${bool !== true ? "translate-x-1/4" : null}`}>
           <p>Welcome Back!</p>
           <button
             className="border border-black hover:bg-red-400 "

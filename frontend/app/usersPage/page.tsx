@@ -5,7 +5,7 @@ import {UserCont} from "./userCont";
 
 export default function basketPage() {
   return (
-    <main className="flex flex-row gap-2 justify-center content-center">
+    <main className="flex flex-row gap-2 content-center justify-center">
       {/* <div className="w-full min-h-screen flex flex-col justify-center">
         <form
           // onSubmit={handleLogin}
