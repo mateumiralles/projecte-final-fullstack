@@ -27,7 +27,7 @@ export default function OverlayPanel({
         <p className="font-bold text-4xl text-white text-center">{title}</p>
         <p className="w-1/2 text-lg text-white text-center">{text}</p>
         <button
-          className="w-1/2 border rounded border-white text-white font-bold text-lg p-1 hover:scale-95 transition duration-200"
+          className="w-1/2 border rounded bg-white font-bold text-lg p-1 hover:scale-95 transition duration-200"
           onClick={() => toggleFunction(!bool)}
         >
           {button}
