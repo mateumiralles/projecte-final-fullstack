@@ -4,9 +4,9 @@ type SignUpContainerProps = {
 
 export default function SignUpContainer(props:SignUpContainerProps) {
   return (
-    <div className={`absolute top-0 h-full left-0 transition ease-in-out duration-500 w-1/2   z-10 ${props.bool !== true ? "translate-x-full opacity-100 z-50":null}`}>
+    <div className={`absolute top-0 h-full left-0 transition ease-in-out duration-500 w-1/2   z-10 ${props.bool !== true ? "translate-x-full opacity-100 z-20":"opacity-0"}`}>
       <form
-          // onSubmit={handleLogin}
+          // onSubmit={handleSignUp}
           className="max-w-sm mx-auto bg-white p-8 shadow-md rounded border border-black"
         >
           <p className="text-2xl text-center font-bold mb-4">SIGN UP</p>

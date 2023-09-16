@@ -6,13 +6,13 @@ type OverlayProps = {
 export default function OverlayContainer({ bool, a }: OverlayProps) {
   return (
     <div
-      className={`absolute top-0 left-1/2  w-1/2 h-full overflow-hidden transition  duration-500 ease-in-out z-20 ${
-        bool !== true ? "-translate-x-full" : null
+      className={`absolute top-0 left-1/2 w-1/2 h-full overflow-hidden transition  duration-500 ease-in-out z-20 ${
+        bool !== true ? "-translate-x-full bg-black color-white" : null
       }`}
     >
       <div
-        className={`bg-yellow-400 relative -left-full h-full w-[200%] transition translate-x-0 duration-500 ease-in-out ${
-          bool !== true ? "translate-x-1/2" : null
+        className={`bg-gray-400 relative -left-full h-full w-[200%] transition translate-x-0 duration-500 ease-in-out ${
+          bool !== true ? "translate-x-1/2 bg-black color-white" : null
         }`}
       >
 
@@ -30,7 +30,7 @@ export default function OverlayContainer({ bool, a }: OverlayProps) {
        
         {/* -- RIGHT OVERLAY PANEL -- */}
         <div className={`absolute flex flex-col top-0 h-full w-1/2 transition duration-500 ease-in-out right-0 translate-x-0 ${bool !== true ? "translate-x-1/4" : null}`}>
-          <p>Welcome Back!</p>
+          <p>JOIN US!</p>
           <button
             className="border border-black hover:bg-red-400 "
             onClick={() => a(!bool)}
