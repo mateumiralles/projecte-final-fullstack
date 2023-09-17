@@ -11,11 +11,100 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   name      String
   lastName  String
-  email     String   @unique
+  email     String     @unique
   password  String
-  createdAt DateTime @default(now())
+  createdAt DateTime   @default(now())
   address   String
+  Cart      Cart[]
+  WishList  WishList[]
+  Order     Order[]
+}
+
+model Product {
+  code                       String    @id
+  name                       String
+  description                String
+  color                      Json?
+  whitePrice                 Json?
+  galleryDetails             Json[]
+  careInstructions           String[]
+  compositions               Json[]
+  materialDetails            Json[]
+  variantsList               Json[]
+  articleCountryOfProduction String?
+  categoryId                 Int?
+  category                   Category? @relation(fields: [categoryId], references: [id])
+
+  ProductSummary ProductSummary?
+}
+
+model ProductSummary {
+  id         Int       @id @default(autoincrement())
+  img        String
+  price      Float
+  currency   String
+  name       String
+  colorRgb   String
+  colorName  String
+  size       String    @default("")
+  ammount    Int       @default(1)
+  code       String    @unique
+  product    Product?  @relation(fields: [code], references: [code])
+  Cart       Cart?     @relation(fields: [cartId], references: [id])
+  cartId     Int?
+  WishList   WishList? @relation(fields: [wishListId], references: [id])
+  wishListId Int?
+  Order      Order?    @relation(fields: [orderId], references: [id])
+  orderId    Int?
+}
+
+model Category {
+  id      Int       @id @default(autoincrement())
+  name    String
+  Product Product[]
+}
+
+model PaymentMethod {
+  id             Int       @id @default(autoincrement())
+  name           String
+  description    String?
+  isDefault      Boolean   @default(false)
+  type           Int // 0=VISA, 1=MasterCard, 2=Paypal
+  cardNumber     String
+  expirationDate String // Format: MM/YY
+  ownerName      String
+  Payment        Payment[]
+}
+
+model Cart {
+  id     Int              @id @default(autoincrement())
+  user   User             @relation(fields: [userId], references: [id])
+  userId Int
+  items  ProductSummary[]
+}
+
+model WishList {
+  id     Int              @id @default(autoincrement())
+  user   User             @relation(fields: [userId], references: [id])
+  userId Int
+  items  ProductSummary[]
+}
+
+model Order {
+  id          Int              @id @default(autoincrement())
+  user        User             @relation(fields: [userId], references: [id])
+  userId      Int
+  paymentDate DateTime?
+  items       ProductSummary[]
+}
+
+model Payment {
+  id              Int           @id @default(autoincrement())
+  paymentMethod   PaymentMethod @relation(fields: [paymentMethodId], references: [id])
+  paymentMethodId Int
+  totalAmount     Float
+  paymentTime     DateTime
 }
