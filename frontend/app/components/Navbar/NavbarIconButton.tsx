@@ -1,22 +1,20 @@
-import Image from 'next/image'
+import Image from "next/image";
 
 type svgProps = {
-    svgName: string;
-  }
+  svgName: string;
+};
 
-export default function NavbarIconButton({svgName}:svgProps) {
+export default function NavbarIconButton({ svgName }: svgProps) {
   return (
     <button className="group w-7 h-7 flex items-center justify-center rounded-full  hover:border  hover:border-black hover:scale-150 transition duration-200">
       <Image
-              src={svgName}
-              
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={20}
-              height={20}
-              priority
-            />
-     
+        src={svgName}
+        alt=""
+        className=""
+        width={20}
+        height={20}
+        priority
+      />
     </button>
   );
 }

@@ -17,15 +17,25 @@ export default function OverlayContainer(props: OverlayProps) {
           props.bool !== true ? "translate-x-1/2 bg-black color-white" : null
         }`}
       >
-
         {/* -- LEFT OVERLAY PANEL -- */}
-        <OverlayPanel position={1}  title="Hello, Friend!" text="Enter your personal details and start a journey with us. You won't regret it!" button="SIGN UP" bool={props.bool} toggleFunction={props.toggleFunction}/>
-        
-        {/* -- RIGHT OVERLAY PANEL -- */}
-        <OverlayPanel position={2}  title="Welcome back!" text="To keep connected with us and get more functionalities login with your personal info" button="LOG IN" bool={props.bool} toggleFunction={props.toggleFunction}/>
-       
-        
+        <OverlayPanel
+          position={1}
+          title="Hello, Friend!"
+          text="Enter your personal details and start a journey with us. You won't regret it!"
+          button="SIGN UP"
+          bool={props.bool}
+          toggleFunction={props.toggleFunction}
+        />
 
+        {/* -- RIGHT OVERLAY PANEL -- */}
+        <OverlayPanel
+          position={2}
+          title="Welcome back!"
+          text="To keep connected with us and get more functionalities login with your personal info"
+          button="LOG IN"
+          bool={props.bool}
+          toggleFunction={props.toggleFunction}
+        />
       </div>
     </div>
   );
