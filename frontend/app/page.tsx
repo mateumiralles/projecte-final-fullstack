@@ -31,6 +31,11 @@ export default function Home() {
             LINK A BASKET PAGE
           </p>
         </Link>
+        <Link href="/mainPage">
+          <p className="text-5xl font-bold border border-black hover:scale-110 rounded p-4 transition duration-500">
+            LINK A MAIN PAGE
+          </p>
+        </Link>
        
       </div>
     </main>
