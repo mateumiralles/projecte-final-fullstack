@@ -17,7 +17,7 @@ model User {
   email     String     @unique
   password  String
   createdAt DateTime   @default(now())
-  address   String
+  address   String?
   Cart      Cart[]
   WishList  WishList[]
   Order     Order[]
