@@ -15,28 +15,27 @@ const prendaTest = {
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="relative flex gap-y-5 flex-col place-items-center ">
+      <div className="relative flex flex-col place-items-center gap-y-5 ">
         <Link href="/productsList">
-          <p className="text-5xl  font-bold border border-black hover:scale-110 rounded p-4 transition duration-500">
+          <p className="rounded  border border-black p-4 text-5xl font-bold transition duration-500 hover:scale-110">
             LINK A PRODUCTS LIST
           </p>
         </Link>
         <Link href="/detailPage">
-          <p className="text-5xl font-bold border border-black hover:scale-110 rounded p-4 transition duration-500">
+          <p className="rounded border border-black p-4 text-5xl font-bold transition duration-500 hover:scale-110">
             LINK A DETAIL PAGE
           </p>
         </Link>
         <Link href="/basketPage">
-          <p className="text-5xl font-bold border border-black hover:scale-110 rounded p-4 transition duration-500">
+          <p className="rounded border border-black p-4 text-5xl font-bold transition duration-500 hover:scale-110">
             LINK A BASKET PAGE
           </p>
         </Link>
         <Link href="/mainPage">
-          <p className="text-5xl font-bold border border-black hover:scale-110 rounded p-4 transition duration-500">
+          <p className="rounded border border-black p-4 text-5xl font-bold transition duration-500 hover:scale-110">
             LINK A MAIN PAGE
           </p>
         </Link>
-       
       </div>
     </main>
   );

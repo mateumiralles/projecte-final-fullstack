@@ -23,11 +23,11 @@ export default function OverlayPanel({
         bool !== true && position === 2 ? "translate-x-0" : null
       }`}
     >
-      <div className="h-full flex flex-col justify-evenly items-center">
-        <p className="font-bold text-4xl text-white text-center">{title}</p>
-        <p className="w-1/2 text-lg text-white text-center">{text}</p>
+      <div className="flex h-full flex-col items-center justify-evenly">
+        <p className="text-center text-4xl font-bold text-white">{title}</p>
+        <p className="w-1/2 text-center text-lg text-white">{text}</p>
         <button
-          className="w-1/2 border rounded bg-white font-bold text-lg p-1 hover:scale-95 transition duration-200"
+          className="w-1/2 rounded border bg-white p-1 text-lg font-bold transition duration-200 hover:scale-95"
           onClick={() => toggleFunction(!bool)}
         >
           {button}

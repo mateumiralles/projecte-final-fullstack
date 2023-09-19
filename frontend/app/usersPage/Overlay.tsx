@@ -8,13 +8,13 @@ type OverlayProps = {
 export default function OverlayContainer(props: OverlayProps) {
   return (
     <div
-      className={`absolute top-0 left-1/2 w-1/2 h-full overflow-hidden transition  duration-500 ease-in-out z-20 ${
-        props.bool !== true ? "-translate-x-full bg-black color-white" : null
+      className={`absolute left-1/2 top-0 z-20 h-full w-1/2 overflow-hidden  transition duration-500 ease-in-out ${
+        props.bool !== true ? "color-white -translate-x-full bg-black" : null
       }`}
     >
       <div
-        className={`relative -left-full h-full w-[200%] transition translate-x-0 duration-500 ease-in-out ${
-          props.bool !== true ? "translate-x-1/2 bg-black color-white" : null
+        className={`relative -left-full h-full w-[200%] translate-x-0 transition duration-500 ease-in-out ${
+          props.bool !== true ? "color-white translate-x-1/2 bg-black" : null
         }`}
       >
         {/* -- LEFT OVERLAY PANEL -- */}

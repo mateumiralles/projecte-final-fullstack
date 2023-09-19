@@ -8,9 +8,9 @@ export default function userPage() {
   const [signIn, toggle] = React.useState(true);
 
   return (
-    <main className="flex flex-row gap-2 content-center justify-center">
-      <div className="flex flex-col w-full  items-center">
-        <div className="bg-white rounded-lg relative overflow-hidden w-1/2 h-96">
+    <main className="flex flex-row content-center justify-center gap-2">
+      <div className="flex w-full flex-col  items-center">
+        <div className="relative -top-20 h-screen w-full overflow-hidden rounded-lg bg-white">
           <OverlayContainer
             bool={signIn}
             toggleFunction={toggle}
@@ -18,7 +18,6 @@ export default function userPage() {
           <SignUpContainer bool={signIn}></SignUpContainer>
           <LogInContainer bool={signIn}></LogInContainer>
         </div>
-        
       </div>
     </main>
   );

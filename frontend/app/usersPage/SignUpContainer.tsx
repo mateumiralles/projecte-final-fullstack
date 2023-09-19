@@ -14,19 +14,21 @@ export default function SignUpContainer(props: SignUpContainerProps) {
 
   return (
     <div
-      className={`absolute top-0 h-full left-0 transition ease-in-out duration-500 w-1/2   z-10 ${
-        props.bool !== true ? "translate-x-full opacity-100 z-20" : "opacity-0"
+      className={`absolute left-0 top-0 z-10 h-full w-1/2 transition duration-500   ease-in-out ${
+        props.bool !== true ? "z-20 translate-x-full opacity-100" : "opacity-0"
       }`}
     >
       <form
         // onSubmit={handleSignUp}
-        className="w-2/3 h-full mx-auto bg-white p-8 shadow-none flex flex-col justify-center"
+        className="mx-auto flex h-full w-2/3 flex-col justify-center bg-white p-8 shadow-none"
       >
-        {signUpToggle === false ?  <p className="text-2xl text-center font-bold mb-4 ">SIGN UP</p> : (
+        {signUpToggle === false ? (
+          <p className="mb-4 text-center text-2xl font-bold ">SIGN UP</p>
+        ) : (
           <div className="flex flex-row">
             <button
               type="button"
-              className={`w-7 h-7 flex items-center justify-center rounded-full  hover:border  hover:border-black hover:scale-150 transition duration-200 relative -left-10`}
+              className={`relative -left-10 flex h-7 w-7 items-center  justify-center  rounded-full transition duration-200 hover:scale-150 hover:border hover:border-black`}
               onClick={() => {
                 setSignUpToggle(!signUpToggle);
               }}
@@ -40,7 +42,9 @@ export default function SignUpContainer(props: SignUpContainerProps) {
                 priority
               />
             </button>
-            <p className="text-2xl text-center w-full font-bold mb-4 mr-6">SIGN UP</p>
+            <p className="mb-4 mr-6 w-full text-center text-2xl font-bold">
+              SIGN UP
+            </p>
           </div>
         )}
 
@@ -49,7 +53,7 @@ export default function SignUpContainer(props: SignUpContainerProps) {
 
         <button
           type="button"
-          className="w-full text-white bg-black font-bold hover:scale-95 py-2 px-4 border border-black rounded transition duration-200"
+          className="w-full rounded border border-black bg-black px-4 py-2 font-bold text-white transition duration-200 hover:scale-95"
           onClick={() => {
             setSignUpToggle(!signUpToggle);
           }}

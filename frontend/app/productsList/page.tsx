@@ -59,9 +59,9 @@ export default function MainPage() {
       {list === undefined ? (
         <p>Loading</p>
       ) : (
-        <div className="mt-8 grid grid-cols-4 mx-12 gap-x-4 gap-y-10 ">
+        <div className="mx-12 mt-8 grid grid-cols-4 gap-x-4 gap-y-10 ">
           {list.results.map((p: any, index: number) => (
-            <div className="w-full flex justify-center" key={index}>
+            <div className="flex w-full justify-center" key={index}>
               <ProductCard
                 title={p.name}
                 price={p.price.value}

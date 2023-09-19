@@ -17,8 +17,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body style={{minHeight: "100svh"}}  className={inter.className} >
-        <header className="sticky top-0 z-10">
+      <body style={{ minHeight: "100svh" }} className={inter.className}>
+        <header className="sticky top-0 z-30">
           <Navbar />
         </header>
         {children}

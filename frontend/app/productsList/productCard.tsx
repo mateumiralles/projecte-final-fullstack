@@ -13,10 +13,10 @@ type ProductCardProps = {
 export default function ProductCard({ title, price, image }: ProductCardProps) {
   return (
     <Link href="/detailPage">
-      <div className="hover:border w-full p-4 rounded hover:border-black hover:scale-95 justify-center transition duration-500">
+      <div className="w-full justify-center rounded p-4 transition duration-500 hover:scale-95 hover:border hover:border-black">
         <Image src={image} width={500} height={500} alt="" />
-        <div className="flex flex-col mt-2">
-          <p className="w-full text-gray-500 text-m mb-1 text-center">
+        <div className="mt-2 flex flex-col">
+          <p className="text-m mb-1 w-full text-center text-gray-500">
             {title}
           </p>
           <p className="w-full text-center">{price}€</p>
