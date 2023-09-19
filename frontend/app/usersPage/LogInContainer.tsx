@@ -13,20 +13,22 @@ export default function LogInContainer({ bool }: LogUpContainerProps) {
     >
       <form
         // onSubmit={handleLogin}
-        className="mx-auto flex h-full w-2/3 flex-col justify-center bg-white p-8 shadow-none"
+        className="mx-auto flex h-full w-2/3 flex-col items-center justify-evenly  bg-white p-8 shadow-none"
       >
-        <p className="mb-4 text-center text-2xl font-bold">LOG IN</p>
-        <div className="mb-4">
-          <label htmlFor="email" className="mb-2  block font-bold">
-            ENTER YOUR EMAIL
-          </label>
-          <InputUserForm id={"email"} type={"email"} placeholder={""} />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="password" className="mb-2  block font-bold">
-            PASSWORD
-          </label>
-          <InputUserForm id={"password"} type={"password"} placeholder={""} />
+        <p className="text-center text-4xl font-bold">Log In</p>
+        <div className="w-full">
+          <div className="mb-4 w-full">
+            <label htmlFor="email" className=" block font-bold">
+              E-mail
+            </label>
+            <InputUserForm id={"email"} type={"email"} placeholder={""} />
+          </div>
+          <div className=" w-full">
+            <label htmlFor="password" className="block font-bold">
+              Password
+            </label>
+            <InputUserForm id={"password"} type={"password"} placeholder={""} />
+          </div>
         </div>
         <button
           type="submit"

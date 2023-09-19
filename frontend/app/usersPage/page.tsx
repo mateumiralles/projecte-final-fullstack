@@ -10,7 +10,7 @@ export default function userPage() {
   return (
     <main className="flex flex-row content-center justify-center gap-2">
       <div className="flex w-full flex-col  items-center">
-        <div className="relative -top-20 h-screen w-full overflow-hidden rounded-lg bg-white">
+        <div className="relative -top-20 h-screen w-full overflow-hidden bg-white -mb-20">
           <OverlayContainer
             bool={signIn}
             toggleFunction={toggle}

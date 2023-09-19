@@ -20,15 +20,15 @@ export default function SignUpContainer(props: SignUpContainerProps) {
     >
       <form
         // onSubmit={handleSignUp}
-        className="mx-auto flex h-full w-2/3 flex-col justify-center bg-white p-8 shadow-none"
+        className="mx-auto flex h-full w-2/3 flex-col items-center justify-evenly bg-white p-8 shadow-none"
       >
         {signUpToggle === false ? (
-          <p className="mb-4 text-center text-2xl font-bold ">SIGN UP</p>
+          <p className="text-center text-4xl font-bold">Sign Up</p>
         ) : (
-          <div className="flex flex-row">
+          <div className="flex flex-row items-baseline">
             <button
               type="button"
-              className={`relative -left-10 flex h-7 w-7 items-center  justify-center  rounded-full transition duration-200 hover:scale-150 hover:border hover:border-black`}
+              className={`relative -left-10 flex h-7 w-9 items-center justify-center  rounded-full transition duration-200 hover:scale-150 hover:border hover:border-black`}
               onClick={() => {
                 setSignUpToggle(!signUpToggle);
               }}
@@ -42,13 +42,12 @@ export default function SignUpContainer(props: SignUpContainerProps) {
                 priority
               />
             </button>
-            <p className="mb-4 mr-6 w-full text-center text-2xl font-bold">
-              SIGN UP
+            <p className="mb-4 mr-6 w-full  text-center text-4xl font-bold">
+              Sign Up
             </p>
           </div>
         )}
 
-        <div className="mb-4"></div>
         {signUpToggle === false ? <SignUpCard1 /> : <SignUpCard2 />}
 
         <button
