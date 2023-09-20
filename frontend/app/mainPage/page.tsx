@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import Intro from "./Intro";
 import Description from "./Description";
+import CategorySelector from "./categorySelector";
 
 export default function mainPage() {
   useEffect(() => {
@@ -15,6 +16,7 @@ export default function mainPage() {
     <main>
       <Intro />
       <Description/>
+      <CategorySelector/>
     </main>
   );
 }

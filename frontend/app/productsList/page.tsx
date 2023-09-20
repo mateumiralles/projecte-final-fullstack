@@ -1,10 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 import ProductCard from "./productCard";
-import blanco1 from "../public/blanco1.jpg";
-import Navbar from "../components/Navbar/Navbar";
 
 export default function MainPage() {
   const options = {

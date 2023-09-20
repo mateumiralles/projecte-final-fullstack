@@ -12,7 +12,7 @@ export default function Description() {
   ];
 
   return (
-    <div className="relative z-30 ml-[10vw] mt-[40vh] text-4xl text-white">
+    <div className="relative z-20 ml-[10vw] mt-[40vh] text-4xl text-white">
       {textLines.map((line, i) => {
         return <AnimatedText key={i}>{line}</AnimatedText>;
       })}
@@ -32,12 +32,15 @@ function AnimatedText({ children }: ScriptProps) {
         start: "0px bottom",
         end: "bottom+=400px bottom",
         scrub: true,
-        markers: true
       },
       left: "-200px",
-      opacity: 0
+      opacity: 0,
     });
   });
 
-  return <p className="relative uppercase" ref={text}>{children}</p>;
+  return (
+    <p className="relative uppercase" ref={text}>
+      {children}
+    </p>
+  );
 }

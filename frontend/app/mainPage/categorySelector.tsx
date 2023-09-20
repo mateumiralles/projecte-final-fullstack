@@ -1,0 +1,72 @@
+import { useState, useRef, useLayoutEffect } from "react";
+import Image from "next/image";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+export default function CategorySelector() {
+  const categories = [
+    {
+      title: "Woman",
+      src: "https://lp2.hm.com/hmgoepprod?set=source[/d5/47/d547a64300c7941bf8d8ac521478046532c01d56.jpg],origin[dam],category[],type[LOOKBOOK],res[y],hmver[1]&call=url[file:/product/main]",
+    },
+    {
+      title: "Man",
+      src: "https://lp2.hm.com/hmgoepprod?set=source[/0c/51/0c5135cdc6097db5e658bdb40e245b246a872ef1.jpg],origin[dam],category[],type[LOOKBOOK],res[y],hmver[2]&call=url[file:/product/main]",
+    },
+    {
+      title: "Kids",
+      src: "https://lp2.hm.com/hmgoepprod?set=source[/9d/88/9d88daa168d904cc860373b86ef181d24480b29d.jpg],origin[dam],category[],type[LOOKBOOK],res[y],hmver[1]&call=url[file:/product/main]",
+    },
+    {
+      title: "Sales",
+      src: "https://lp2.hm.com/hmgoepprod?set=source[/94/fe/94fef1eac71e8d7f26da30199d0f8499570ff135.jpg],origin[dam],category[],type[LOOKBOOK],res[y],hmver[1]&call=url[file:/product/main]",
+    },
+  ];
+
+  const ImageContainer = useRef(null);
+  const [selectedCategory, setSelectedCategory] = useState(0);
+  useLayoutEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.create({
+      trigger: ImageContainer.current,
+      start: "-=100px",
+      end: document.body.offsetHeight,
+      pin: true,
+    });
+  }, []);
+
+  return (
+    <div className="mt-[40vh] flex flex-col">
+      <div className="display flex h-[700px] w-full justify-between gap-10">
+        <div ref={ImageContainer} className="relative h-full w-2/5">
+          <Image
+            className="object-cover"
+            src={`${categories[selectedCategory].src}`}
+            alt={`${categories[selectedCategory].title} Category`}
+            fill={true}
+          />
+        </div>
+        <div className="w-2/5">
+          <p className="text-xl">
+            Indulge in a world of endless style possibilities, from timeless
+            classics to the latest trends, our diverse categories await your
+            discovery!
+          </p>
+        </div>
+      </div>
+      <div className="mt-52 flex flex-col">
+        {categories.map((category, i) => {
+          return (
+            <div
+              onMouseOver={() => setSelectedCategory(i)}
+              key={i}
+              className="border-t-1 flex justify-end border border-black text-2xl"
+            >
+              <p>{category.title}</p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}

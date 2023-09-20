@@ -20,7 +20,6 @@ export default function Index() {
         start: "top",
         end: "+=400px",
         scrub: true,
-        markers: true,
       },
     });
 
