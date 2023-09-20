@@ -1,5 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+import bcrypt from "bcrypt";
 
 interface UserData {
   name: string;
@@ -11,12 +12,14 @@ interface UserData {
 
 async function createUser(data: UserData) {
   try {
+    const { password, ...userData } = data;
+
+    const hashedPassword = await hashPassword(password);
+
     const newUser = await prisma.user.create({
       data: {
-        name: data.name,
-        lastName: data.lastName,
-        email: data.email,
-        password: data.password,
+        ...userData,
+        password: hashedPassword,
       },
     });
 
@@ -69,4 +72,24 @@ async function deleteUser(userId: number) {
   }
 }
 
-export { createUser, getUserById, updateUser, deleteUser };
+async function login(email: string, password: string): Promise<boolean> {
+  const user = await prisma.user.findUnique({
+    where: {
+      email: email,
+    },
+  });
+
+  if (!user) {
+    return false;
+  }
+
+  const passwordMatch = await bcrypt.compare(password, user.password);
+  return passwordMatch;
+}
+
+async function hashPassword(password: string): Promise<string> {
+  const saltRounds = 10;
+  return await bcrypt.hash(password, saltRounds);
+}
+
+export { createUser, getUserById, updateUser, deleteUser, login };

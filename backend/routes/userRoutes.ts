@@ -4,6 +4,7 @@ import {
   createUserController,
   deleteUserController,
   getUserByIdController,
+  loginController,
   updateUserController,
 } from "../controllers/userController";
 
@@ -13,5 +14,6 @@ router.post("/", createUserController);
 router.get("/:id", getUserByIdController);
 router.put("/:id", updateUserController);
 router.delete("/:id", deleteUserController);
+router.post("/login", loginController);
 
 export default router;
