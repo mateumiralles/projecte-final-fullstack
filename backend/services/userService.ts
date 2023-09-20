@@ -72,7 +72,7 @@ async function deleteUser(userId: number) {
   }
 }
 
-async function login(email: string, password: string): Promise<boolean> {
+async function login(email: string, password: string) {
   const user = await prisma.user.findUnique({
     where: {
       email: email,
@@ -80,11 +80,15 @@ async function login(email: string, password: string): Promise<boolean> {
   });
 
   if (!user) {
-    return false;
+    return null;
   }
 
   const passwordMatch = await bcrypt.compare(password, user.password);
-  return passwordMatch;
+  if (passwordMatch) {
+    return user;
+  } else {
+    return null;
+  }
 }
 
 async function hashPassword(password: string): Promise<string> {

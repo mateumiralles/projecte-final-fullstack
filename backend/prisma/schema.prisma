@@ -11,16 +11,18 @@ datasource db {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
-  name      String
-  lastName  String
-  email     String     @unique
-  password  String
-  createdAt DateTime   @default(now())
-  address   String?
-  Cart      Cart[]
-  WishList  WishList[]
-  Order     Order[]
+  id            Int             @id @default(autoincrement())
+  name          String
+  lastName      String
+  email         String          @unique
+  password      String
+  createdAt     DateTime        @default(now())
+  address       String?
+  Cart          Cart[]
+  WishList      WishList[]
+  Order         Order[]
+  Payment       Payment[]
+  PaymentMethod PaymentMethod[]
 }
 
 model Product {
@@ -70,12 +72,13 @@ model Category {
 model PaymentMethod {
   id             Int       @id @default(autoincrement())
   name           String
-  description    String?
   isDefault      Boolean   @default(false)
   type           Int // 0=VISA, 1=MasterCard, 2=Paypal
   cardNumber     String
   expirationDate String // Format: MM/YY
   ownerName      String
+  user           User      @relation(fields: [userId], references: [id])
+  userId         Int
   Payment        Payment[]
 }
 
@@ -107,4 +110,6 @@ model Payment {
   paymentMethodId Int
   totalAmount     Float
   paymentTime     DateTime
+  user            User          @relation(fields: [userId], references: [id])
+  userId          Int
 }
