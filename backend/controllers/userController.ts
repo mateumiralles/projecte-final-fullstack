@@ -3,6 +3,7 @@ import {
   createUser,
   deleteUser,
   getUserById,
+  login,
   updateUser,
 } from "../services/userService";
 
@@ -69,6 +70,23 @@ export async function deleteUserController(req: Request, res: Response) {
       res.status(404).json({ message: "User not found" });
     } else {
       res.status(200).json({ message: "User deleted successfully" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+export async function loginController(req: Request, res: Response) {
+  try {
+    const { email, password } = req.body as { email: string; password: string };
+
+    const passwordMatch = await login(email, password);
+
+    if (passwordMatch) {
+      return res.status(200).json({ message: "Login successful" });
+    } else {
+      return res.status(401).json({ message: "Incorrect email or password" });
     }
   } catch (error) {
     console.error(error);
