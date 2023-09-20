@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Intro from "./Intro";
+import Description from "./Description";
 
 export default function mainPage() {
   useEffect(() => {
@@ -13,6 +14,7 @@ export default function mainPage() {
   return (
     <main>
       <Intro />
+      <Description/>
     </main>
   );
 }
