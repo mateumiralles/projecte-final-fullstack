@@ -1,7 +1,15 @@
+"use client"
 import Link from "next/link";
 import NavbarIconButton from "./NavbarIconButton";
 import NavbarTile from "./NavbarTile";
+import UserProfile from "./UserProfile";
+import { useState } from "react";
+
 export default function Navbar() {
+  const user = localStorage.getItem('user');
+  const [profile, setProfile] = useState<boolean>(false);
+  
+
   return (
     <div className="group flex flex-row items-center pt-4 transition duration-300  hover:-translate-y-3  hover:bg-slate-100">
       <div className="lg:px8 flex h-16 flex-1 items-center px-4 sm:px-6 ">
@@ -17,9 +25,18 @@ export default function Navbar() {
         <Link href="/basketPage">
           <NavbarIconButton svgName="/shoppingBagIcon.svg" />
         </Link>
-        <Link href="/usersPage">
+        {user ? 
+        <button onClick={() => setProfile(!profile)}>
+          <NavbarIconButton svgName="/userIcon.svg" /> 
+          {profile ? <UserProfile
+            setProfile={setProfile}
+          />: null}
+        </button>
+        : 
+        <Link href="/usersPage">          
           <NavbarIconButton svgName="/userIcon.svg" />
-        </Link>
+        </Link>} 
+
       </div>
     </div>
   );
