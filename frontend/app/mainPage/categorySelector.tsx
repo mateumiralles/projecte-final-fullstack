@@ -36,9 +36,9 @@ export default function CategorySelector() {
   }, []);
 
   return (
-    <div className="relative my-[40vh]">
+    <div className="relative mt-[40vh]">
       <div className="display flex h-[700px] w-full justify-between ">
-        <div ref={ImageContainer} className="relative h-full w-2/5 ml-52">
+        <div ref={ImageContainer} className="relative ml-52 h-full w-2/5">
           <Image
             className="object-cover"
             src={`${categories[selectedCategory].src}`}
@@ -47,23 +47,23 @@ export default function CategorySelector() {
             width={400}
           />
         </div>
-        <div className="w-2/5 h-full flex">
-          <p className="text-xl pt-32">
+        <div className="flex h-full w-2/5">
+          <p className="pt-32 mr-16 text-2xl">
             Indulge in a world of endless style possibilities, from timeless
             classics to the latest trends, our diverse categories await your
             discovery!
           </p>
         </div>
       </div>
-      <div className=" flex flex-col mr-10 z-10">
+      <div className="z-10 ml-52 mr-16 flex flex-col">
         {categories.map((category, i) => {
           return (
             <div
               onMouseOver={() => setSelectedCategory(i)}
               key={i}
-              className="border-b mt-6 flex justify-end border-black text-3xl "
+              className="group pt-10 flex justify-end border-b border-black text-3xl first-of-type:pt-3"
             >
-              <p>{category.title}</p>
+              <p className="group-hover:-translate-x-10 transition duration-300">{category.title}</p>
             </div>
           );
         })}
