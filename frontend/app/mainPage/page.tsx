@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Intro from "./Intro";
 import Description from "./Description";
 import CategorySelector from "./categorySelector";
+import SlidingProducts from "./SlidingProducts";
 
 export default function mainPage() {
   useEffect(() => {
@@ -17,6 +18,7 @@ export default function mainPage() {
       <Intro />
       <Description/>
       <CategorySelector/>
+      <SlidingProducts />
     </main>
   );
 }
