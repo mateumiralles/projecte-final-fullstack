@@ -29,38 +29,39 @@ export default function CategorySelector() {
     gsap.registerPlugin(ScrollTrigger);
     ScrollTrigger.create({
       trigger: ImageContainer.current,
-      start: "-=100px",
-      end: document.body.offsetHeight,
+      start: "-=200px",
+      end: "+=450px",
       pin: true,
     });
   }, []);
 
   return (
-    <div className="mt-[40vh] flex flex-col">
-      <div className="display flex h-[700px] w-full justify-between gap-10">
-        <div ref={ImageContainer} className="relative h-full w-2/5">
+    <div className="relative my-[40vh]">
+      <div className="display flex h-[700px] w-full justify-between ">
+        <div ref={ImageContainer} className="relative h-full w-2/5 ml-52">
           <Image
             className="object-cover"
             src={`${categories[selectedCategory].src}`}
             alt={`${categories[selectedCategory].title} Category`}
-            fill={true}
+            height={800}
+            width={400}
           />
         </div>
-        <div className="w-2/5">
-          <p className="text-xl">
+        <div className="w-2/5 h-full flex">
+          <p className="text-xl pt-32">
             Indulge in a world of endless style possibilities, from timeless
             classics to the latest trends, our diverse categories await your
             discovery!
           </p>
         </div>
       </div>
-      <div className="mt-52 flex flex-col">
+      <div className=" flex flex-col mr-10 z-10">
         {categories.map((category, i) => {
           return (
             <div
               onMouseOver={() => setSelectedCategory(i)}
               key={i}
-              className="border-t-1 flex justify-end border border-black text-2xl"
+              className="border-b mt-6 flex justify-end border-black text-3xl "
             >
               <p>{category.title}</p>
             </div>
