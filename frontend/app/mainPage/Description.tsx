@@ -5,10 +5,11 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export default function Description() {
   const textLines = [
-    "La guía definitiva de jeans para descubrir ",
-    "los fits más icónicos de la temporada.",
-    "Tu estilo, tu elección.",
-    "Elige el modelo perfecto para ti.",
+    "Welcome to our site,",  
+    "Where fashion meets convenience,",
+    "and your wardrobe dreams come to life.",
+    "Designed to empower you with style and confidence."
+   
   ];
 
   return (

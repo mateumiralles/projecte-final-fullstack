@@ -2,8 +2,8 @@
 
 import React, { useLayoutEffect, useRef } from "react";
 import Image from "next/image";
-import background2 from "../../public/background.webp";
-import intro1 from "../../public/intro.jpg";
+import background2 from "../../public/churchMainPage.jpg";
+import intro1 from "../../public/drippinPope.webp";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -24,12 +24,12 @@ export default function Index() {
     });
 
     timeline
-      .from(background.current, { clipPath: "inset(6%)" })
+      .from(background.current, { clipPath: "inset(0% 6% 0% 6%)" })
       .to(introImage.current, { height: "200px" }, 0);
   }, []);
 
   return (
-    <div className="relative -top-20 flex w-full justify-center">
+    <div className="relative -top-3  flex w-full justify-center">
       <div
         className="absolute h-[140vh] w-full brightness-[30%]	"
         ref={background}
@@ -61,7 +61,7 @@ export default function Index() {
           data-scroll
           data-scroll-speed="0.7"
         >
-          PULL N' BEAR
+          DRIPPIN' POPE
         </h1>
       </div>
     </div>
