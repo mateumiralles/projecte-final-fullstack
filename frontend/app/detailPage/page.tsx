@@ -8,11 +8,7 @@ import {
 } from "react";
 import ProductSummary from "./productSummary";
 import axios from "axios";
-import Image from "next/image";
 import { Article, ProductGeneral } from "../classes";
-import Navbar from "../components/Navbar/Navbar";
-import { cursorTo } from "readline";
-import ProductCard from "../productsList/productCard";
 
 export default function detailPage() {
   const [product, setProduct] = useState<any>();
@@ -25,42 +21,31 @@ export default function detailPage() {
   );
   const [currentIndex, setCurrentIndex] = useState(1);
   const [seeMoreDetail, setSeeMoreDetail] = useState(false);
-  const options = {
-    method: "GET",
-    url: "https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/detail",
-    params: {
-      lang: "es",
-      country: "es",
-      productcode: "1183573002",
-    },
-    headers: {
-      "X-RapidAPI-Key": "ca39b364a4msh5747570dc5634fbp18b7aejsn66c9149fcf5d",
-      "X-RapidAPI-Host": "apidojo-hm-hennes-mauritz-v1.p.rapidapi.com",
-    },
+
+  const [loadedImages, setLoadedImages] = useState<number[]>([]);
+
+  const handleImageLoad = (index: number) => {
+    // Marca la imagen como cargada correctamente.
+    setLoadedImages((prevLoadedImages) => [...prevLoadedImages, index]);
   };
 
-  const styleWithRequest = (code: string) => {
-    const styleWithRequest = {
+
+  const getProduct = async (productId: string) => {
+    let options = {
       method: "GET",
       url: "https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/detail",
       params: {
         lang: "es",
         country: "es",
-        productcode: code,
+        productcode: `${productId}`,
       },
       headers: {
         "X-RapidAPI-Key": "ca39b364a4msh5747570dc5634fbp18b7aejsn66c9149fcf5d",
         "X-RapidAPI-Host": "apidojo-hm-hennes-mauritz-v1.p.rapidapi.com",
       },
     };
-    return getProduct(styleWithRequest);
-  };
-
-  console.log(productToAdd);
-
-  const getProduct = async (fetchType: any) => {
     try {
-      const response = await axios.request(fetchType);
+      const response = await axios.request(options);
       return response.data;
     } catch (error) {
       return error;
@@ -69,7 +54,6 @@ export default function detailPage() {
 
   const getProductDetails = (): Article => {
     let productInstance = null;
-
     product.product.articlesList.forEach((element: any) => {
       if (element.code === product.product.code) {
         productInstance = new Article(element);
@@ -108,12 +92,19 @@ export default function detailPage() {
   };
 
   useEffect(() => {
+    const currentUrl = window.location.href;
+    const url = new URL(currentUrl);
+    const params = url.searchParams;
+    let productId = params.get('productId')!;
     const fetchData = async () => {
-      const storedProduct = localStorage.getItem("product");
+      // const storedProduct = localStorage.getItem("product");
+      const storedProduct = null;
       if (storedProduct == null) {
         try {
-          const response = await getProduct(options);
+         
+          const response = await getProduct(productId);
           setProduct(response);
+          console.log(response);
           localStorage.setItem("product", JSON.stringify(response));
         } catch (error) {
           console.error("Error fetching data:", error);
@@ -128,10 +119,14 @@ export default function detailPage() {
 
   useEffect(() => {
     if (product !== undefined) {
-      setProductDetails(getProductDetails());
-      setProductSizeAndColors(getProductSizeAndColors());
+      console.log(product);
+      if(product.responseStatusCode==="ok"){
+        setProductDetails(getProductDetails());
+        setProductSizeAndColors(getProductSizeAndColors());
+      }
     }
   }, [product]);
+
   useEffect(() => {
     if (productSizeAndColors.length !== 0) {
       setProductToAdd((prevProduct) => ({
@@ -170,8 +165,6 @@ export default function detailPage() {
 
   const handleScroll = (event: globalThis.WheelEvent, images: HTMLElement) => {
     event.preventDefault();
-    console.log("Current index: " + currentIndex);
-    console.log("Current Index real time: " + currentIndexRealTime);
     if (isScrollActive) {
       return; // Evitar el scroll mientras se está desplazando
     }
@@ -276,7 +269,7 @@ export default function detailPage() {
                 id="scrollLine"
                 style={{
                   height: `${
-                    (currentIndex / productDetails.galleryDetails.length) * 100
+                    (currentIndex / loadedImages.length) * 100
                   }%`,
                   transition: "0.4s ease-in-out",
                 }}
@@ -287,7 +280,7 @@ export default function detailPage() {
                 className="no-scrollbar relative h-[100%] w-[100%] overflow-y-auto"
               >
                 {productDetails.galleryDetails.map((img, index) => (
-                  <img key={index} src={img.baseUrl} />
+                  <img key={index} src={img.baseUrl} onLoad={() => handleImageLoad(index)} onError={() => console.log("TREMENDO BUG PAUIEK")} style={{ display: loadedImages.includes(index) ? 'block' : 'none' }}/>
                 ))}
               </div>
             </div>

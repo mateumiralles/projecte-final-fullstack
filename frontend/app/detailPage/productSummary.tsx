@@ -55,7 +55,7 @@ export default function ProductSummary(props: {
                   props.changeColor(element.rgbColor, element.text)
                 }
                 style={{ backgroundColor: element.rgbColor }}
-                className={`h-5 w-5 ${
+                className={`h-5 w-5 border border-black rounded hover:-scale-90 ${
                   index === 0
                     ? `mr-2`
                     : index === props.colors?.length
