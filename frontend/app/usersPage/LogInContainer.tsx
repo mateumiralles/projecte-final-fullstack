@@ -18,6 +18,7 @@ export default function LogInContainer({ bool }: LogUpContainerProps) {
   const [loginError, setLoginError] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>("");
   const { push } = useRouter();
+  const { refresh } = useRouter();
 
   const checkErrors = () => {
       if(email=="") {setErrorMsg("You must fill the email input"); setLoginError(true); return true;};
@@ -35,6 +36,7 @@ export default function LogInContainer({ bool }: LogUpContainerProps) {
         if(respuesta.data.message=="Login successful"){
           localStorage.setItem('user', JSON.stringify(respuesta.data.user));
           push('/mainPage');
+          refresh();
         }
       } catch (error: any) {  
 

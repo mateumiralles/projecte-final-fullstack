@@ -21,26 +21,29 @@
     const [registerError, setRegisterError] = useState<boolean>(false);
     const [errorMsg, setErrorMsg] = useState<string>("");
     const { push } = useRouter();
+    const { refresh } = useRouter();
 
     const checkErrors1 = () => {
-      if(name=="") {setErrorMsg("You must fill the name input"); setRegisterError(true); return true;};
-      if(name.length<=1) {setErrorMsg("Your name is too short"); setRegisterError(true); return true;};
-      if(surname=="") {setErrorMsg("You must fill the surname input"); setRegisterError(true); return true;};
-      if(email=="") {setErrorMsg("You must fill the email input"); setRegisterError(true); return true;};
-      if(!email.includes("@")) {setErrorMsg("You must set the email in the correct format"); setRegisterError(true); return true;};
-      setSignUpToggle(true);
+      if(name=="") {setErrorMsg("You must fill the name input"); setRegisterError(true); return true;}
+      else if(name.length<=1) {setErrorMsg("Your name is too short"); setRegisterError(true); return true;}
+      else if(surname=="") {setErrorMsg("You must fill the surname input"); setRegisterError(true); return true;}
+      else if(email=="") {setErrorMsg("You must fill the email input"); setRegisterError(true); return true;}
+      else if(!email.includes("@")) {setErrorMsg("You must set the email in the correct format"); setRegisterError(true); return true;}
+      else{
+        setSignUpToggle(true);
+        setRegisterError(false);
+      }
     }
 
     const checkErrors2 = () => {
-        if(pass=="") {setErrorMsg("You must fill the password input"); setRegisterError(true); return true;};
-        if(pass.length<6) {setErrorMsg("Your password must be longer than 6 characters"); setRegisterError(true); return true;};
-        if(pass!==pass2) {setErrorMsg("Both passwords must be the same"); setRegisterError(true); return true;}
-
+        if(pass=="") {setErrorMsg("You must fill the password input"); setRegisterError(true); return true;}
+        else if(pass.length<6) {setErrorMsg("Your password must be longer than 6 characters"); setRegisterError(true); return true;}
+        else if(pass!==pass2) {setErrorMsg("Both passwords must be the same"); setRegisterError(true); return true;}
+        
         return false;
     }
 
     const OnRegister = async () => {
-
       if(!checkErrors2()){
         setRegisterError(false);
         try {
@@ -49,6 +52,7 @@
           if(respuesta.statusText=="Created"){
             localStorage.setItem('user', JSON.stringify(respuesta.data));
             push('/mainPage');
+            refresh();
           }
         } catch (error: any) {  
           if(error.response.data.message=="Account already exists") setErrorMsg("This email is already registered");
