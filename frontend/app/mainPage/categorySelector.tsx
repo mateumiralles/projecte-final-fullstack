@@ -23,6 +23,8 @@ export default function CategorySelector() {
     },
   ];
 
+  const phrase = "Indulge in a world of endless style possibilities, from timeless classics to the latest trends, our diverse categories await your discovery!";
+
   const ImageContainer = useRef(null);
   const [selectedCategory, setSelectedCategory] = useState(0);
   useLayoutEffect(() => {
@@ -36,22 +38,20 @@ export default function CategorySelector() {
   }, []);
 
   return (
-    <div className="relative mt-[40vh]">
-      <div className="display flex h-[700px] w-full justify-between ">
-        <div ref={ImageContainer} className="relative ml-52 h-full w-2/5">
+    <div className="relative mt-[50vh]">
+      <div className="display flex h-[700px] w-full justify-between">
+        <div ref={ImageContainer} className="relative ml-52">
           <Image
-            className="object-cover"
+            className="border border-black rounded object-cover"
             src={`${categories[selectedCategory].src}`}
             alt={`${categories[selectedCategory].title} Category`}
-            height={800}
+            height={700}
             width={400}
           />
         </div>
         <div className="flex h-full w-2/5">
-          <p className="pt-32 mr-16 text-2xl">
-            Indulge in a world of endless style possibilities, from timeless
-            classics to the latest trends, our diverse categories await your
-            discovery!
+          <p className="mr-16 pt-32 text-2xl">
+            {phrase}
           </p>
         </div>
       </div>
@@ -61,9 +61,11 @@ export default function CategorySelector() {
             <div
               onMouseOver={() => setSelectedCategory(i)}
               key={i}
-              className="group pt-10 flex justify-end border-b border-black text-3xl first-of-type:pt-3"
+              className="group flex justify-end border-b border-black pt-10 text-3xl first-of-type:pt-3"
             >
-              <p className="group-hover:-translate-x-10 transition duration-300">{category.title}</p>
+              <p className="transition duration-300 group-hover:-translate-x-10">
+                {category.title}
+              </p>
             </div>
           );
         })}

@@ -7,47 +7,53 @@ import templateImg from "../../public/background.webp";
 export default function SlidingProducts() {
   const slider1 = [
     {
-      color: "#e3e3e3",
       src: templateImg,
     },
     {
-      color: "#21242b",
       src: templateImg,
     },
     {
-      color: "#e3e5e7",
       src: templateImg,
     },
     {
-      color: "#d6d7dc",
       src: templateImg,
     },
   ];
 
   const slider2 = [
     {
-      color: "#d4e3ec",
       src: templateImg,
     },
     {
-      color: "#e5e0e1",
       src: templateImg,
     },
     {
-      color: "#e1dad6",
       src: templateImg,
     },
     {
-      color: "#d7d4cf",
       src: templateImg,
     },
   ];
 
+const phrase = "Unleash your inner fashionista and discover hidden gems among our curated selection of random products below!";
+
+  const phraseRef = useRef(null);
   const sl1 = useRef(null);
   const sl2 = useRef(null);
 
   useLayoutEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+
+    gsap.from(phraseRef.current, {
+        scrollTrigger: {
+          trigger: phraseRef.current,
+          start: "200px bottom",
+          end: "bottom+=1000px bottom",
+          scrub: true,
+        },
+        top: "-100px",
+        opacity: 0,
+      });
 
     gsap.from(sl1.current, {
       scrollTrigger: {
@@ -71,14 +77,19 @@ export default function SlidingProducts() {
   });
 
   return (
-    <div className="my-96 flex flex-col gap-10 overflow-hidden">
+    <div className="p-44 mt-14 flex flex-col gap-10 overflow-hidden bg-[#001a33]" >
+        <div className="flex h-full w-full" ref={phraseRef}>
+          <p className="ml-96 my-40 text-4xl font-bold text-white">
+         {phrase}
+          </p>
+        </div>
    
       <div className="relative  flex w-full gap-7" ref={sl1}>
         {slider1.map((product, i) => {
           return (
             <div
               key={`s2_${i}`}
-              style={{ backgroundColor: product.color }}
+              style={{ backgroundColor: '#D6DBDC' }}
               className="flex h-80 w-1/4 items-center justify-center"
             >
               <div className="relative h-4/5 w-4/5">
@@ -98,7 +109,7 @@ export default function SlidingProducts() {
           return (
             <div
               key={`s2_${i}`}
-              style={{ backgroundColor: product.color }}
+              style={{ backgroundColor: '#D6DBDC' }}
               className="flex h-80 w-1/4 items-center justify-center"
             >
               <div className="relative h-4/5 w-4/5">
