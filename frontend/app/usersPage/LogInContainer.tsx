@@ -1,3 +1,4 @@
+import axios, { AxiosResponse } from "axios";
 import InputUserForm from "./InputUserForm";
 
 type LogUpContainerProps = {
@@ -5,6 +6,31 @@ type LogUpContainerProps = {
 };
 
 export default function LogInContainer({ bool }: LogUpContainerProps) {
+  const name = "javiGAMO";
+  const lastName = "gamo";
+  const email = "javi.gauxachs@gmail.com";
+  const password = "holaquetaaaal";
+
+
+  const OnRegister = async () => {
+    try {
+      const respuesta = await axios.post("http://localhost:3333/api/users/login", {email: email, password: password});
+      console.log(respuesta.data);
+    } catch (error: any) {
+      console.log(error.response.data.message);    
+    }
+  }
+
+
+    // fetch('http://localhost:3333/api/users/123', {method: "GET"})
+    // .then((result) => {
+    //   console.log(result);
+    // })  
+    // .catch((error) => {
+    //   console.log(error);
+    // })
+    
+
   return (
     <div
       className={`absolute left-0 top-0 z-10 h-full w-1/2 transition duration-500   ease-in-out ${
@@ -31,6 +57,7 @@ export default function LogInContainer({ bool }: LogUpContainerProps) {
           </div>
         </div>
         <button
+          onClick={OnRegister}
           type="submit"
           className="w-full rounded border border-black bg-black px-4 py-2 font-bold text-white transition duration-200 hover:scale-95"
         >

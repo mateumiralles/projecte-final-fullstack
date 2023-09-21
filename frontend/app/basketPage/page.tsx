@@ -1,7 +1,9 @@
 "use client";
 import { ProductGeneral } from "../classes";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProductInfo from "./productInfo";
+import SummaryPage from "./summaryPage";
+import ProcessPurchase from "./processPurhcase";
 
 export default function basketPage() {
   const makeNewProduct = (
@@ -30,7 +32,7 @@ export default function basketPage() {
 
   let productosCantidadTotal = 0;
   let precioFinal = 0;
-
+  const [purchaseSteps, setPurchaseSteps] = useState(-1);
   const [products, setProducts] = useState([
     makeNewProduct(
       "1",
@@ -96,42 +98,50 @@ export default function basketPage() {
     ),
   ]);
 
+
   products.forEach((product) => {
     productosCantidadTotal += product.ammount;
     precioFinal += product.price! * product.ammount;
     precioFinal = parseFloat(precioFinal.toFixed(2));
   });
 
+  useEffect(() => {
+    switch(purchaseSteps){
+      case 0:
+        let productosSummary =  document.getElementById('summaryBasket0')!;
+        let precioTotal = document.getElementById('totalPriceBasket0')!;
+
+        productosSummary.style.transition = '1s ease-in'; 
+        productosSummary.style.transform = 'translateX(-300px)';
+        productosSummary.style.opacity = '0';
+        precioTotal.style.transition = '1s ease-in'; 
+        precioTotal.style.transform = 'translateX(300px)';
+        precioTotal.style.opacity = '0';
+        setTimeout(() => {
+            setBasketComponent(<ProcessPurchase 
+            purchaseSteps = {purchaseSteps}
+            />);
+        }, 1000);
+        break;
+      case 1:
+        console.log(purchaseSteps);
+        console.log("hola");
+        break;
+    }
+  }, [purchaseSteps])
+
+  const [basketComponent, setBasketComponent] = useState(<SummaryPage
+    products = {products}
+    productosCantidadTotal={productosCantidadTotal}
+    precioFinal={precioFinal}
+    purchaseSteps={purchaseSteps}
+    setPurchaseSteps = {setPurchaseSteps}
+    setProducts = {setProducts}
+    /> )
+
   return (
     <main className="flex justify-center">
-      <div
-        id="products"
-        className="flex min-h-screen w-[90%] flex-row justify-center"
-      >
-        <div className="flex-grow-[2]">
-          {products.map((product, index) => (
-            <ProductInfo
-              product={product}
-              index={index}
-              products={products}
-              setProducts={setProducts}
-            />
-          ))}
-        </div>
-        <div className="mt-2 flex flex-[2] justify-center">
-          <div className="fixed w-[25%] rounded border border-black p-4">
-            <p>HOLAAAA</p>
-            <div className="flex w-full flex-row justify-between">
-              <p>{productosCantidadTotal} artículos</p>
-              <p>{precioFinal}€</p>
-            </div>
-            <div className="flex w-full flex-row justify-between">
-              <p className="font-bold">TOTAL:</p>
-              <p className="font-bold">{precioFinal}€</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      {basketComponent}
     </main>
   );
 }

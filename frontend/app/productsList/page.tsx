@@ -61,6 +61,7 @@ export default function MainPage() {
           {list.results.map((p: any, index: number) => (
             <div className="flex w-full justify-center" key={index}>
               <ProductCard
+                code={p.code}
                 title={p.name}
                 price={p.price.value}
                 image={p.galleryImages[0].url}

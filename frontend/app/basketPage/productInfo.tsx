@@ -66,8 +66,8 @@ export default function ProductInfo(props: {
       <div className="flex flex-1 flex-col justify-between">
         <div className="flex items-center justify-between">
           <div>
-            <p>{props.product.name}</p>
-            <p>
+            <p className="text-xl">{props.product.name}</p>
+            <p className="text-2xl font-extrabold">
               {props.product.price} {props.product.currency}
             </p>
           </div>
@@ -87,19 +87,19 @@ export default function ProductInfo(props: {
         </div>
         <div className="flex flex-row self-end">
           <div
-            className="hover: cursor-pointer rounded-s bg-slate-700 p-3"
+            className="hover: cursor-pointer rounded-s bg-black p-3"
             onClick={() => addOrSubtract(true)}
           >
-            <p>-</p>
+            <p className="text-white font-bold text-lg select-none">-</p>
           </div>
-          <div className="bg-white p-3">
-            <p>{props.product.ammount}</p>
+          <div className="w-9 text-center m-auto border-t border-b border-black h-full flex justify-center items-center">
+            <p className="text-lg select-none">{props.product.ammount}</p>
           </div>
           <div
-            className="hover: cursor-pointer rounded-e bg-slate-700 p-3"
+            className="hover: cursor-pointer rounded-e bg-black p-3"
             onClick={() => addOrSubtract(false)}
           >
-            <p>+</p>
+            <p className="text-white font-bold text-lg select-none">+</p>
           </div>
         </div>
       </div>
