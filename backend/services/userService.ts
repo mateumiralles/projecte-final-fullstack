@@ -14,6 +14,16 @@ async function createUser(data: UserData) {
   try {
     const { password, ...userData } = data;
 
+    const existingUser = await prisma.user.findUnique({
+      where: {
+        email: data.email,
+      },
+    });
+  
+    if (existingUser) {
+      return Promise.reject('Account already exists');
+    }
+
     const hashedPassword = await hashPassword(password);
 
     const newUser = await prisma.user.create({
