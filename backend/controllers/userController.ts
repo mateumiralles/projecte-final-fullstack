@@ -81,10 +81,11 @@ export async function loginController(req: Request, res: Response) {
   try {
     const { email, password } = req.body as { email: string; password: string };
 
-    const user = await login(email, password);
+    const result = await login(email, password);
 
-    if (user) {
-      return res.status(200).json({ message: "Login successful", user });
+    if (result) {
+      const { user, cart } = result;
+      return res.status(200).json({ message: "Login successful", user, cart });
     } else {
       return res.status(401).json({ message: "Incorrect email or password" });
     }
