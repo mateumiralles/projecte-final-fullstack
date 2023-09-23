@@ -7,15 +7,11 @@ import {
   useState,
 } from "react";
 import ProductSummary from "./productSummary";
-import axios from "axios";
-import { Article, ProductGeneral } from "../classes";
+import axios, { AxiosError } from "axios";
+import { Article, ProductData, ProductGeneral } from "../classes";
 
 export default function detailPage() {
-  const [product, setProduct] = useState<any>();
-  const [productDetails, setProductDetails] = useState<Article>(new Article());
-  const [productSizeAndColors, setProductSizeAndColors] = useState<Array<any>>(
-    [],
-  );
+  const [product, setProduct] = useState<ProductData>();
   const [productToAdd, setProductToAdd] = useState<ProductGeneral>(
     new ProductGeneral(),
   );
@@ -29,15 +25,86 @@ export default function detailPage() {
     setLoadedImages((prevLoadedImages) => [...prevLoadedImages, index]);
   };
 
+  const setProductToClass = (product: any, productId: string) => {
+    let newProduct: ProductData = {
+      code: product.code,
+      name: product.name,
+      description: product.description,
+      color: product.color,
+      whitePrice: product.whitePrice,
+      articlesList: [],
+      galleryDetails: [],
+      careInstructions: [],
+      compositions: [],
+      materialDetails: [],
+      variantsList: [],
+      colors: [],
+      articleCountryOfProduction: product.articleCountryOfProduction || product.countryOfProduction || product.productCountryOfProduction,
+      categoryId: product.categoryId,
+    };
+    product.articlesList.forEach((article: any) => {
+      let newArticle: {
+        code: string; // Reemplaza 'string' con el tipo correcto de article.code
+        galleryDetails: string[]; // Reemplaza 'any' con el tipo correcto de article.galleryDetails
+        color: any; // Reemplaza 'string' con el tipo correcto de article.color
+        variantsList: string[]; // Especifica que newArticle.variantsList es un array de strings
+      } = {
+        code: article.code,
+        galleryDetails: [],
+        color: article.color,
+        variantsList: [],
+      };
 
-  const getProduct = async (productId: string) => {
+      let sizesOfArticle: any[] = [];
+      let imagesOfArticle: any[] = [];
+      article.variantsList.forEach((size: any) => sizesOfArticle.push(size.size.name));
+      article.galleryDetails.forEach((image: any) => imagesOfArticle.push(image.baseUrl))
+      
+      newArticle.variantsList = sizesOfArticle;
+      newArticle.galleryDetails = imagesOfArticle;
+
+      newProduct.articlesList.push(newArticle);
+
+      let color = {rgbColor: article.color.rgbColor, name: article.color.text, code: article.color.code}
+      newProduct.colors.push(color);
+      if(article.code==productId){
+        let sizes: any[] = [];
+        let images: any[] = [];
+        article.galleryDetails.forEach((image: any) => {
+          images.push(image.baseUrl)
+        });
+        article.variantsList.forEach((variant: any) => {
+          sizes.push(variant.size.name);
+        })
+
+        newProduct.galleryDetails=images;
+        newProduct.variantsList=sizes;
+        newProduct.careInstructions=article.careInstructions;
+        newProduct.compositions = article.compositions;
+        newProduct.materialDetails=article.materialDetails;
+      }
+    });
+    console.log(newProduct as ProductData);
+    return newProduct as ProductData;
+  }
+
+  const uploadProductToDB = async (newProduct: any) => {
+    try{
+      const uploadProduct = axios.post("http://localhost:3333/api/products", newProduct);
+      console.log(uploadProduct);
+    }catch(error){
+      console.log(error);
+    }
+  }
+
+  const getProduct = async (productParentMain: string, productId: string) => {
     let options = {
       method: "GET",
       url: "https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/detail",
       params: {
         lang: "es",
         country: "es",
-        productcode: `${productId}`,
+        productcode: `${productParentMain}`,
       },
       headers: {
         "X-RapidAPI-Key": "ca39b364a4msh5747570dc5634fbp18b7aejsn66c9149fcf5d",
@@ -45,101 +112,96 @@ export default function detailPage() {
       },
     };
     try {
-      const response = await axios.request(options);
-      return response.data;
-    } catch (error) {
-      return error;
+      const localResponse = await axios.get(`http://localhost:3333/api/products/${productParentMain}`);
+      return [localResponse, false];
+    } catch (error: any) {
+      if(error.response.status===404){
+        try{
+          const response = await axios.request(options);
+          if(response.data.responseStatusCode==="not-found"){
+            getProduct(productId, "");
+          }
+          else if(response.data.responseStatusCode==="ok"){
+            return [response.data, true];
+          }
+          else{
+            return null;
+          }
+        } catch (error) {
+          return null;
+        }
+      }
     }
   };
 
-  const getProductDetails = (): Article => {
-    let productInstance = null;
-    product.product.articlesList.forEach((element: any) => {
-      if (element.code === product.product.code) {
-        productInstance = new Article(element);
-      }
-    });
+  const addProductToBasket = () => {
+    console.log("holaaa!");
+  }
 
-    return productInstance ?? new Article();
+  const updateColor = (colorName: string) => {
+    product?.articlesList.forEach((article: any, index: number) => {
+      if(article.color.text===colorName){
+        const updatedProduct = {
+          ...product, // Copiar todas las propiedades existentes
+          color: article.color,
+          galleryDetails: article.galleryDetails, // Sobrescribir propiedad1 con un nuevo valor
+          variantsList: article.variantsList, // Sobrescribir propiedad2 con un nuevo valor
+        };
+        setProduct(updatedProduct);
+      }
+    })
   };
 
-  const updateColor = (colorRgb: string, colorName: string) => {
-    console.log(colorName);
-    product.product.articlesList.forEach((element: Article) => {
-      if (element.color.rgbColor === colorRgb) {
-        setProductDetails(element);
-        setProductToAdd((prevProduct) => ({
-          ...prevProduct,
-          colorRgb: colorRgb,
-          colorName: colorName,
-        }));
-      }
-    });
-  };
-
-  const getProductSizeAndColors = () => {
-    var sizes = null;
-    var colors: any[] = [];
-    product.product.articlesList.forEach((element: any) => {
-      if (element.code === product.product.code) {
-        sizes = element.variantsList;
-      }
-      if (element.inStore) {
-        colors.push(element.color);
-      }
-    });
-    return [sizes, colors];
-  };
 
   useEffect(() => {
     const currentUrl = window.location.href;
     const url = new URL(currentUrl);
     const params = url.searchParams;
     let productId = params.get('productId')!;
+    let productParent = params.get('productParent')!;
     const fetchData = async () => {
-      // const storedProduct = localStorage.getItem("product");
-      const storedProduct = null;
-      if (storedProduct == null) {
-        try {
-         
-          const response = await getProduct(productId);
-          setProduct(response);
-          console.log(response);
-          localStorage.setItem("product", JSON.stringify(response));
-        } catch (error) {
-          console.error("Error fetching data:", error);
+      try {
+        const response = await getProduct(productParent+"001", productId);
+        console.log(response);
+        if (response !== null) {
+          if (Array.isArray(response)) {
+            if(response[1]){
+              let product = setProductToClass(response[0].product, productId);
+              uploadProductToDB(product);
+              setProduct(product);
+            }
+            else {
+              setProductToClass(response[0].data, productId);
+              setProduct(response[0].data);
+            }
+          } 
         }
-      } else {
-        setProduct(JSON.parse(storedProduct));
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
     };
-
     fetchData();
   }, []);
 
   useEffect(() => {
-    if (product !== undefined) {
-      console.log(product);
-      if(product.responseStatusCode==="ok"){
-        setProductDetails(getProductDetails());
-        setProductSizeAndColors(getProductSizeAndColors());
-      }
-    }
-  }, [product]);
+    console.log(productToAdd);
+    console.log(loadedImages);
+  }, [productToAdd]);
 
   useEffect(() => {
-    if (productSizeAndColors.length !== 0) {
+    if (product) {
       setProductToAdd((prevProduct) => ({
         ...prevProduct,
-        code: productDetails.code,
-        name: productDetails.name,
-        price: productDetails.whitePrice.price,
-        currency: productDetails.whitePrice.currency,
-        img: productDetails.galleryDetails[0].baseUrl,
-        colorRgb: productDetails.color.rgbColor,
-        colorName: productDetails.color.text,
+        code: product.code,
+        name: product.name,
+        price: product.whitePrice.price,
+        currency: product.whitePrice.currency,
+        img: product.galleryDetails[0],
+        colorRgb: product.color.rgbColor,
+        colorName: product.color.text,
       }));
     }
+
     const images = document.getElementById("images");
     const imageAndScroll = document.getElementById("imageAndScroll")!;
     const productDetail = document.getElementById("productSummary");
@@ -158,7 +220,7 @@ export default function detailPage() {
         images.removeEventListener("wheel", (e) => handleScroll(e, images));
       }
     };
-  }, [productSizeAndColors]);
+  }, [product]);
 
   let isScrollActive = false;
   let currentIndexRealTime: number = 0;
@@ -171,12 +233,12 @@ export default function detailPage() {
     isScrollActive = true;
     if (event.deltaY > 0) {
       currentIndexRealTime =
-        (currentIndexRealTime + 1) % productDetails.galleryDetails.length;
+        (currentIndexRealTime + 1) % product!.galleryDetails.length;
       setCurrentIndex(currentIndexRealTime + 1);
     } else if (event.deltaY < 0) {
       currentIndexRealTime =
-        (currentIndexRealTime - 1 + productDetails.galleryDetails.length) %
-        productDetails.galleryDetails.length;
+        (currentIndexRealTime - 1 + product!.galleryDetails.length) %
+        product!.galleryDetails.length;
       setCurrentIndex(currentIndexRealTime + 1);
     }
     const scrollY: number = currentIndexRealTime * (images?.clientHeight || 0);
@@ -203,9 +265,9 @@ export default function detailPage() {
   return (
     <>
       <main className="flex flex-row items-start justify-center gap-5 p-20">
-        {productSizeAndColors.length == 0 ? (
+        {!product ? (
           <h1>Loading...</h1>
-        ) : product.responseStatusCode === "ok" ? (
+        ) : (
           <>
             <div
               id="productInfo"
@@ -215,8 +277,8 @@ export default function detailPage() {
               <div>
                 <p className="mb-5 mt-5 text-base">COMPOSICIÓN</p>
                 <div className="mb-2">
-                  {productDetails.compositions.map((element, index) =>
-                    element.materials.map((material, index) => (
+                  {product.compositions?.map((element, index) =>
+                    element.materials.map((material: any, index: number) => (
                       <div>
                         <p key={index} className="inline-block text-sm">
                           {material.percentage}%
@@ -227,7 +289,7 @@ export default function detailPage() {
                     )),
                   )}
                 </div>
-                {productDetails.materialDetails.map((materialDesc, index) => (
+                {product.materialDetails?.map((materialDesc, index) => (
                   <div className="mb-2" key={index}>
                     <p className="text-sm font-bold">{materialDesc.name}:</p>
                     <p className="text-sm">{materialDesc.description}</p>
@@ -244,7 +306,7 @@ export default function detailPage() {
                 color, la forma y la estructura del tejido.
               </p>
               <ul>
-                {productDetails.careInstructions.map((care, index) => (
+                {product.careInstructions?.map((care, index) => (
                   <li className="text-sm" key={index}>
                     {care}
                   </li>
@@ -252,7 +314,7 @@ export default function detailPage() {
               </ul>
               <p className="mb-5 mt-5 text-base">ORIGEN</p>
               <p className="mb-5 text-sm">
-                Hecho en {productDetails.articleCountryOfProduction}
+                Hecho en {product.articleCountryOfProduction}
               </p>
               <p
                 className="underline hover:cursor-pointer"
@@ -279,8 +341,8 @@ export default function detailPage() {
                 id="images"
                 className="no-scrollbar relative h-[100%] w-[100%] overflow-y-auto"
               >
-                {productDetails.galleryDetails.map((img, index) => (
-                  <img key={index} src={img.baseUrl} onLoad={() => handleImageLoad(index)} onError={() => console.log("TREMENDO BUG PAUIEK")} style={{ display: loadedImages.includes(index) ? 'block' : 'none' }}/>
+                {product.galleryDetails?.map((img, index) => (
+                  <img key={index} src={img} onLoad={() => handleImageLoad(index)} onError={() => console.log("TREMENDO BUG PAUIEK")} style={{ display: loadedImages.includes(index) ? 'block' : 'none' }}/>
                 ))}
               </div>
             </div>
@@ -289,27 +351,21 @@ export default function detailPage() {
               className="max-w-[35%] rounded border border-black"
             >
               <ProductSummary
-                name={productDetails.name}
-                price={productDetails.whitePrice}
-                color={productDetails.color}
-                desc={productDetails.description}
-                colors={productSizeAndColors[1]}
-                sizes={productSizeAndColors[0]}
+                name={product.name}
+                price={product.whitePrice}
+                color={product.color}
+                desc={product.description}
+                colors={product.colors}
+                sizes={product.variantsList!}
                 productToAdd={productToAdd}
                 setProductToAdd={setProductToAdd}
                 changeColor={updateColor}
+                addProductToBasket={addProductToBasket}
               />
             </div>
           </>
-        ) : (
-          <p>Algo ha salido mal!</p>
         )}
       </main>
-      {/* <section>
-                {productDetails.styleWith.map((product, index) => (
-                     product.code
-                ))}
-            </section> */}
     </>
   );
 }

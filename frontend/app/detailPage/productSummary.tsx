@@ -8,10 +8,11 @@ export default function ProductSummary(props: {
   color: any;
   desc: string;
   colors: Array<any> | null;
-  sizes: Array<any>;
+  sizes: Array<string>;
   productToAdd: ProductGeneral;
   setProductToAdd: React.Dispatch<React.SetStateAction<any>>;
-  changeColor: (colorRgb: string, colorName: string) => void;
+  changeColor: (colorName: string) => void;
+  addProductToBasket: () => void;
 }) {
   const updateProduct = (size: string | undefined) => {
     props.setProductToAdd((prevProduct: any) => ({
@@ -51,8 +52,10 @@ export default function ProductSummary(props: {
           <div className="mb-6 mt-6 flex flex-row">
             {props.colors?.map((element, index) => (
               <div
-                onClick={() =>
-                  props.changeColor(element.rgbColor, element.text)
+                onClick={() =>{
+                    updateProduct(undefined),
+                    props.changeColor(element.name)
+                  }
                 }
                 style={{ backgroundColor: element.rgbColor }}
                 className={`h-5 w-5 border border-black rounded hover:-scale-90 ${
@@ -70,24 +73,24 @@ export default function ProductSummary(props: {
         <div>
           <div
             className={`grid-cols grid ${
-              props.sizes?.length > 6 ? `grid-cols-3` : `grid-cols-2`
+              props.sizes?.length > 6 ? props.sizes?.length>9 ? 'grid-cols-4' : `grid-cols-3` : `grid-cols-2`
             } w-full gap-3`}
           >
             {props.sizes?.map((element, index) => (
               <div
                 key={index}
                 onClick={() =>
-                  props.productToAdd.size === element.size.name
+                  props.productToAdd.size === element
                     ? updateProduct(undefined)
-                    : updateProduct(element.size.name)
+                    : updateProduct(element)
                 }
                 className={`${
-                  props.productToAdd.size === element.size.name
+                  props.productToAdd.size === element
                     ? `selectedSize`
                     : ``
                 } flex justify-center rounded border border-black p-2 text-sm transition duration-100 hover:scale-95 hover:cursor-pointer`}
               >
-                {element.size.name}
+                {element}
               </div>
             ))}
           </div>
@@ -99,6 +102,7 @@ export default function ProductSummary(props: {
         </div>
       </div>
       <div
+        onClick={props.addProductToBasket}
         className={`${
           props.productToAdd.size !== undefined ? `selectedSize` : null
         } flex items-center justify-center border-t border-black p-2 transition-all hover:cursor-pointer hover:text-gray-600`}

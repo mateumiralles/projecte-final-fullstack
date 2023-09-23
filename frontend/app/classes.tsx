@@ -46,6 +46,39 @@ export class Article {
       this.articleCountryOfProduction = data.articleCountryOfProduction || '';
     }
   }
+export class ProductData {
+    code: string;
+    name: string;
+    description: string;
+    color?: any;
+    whitePrice?: any;
+    articlesList: any[];
+    galleryDetails: any[];
+    careInstructions?: string[];
+    compositions?: any[];
+    materialDetails?: any[];
+    variantsList?: any[];
+    colors: any[];
+    articleCountryOfProduction?: string | null;
+    categoryId?: number | null;
+    constructor(data: any = {}){
+      this.code = data.code;
+      this.name = data.name;
+      this.description = data.description;
+      this.color = data.color;
+      this.whitePrice = data.whitePrice;
+      this.articlesList = data.articlesList || [];
+      this.galleryDetails = data.galleryDetails;
+      this.careInstructions = data.careInstructions || [];
+      this.compositions = data.compositions || [];
+      this.materialDetails = data.materialDetails || [];
+      this.variantsList = data.variantsList || [];
+      this.colors = data.colors || [];
+      this.articleCountryOfProduction = data.articleCountryOfProduction || '';
+      this.categoryId = data.categoryId || '';
+    }
+  }
+
 
 export class ProductGeneral {
   img: string | undefined;

@@ -13,9 +13,20 @@ type ProductCardProps = {
 
 export default function ProductCard({ code, title, price, image }: ProductCardProps) {
 
-  let nuevaCadena = code.replace("_group_", "");
+  const partes = code.split("_group_");
+  let codigoAntesDelGroup = partes[0];
+  let codigoDespuesDelGroup = partes[1];
+  let codigoEnteroSinGroup = codigoAntesDelGroup + codigoDespuesDelGroup;
+
+  if (partes.length === 2) {
+    codigoAntesDelGroup = partes[0];
+    codigoDespuesDelGroup = partes[1];
+    codigoEnteroSinGroup = codigoAntesDelGroup + codigoDespuesDelGroup;
+  } else {
+    console.log("No se encontró un formato válido en el string.");
+  }
   return (
-  <Link href={`/detailPage?productId=${nuevaCadena}`}>
+  <Link href={`/detailPage?productId=${codigoEnteroSinGroup}&productParent=${codigoAntesDelGroup}`}>
       <div className="w-full justify-center rounded p-4 transition duration-500 hover:scale-95 hover:border hover:border-black">
         <Image src={image} width={500} height={500} alt="" />
         <div className="mt-2 flex flex-col">
