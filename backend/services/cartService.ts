@@ -26,7 +26,7 @@ async function getCartByUserId(userId: number) {
     const cart = await prisma.cart.findFirst({
       where: { userId },
       include: {
-        items: true,
+        CartItem: true,
       },
     });
 
@@ -37,34 +37,4 @@ async function getCartByUserId(userId: number) {
   }
 }
 
-async function resetCart(userId: number) {
-  try {
-    const cart = await getCartByUserId(userId);
-    if (!cart) {
-      throw new Error("Cart not found");
-    }
-
-    await prisma.productSummary.deleteMany({
-      where: {
-        cartId: cart.id,
-      },
-    });
-
-    const updatedCart = await prisma.cart.update({
-      where: { id: cart.id },
-      data: {
-        items: { set: [] },
-      },
-      include: {
-        items: true,
-      },
-    });
-
-    return updatedCart;
-  } catch (error) {
-    console.error(error);
-    throw new Error("Failed to reset the cart");
-  }
-}
-
-export { createCart, getCartByUserId, resetCart };
+export { createCart, getCartByUserId };

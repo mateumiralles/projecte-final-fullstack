@@ -11,8 +11,14 @@ import { getPaymentMethodsController } from "../controllers/paymentMethodControl
 import {
   createCartController,
   getCartByUserIdController,
-  resetCartController,
+  // resetCartController,
 } from "../controllers/cartController";
+import {} from "../controllers/wishListController";
+import {
+  addCartItemController,
+  deleteCartItemController,
+  modifyCartItemController,
+} from "../controllers/cartItemController";
 
 const router = express.Router();
 
@@ -27,6 +33,9 @@ router.post("/login", loginController);
 router.get("/:id/payment-methods", getPaymentMethodsController);
 router.post("/:id/cart", createCartController);
 router.get("/:id/cart", getCartByUserIdController);
-router.put("/:id/cart/reset", resetCartController);
+
+router.post("/:id/cart/add", addCartItemController);
+router.delete("/:id/cart/delete/:cartItemId", deleteCartItemController);
+router.put("/:id/cart/modify/:cartItemId", modifyCartItemController);
 
 export default router;
