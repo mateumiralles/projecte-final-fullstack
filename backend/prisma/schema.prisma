@@ -45,23 +45,18 @@ model Product {
 }
 
 model ProductSummary {
-  id         Int       @id @default(autoincrement())
-  img        String
-  price      Float
-  currency   String
-  name       String
-  colorRgb   String
-  colorName  String
-  size       String    @default("")
-  ammount    Int       @default(1)
-  code       String    @unique
-  product    Product?  @relation(fields: [code], references: [code])
-  Cart       Cart      @relation(fields: [cartId], references: [id]) // Remove the "?" here
-  cartId     Int
-  WishList   WishList? @relation(fields: [wishListId], references: [id])
-  wishListId Int?
-  Order      Order?    @relation(fields: [orderId], references: [id])
-  orderId    Int?
+  id           Int            @id @default(autoincrement())
+  img          String
+  price        Float
+  currency     String
+  name         String
+  colorRgb     String
+  colorName    String
+  code         String         @unique
+  product      Product        @relation(fields: [code], references: [code])
+  CartItem     CartItem[]
+  WishListItem WishListItem[]
+  OrderItem    OrderItem[]
 }
 
 model Category {
@@ -74,7 +69,7 @@ model PaymentMethod {
   id             Int       @id @default(autoincrement())
   isDefault      Boolean   @default(false)
   type           Int // 0=VISA, 1=MasterCard, 2=Paypal
-  cardNumber     String
+  cardNumber     String    @unique
   expirationDate String // Format: MM/YY
   ownerName      String
   user           User      @relation(fields: [userId], references: [id])
@@ -83,26 +78,60 @@ model PaymentMethod {
 }
 
 model Cart {
-  id     Int              @id @default(autoincrement())
-  user   User             @relation(fields: [userId], references: [id])
-  userId Int              @unique
-  items  ProductSummary[]
+  id        Int         @id @default(autoincrement())
+  user      User        @relation(fields: [userId], references: [id])
+  userId    Int         @unique
+  CartItem  CartItem[]
+  OrderItem OrderItem[]
+}
+
+model CartItem {
+  id                 Int            @id @default(autoincrement())
+  cart               Cart           @relation(fields: [cartId], references: [id])
+  cartId             Int
+  productSummary     ProductSummary @relation(fields: [productSummaryCode], references: [code])
+  productSummaryCode String
+  quantity           Int
+  size               String
+
+  @@unique([cartId, productSummaryCode], name: "UniqueCartItem")
 }
 
 model WishList {
-  id     Int              @id @default(autoincrement())
-  items  ProductSummary[]
-  user   User             @relation(fields: [userId], references: [id])
-  userId Int              @unique
+  id           Int            @id @default(autoincrement())
+  user         User           @relation(fields: [userId], references: [id])
+  userId       Int            @unique
+  WishListItem WishListItem[]
+}
+
+model WishListItem {
+  id                 Int            @id @default(autoincrement())
+  wishList           WishList       @relation(fields: [wishListId], references: [id])
+  wishListId         Int
+  productSummary     ProductSummary @relation(fields: [productSummaryCode], references: [code])
+  productSummaryCode String
+
+  @@unique([wishListId, productSummaryCode], name: "UniqueWishListItem")
 }
 
 model Order {
-  id          Int              @id @default(autoincrement())
-  user        User             @relation(fields: [userId], references: [id])
+  id          Int       @id @default(autoincrement())
+  user        User      @relation(fields: [userId], references: [id])
   userId      Int
   paymentDate DateTime?
-  items       ProductSummary[]
   Payment     Payment[]
+}
+
+model OrderItem {
+  id                 Int            @id @default(autoincrement())
+  order              Cart           @relation(fields: [orderId], references: [id])
+  orderId            Int
+  productSummary     ProductSummary @relation(fields: [productSummaryCode], references: [code])
+  productSummaryCode String
+  quantity           Int
+  size               String
+
+  @@unique([orderId, productSummaryCode], name: "UniqueOrderItem")
 }
 
 model Payment {

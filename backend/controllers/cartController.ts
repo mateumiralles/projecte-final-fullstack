@@ -30,9 +30,14 @@ export async function getCartByUserIdController(req: Request, res: Response) {
 
 export async function resetCartController(req: Request, res: Response) {
   try {
-    const { id } = req.params;
-    const updatedCart = await resetCart(parseInt(id, 10));
-    res.status(200).json(updatedCart);
+    const { id } = req.params; // Assuming you're passing userId as a parameter in the route
+    const updatedCart = await resetCart(parseInt(id, 10)); // Parse userId to an integer
+
+    if (updatedCart) {
+      return res.status(200).json(updatedCart);
+    } else {
+      return res.status(404).json({ message: "Cart not found" });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

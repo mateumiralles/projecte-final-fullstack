@@ -26,7 +26,7 @@ async function getCartByUserId(userId: number) {
     const cart = await prisma.cart.findFirst({
       where: { userId },
       include: {
-        items: true,
+        CartItem: true,
       },
     });
 
@@ -39,24 +39,27 @@ async function getCartByUserId(userId: number) {
 
 async function resetCart(userId: number) {
   try {
-    const cart = await getCartByUserId(userId);
+    // Find the cart ID associated with the user ID
+    const cart = await prisma.cart.findFirst({
+      where: {
+        userId: userId,
+      },
+    });
+
     if (!cart) {
-      throw new Error("Cart not found");
+      throw new Error("Cart not found for the given user");
     }
 
-    await prisma.productSummary.deleteMany({
+    await prisma.cartItem.deleteMany({
       where: {
         cartId: cart.id,
       },
     });
 
-    const updatedCart = await prisma.cart.update({
-      where: { id: cart.id },
-      data: {
-        items: { set: [] },
-      },
+    const updatedCart = await prisma.cart.findFirst({
+      where: { userId },
       include: {
-        items: true,
+        CartItem: true,
       },
     });
 
