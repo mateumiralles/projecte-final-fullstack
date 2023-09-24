@@ -11,8 +11,6 @@ import { getPaymentMethodsController } from "../controllers/paymentMethodControl
 import {
   createCartController,
   getCartByUserIdController,
-  addProductSummaryToCartController,
-  removeProductSummaryFromCartController,
   resetCartController,
 } from "../controllers/cartController";
 
@@ -29,8 +27,6 @@ router.post("/login", loginController);
 router.get("/:id/payment-methods", getPaymentMethodsController);
 router.post("/:id/cart", createCartController);
 router.get("/:id/cart", getCartByUserIdController);
-router.post("/:id/cart/add", addProductSummaryToCartController);
-router.post("/:id/cart/remove", removeProductSummaryFromCartController);
-router.put("/:id/cart/reset/", resetCartController);
+router.put("/:id/cart/reset", resetCartController);
 
 export default router;

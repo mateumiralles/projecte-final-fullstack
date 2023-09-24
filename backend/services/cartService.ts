@@ -37,59 +37,23 @@ async function getCartByUserId(userId: number) {
   }
 }
 
-async function addProductSummaryToCart(
-  cartId: number,
-  productSummaryCode: string
-) {
+async function resetCart(userId: number) {
   try {
-    const updatedCart = await prisma.cart.update({
-      where: { id: cartId },
-      data: {
-        items: {
-          connect: { code: productSummaryCode },
-        },
+    const cart = await getCartByUserId(userId);
+    if (!cart) {
+      throw new Error("Cart not found");
+    }
+
+    await prisma.productSummary.deleteMany({
+      where: {
+        cartId: cart.id,
       },
     });
 
-    return updatedCart;
-  } catch (error) {
-    console.error(error);
-    throw new Error("Failed to add ProductSummary to cart");
-  }
-}
-
-async function removeProductSummaryFromCart(
-  cartId: number,
-  productSummaryCode: string
-) {
-  try {
     const updatedCart = await prisma.cart.update({
-      where: { id: cartId },
+      where: { id: cart.id },
       data: {
-        items: {
-          disconnect: [{ code: productSummaryCode }],
-        },
-      },
-      include: {
-        items: true,
-      },
-    });
-
-    return updatedCart;
-  } catch (error) {
-    console.error(error);
-    throw new Error("Failed to remove ProductSummary from cart");
-  }
-}
-
-async function resetCart(cartId: number) {
-  try {
-    const updatedCart = await prisma.cart.update({
-      where: { id: cartId },
-      data: {
-        items: {
-          set: [],
-        },
+        items: { set: [] },
       },
       include: {
         items: true,
@@ -103,10 +67,4 @@ async function resetCart(cartId: number) {
   }
 }
 
-export {
-  createCart,
-  getCartByUserId,
-  addProductSummaryToCart,
-  removeProductSummaryFromCart,
-  resetCart,
-};
+export { createCart, getCartByUserId, resetCart };
