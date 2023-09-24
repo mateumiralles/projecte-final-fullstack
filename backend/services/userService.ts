@@ -33,6 +33,18 @@ async function createUser(data: UserData) {
       },
     });
 
+    await prisma.cart.create({
+      data: {
+        userId: newUser.id,
+      },
+    });
+
+    await prisma.wishList.create({
+      data: {
+        userId: newUser.id,
+      },
+    });
+
     return newUser;
   } catch (error) {
     console.error(error);
@@ -95,7 +107,12 @@ async function login(email: string, password: string) {
 
   const passwordMatch = await bcrypt.compare(password, user.password);
   if (passwordMatch) {
-    return user;
+    const cart = await prisma.cart.findUnique({
+      where: {
+        userId: user.id,
+      },
+    });
+    return { user, cart };
   } else {
     return null;
   }

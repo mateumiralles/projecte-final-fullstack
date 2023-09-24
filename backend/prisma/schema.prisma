@@ -11,18 +11,19 @@ datasource db {
 }
 
 model User {
-  id            Int             @id @default(autoincrement())
-  name          String
-  lastName      String
-  email         String          @unique
-  password      String
-  createdAt     DateTime        @default(now())
-  address       String?
-  Cart          Cart[]
-  WishList      WishList[]
+  id        Int      @id @default(autoincrement())
+  name      String
+  lastName  String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  address   String?
+
   Order         Order[]
   Payment       Payment[]
   PaymentMethod PaymentMethod[]
+  Cart          Cart?
+  WishList      WishList?
 }
 
 model Product {
@@ -55,8 +56,8 @@ model ProductSummary {
   ammount    Int       @default(1)
   code       String    @unique
   product    Product?  @relation(fields: [code], references: [code])
-  Cart       Cart?     @relation(fields: [cartId], references: [id])
-  cartId     Int?
+  Cart       Cart      @relation(fields: [cartId], references: [id]) // Remove the "?" here
+  cartId     Int
   WishList   WishList? @relation(fields: [wishListId], references: [id])
   wishListId Int?
   Order      Order?    @relation(fields: [orderId], references: [id])
@@ -84,15 +85,15 @@ model PaymentMethod {
 model Cart {
   id     Int              @id @default(autoincrement())
   user   User             @relation(fields: [userId], references: [id])
-  userId Int
+  userId Int              @unique
   items  ProductSummary[]
 }
 
 model WishList {
   id     Int              @id @default(autoincrement())
-  user   User             @relation(fields: [userId], references: [id])
-  userId Int
   items  ProductSummary[]
+  user   User             @relation(fields: [userId], references: [id])
+  userId Int              @unique
 }
 
 model Order {
