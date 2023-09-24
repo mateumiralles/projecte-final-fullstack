@@ -135,8 +135,16 @@ export default function detailPage() {
   };
 
   const addProductToBasket = () => {
-    console.log("holaaa!");
-  }
+      const valores = Object.values(productToAdd);
+      if(valores.every(valor => valor !== undefined)){
+        if(localStorage.getItem('user')){
+          console.log("logged-in");
+        }
+        else{
+          console.log("Not logged-in");
+        }
+      }
+    }
 
   const updateColor = (colorName: string) => {
     product?.articlesList.forEach((article: any, index: number) => {
@@ -184,8 +192,8 @@ export default function detailPage() {
   }, []);
 
   useEffect(() => {
-    console.log(productToAdd);
-    console.log(loadedImages);
+    // console.log(productToAdd);
+    // console.log(loadedImages);
   }, [productToAdd]);
 
   useEffect(() => {
@@ -256,7 +264,6 @@ export default function detailPage() {
         productInfo.scrollTo({ top: 0, behavior: "smooth" });
         productInfo.style.height = `${productInfo.clientHeight / 2}px`;
       } else {
-        //console.log(productInfo.scrollTop);
         productInfo.style.height = `${productInfo.clientHeight * 2}px`;
       }
     }
