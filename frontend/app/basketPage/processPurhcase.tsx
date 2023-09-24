@@ -89,7 +89,7 @@ export default function ProcessPurchase(props: {purchaseSteps: number}){
                 value={newPaymentMethod.ownerName}
                 onChange={handleInputChange}
             />
-            <button onClick={createPaymentMethod}>Add payment method</button>
+            <button onClick={createPaymentMethod}>Add payment methodd</button>
         </div>
             <div className="w-[75%] flex flex-row gap-4">
                 <div id="processPurchase" className="opacity-0 translate-y-80 flex flex-col w-[80%] flex-[3] items-end">
