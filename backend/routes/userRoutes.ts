@@ -11,6 +11,7 @@ import { getPaymentMethodsController } from "../controllers/paymentMethodControl
 import {
   createCartController,
   getCartByUserIdController,
+  resetCartController,
   // resetCartController,
 } from "../controllers/cartController";
 import {} from "../controllers/wishListController";
@@ -37,5 +38,6 @@ router.get("/:id/cart", getCartByUserIdController);
 router.post("/:id/cart/add", addCartItemController);
 router.delete("/:id/cart/delete/:cartItemId", deleteCartItemController);
 router.put("/:id/cart/modify/:cartItemId", modifyCartItemController);
+router.post("/:id/cart/reset", resetCartController);
 
 export default router;
