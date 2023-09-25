@@ -7,18 +7,21 @@ import {
 
 export async function addCartItemController(req: Request, res: Response) {
   try {
-    const { cartId, productSummaryCode, quantity, size } = req.body as {
-      cartId: number;
-      productSummaryCode: string;
-      quantity: number;
-      size: string;
-    };
+    const { cartId, productSummaryCode, quantity, size, colorRgb } =
+      req.body as {
+        cartId: number;
+        productSummaryCode: string;
+        quantity: number;
+        size: string;
+        colorRgb: string;
+      };
 
     const cartItem = await addCartItem(
       cartId,
       productSummaryCode,
       quantity,
-      size
+      size,
+      colorRgb
     );
 
     res.status(201).json(cartItem);
@@ -42,12 +45,17 @@ export async function deleteCartItemController(req: Request, res: Response) {
 export async function modifyCartItemController(req: Request, res: Response) {
   try {
     const { cartItemId } = req.params;
-    const { quantity, size } = req.body as { quantity?: number; size?: string };
+    const { quantity, size, colorRgb } = req.body as {
+      quantity?: number;
+      size?: string;
+      colorRgb?: string;
+    };
 
     const updatedCartItem = await modifyCartItem(
       parseInt(cartItemId, 10),
       quantity,
-      size
+      size,
+      colorRgb
     );
 
     if (updatedCartItem) {
