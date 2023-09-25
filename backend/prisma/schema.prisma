@@ -32,13 +32,13 @@ model Product {
   description                String
   color                      Json?
   whitePrice                 Json?
-  articleList                Json?
+  articlesList               Json[]
   galleryDetails             Json[]
   careInstructions           String[]
   compositions               Json[]
   materialDetails            Json[]
   variantsList               Json[]
-  colors                     Json?
+  colors                     Json[]
   articleCountryOfProduction String?
   categoryId                 Int?
   category                   Category? @relation(fields: [categoryId], references: [id])
