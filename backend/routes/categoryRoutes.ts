@@ -1,4 +1,3 @@
-// categoryRoutes.ts
 import express from "express";
 import {
   createCategoryController,
