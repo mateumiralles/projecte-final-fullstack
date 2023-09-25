@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import ProductInfo from "./productInfo";
 import SummaryPage from "./summaryPage";
 import ProcessPurchase from "./processPurhcase";
+import axios from "axios";
 
 export default function basketPage() {
   const makeNewProduct = (
@@ -12,7 +13,6 @@ export default function basketPage() {
     currency: string,
     name: string,
     colorRgb: string,
-    colorName: string,
     size: string,
     ammount: number,
     img?: string,
@@ -24,7 +24,6 @@ export default function basketPage() {
     product.currency = currency;
     product.name = name;
     product.colorRgb = colorRgb;
-    product.colorName = colorName;
     product.size = size;
     product.ammount = ammount;
     return product;
@@ -33,80 +32,58 @@ export default function basketPage() {
   let productosCantidadTotal = 0;
   let precioFinal = 0;
   const [purchaseSteps, setPurchaseSteps] = useState(-1);
-  const [products, setProducts] = useState([
-    makeNewProduct(
-      "1",
-      10.0,
-      "EUR",
-      "Camisalol",
-      "#FF5733",
-      "naranja mandarina",
-      "M",
-      2,
-      "https://image.hm.com/assets/hm/28/08/280826e3a79f9bdd531d9981caa8e522a755e9a1.jpg",
-    ),
-    makeNewProduct(
-      "2",
-      25.42,
-      "EUR",
-      "sudadera admin fit",
-      "#F3F039",
-      "amarillo fosforito",
-      "M",
-      1,
-    ),
-    makeNewProduct(
-      "3",
-      12.99,
-      "EUR",
-      "camisa estampado",
-      "#504F17",
-      "granate terremoto",
-      "L",
-      1,
-    ),
-    makeNewProduct(
-      "4",
-      16.99,
-      "EUR",
-      "camisa estampado pero de lujo",
-      "#4177D7",
-      "azul fantasioso",
-      "M",
-      1,
-      "	https://image.hm.com/assets/hm/aa/63/aa6321d7fd4f71c538a13cbbe74c1a859444a1a6.jpg",
-    ),
-    makeNewProduct(
-      "5",
-      35.2,
-      "USD",
-      "sudadera high chance lacoste",
-      "#21CEA2",
-      "aqua marina d'or",
-      "S",
-      2,
-    ),
-    makeNewProduct(
-      "6",
-      60.8,
-      "EUR",
-      "Zapatillas Nikey air force",
-      "#C51766",
-      "purpura rosa",
-      "36",
-      1,
-    ),
-  ]);
-
-
-  products.forEach((product) => {
+  const [products, setProducts] = useState<Array<any>>([]);
+  
+  products.forEach((product: any) => {
     productosCantidadTotal += product.ammount;
     precioFinal += product.price! * product.ammount;
+
     precioFinal = parseFloat(precioFinal.toFixed(2));
   });
 
+
+  const getUserCart = async () => {
+    const user = JSON.parse(localStorage.getItem('user')!);
+    try{
+      const userCart = await axios.get(`http://localhost:3333/api/users/${user.id}/cart`);
+      console.log(userCart.status);
+      if(userCart.status===200){
+        userCart.data.CartItem.forEach(async (cartItem:any) => {
+          console.log(cartItem);
+          try{
+            const productSummary = await axios.get(`http://localhost:3333/api/productSummaries/${cartItem.productSummaryCode}`);
+            if(productSummary.status===200){
+              const productSummaryEnd = productSummary.data;
+              const newProduct = makeNewProduct(
+                cartItem.productSummaryCode,
+                productSummaryEnd.price,
+                productSummaryEnd.currency,
+                productSummaryEnd.name,
+                cartItem.colorRgb,
+                cartItem.size,
+                cartItem.quantity,  
+                cartItem.img,
+              )
+              setProducts((prevProducts) => [...prevProducts, newProduct]);
+              console.log(productSummary);
+            }
+          } catch (error: any){
+            console.log(error);
+          }
+        });
+      }
+    } catch (error: any){
+      console.log(error);
+    }
+    
+  }
+
+
   useEffect(() => {
     switch(purchaseSteps){
+      case -1:
+        getUserCart();
+        break;
       case 0:
         let productosSummary =  document.getElementById('summaryBasket0')!;
         // let precioTotal = document.getElementById('totalPriceBasket0')!;
@@ -114,21 +91,34 @@ export default function basketPage() {
         productosSummary.style.transition = '1s ease-in'; 
         productosSummary.style.transform = 'translateX(-300px)';
         productosSummary.style.opacity = '0';
-        // precioTotal.style.transition = '1s ease-in'; 
-        // precioTotal.style.transform = 'translateX(300px)';
-        // precioTotal.style.opacity = '0';
+        // precioTotal.style
         setTimeout(() => {
             setBasketComponent(<ProcessPurchase 
             purchaseSteps = {purchaseSteps}
             />);
         }, 1000);
+
         break;
       case 1:
         console.log(purchaseSteps);
         console.log("hola");
         break;
     }
+
   }, [purchaseSteps])
+
+  useEffect(() => {
+    setBasketComponent(
+      <SummaryPage
+    products = {products}
+    productosCantidadTotal={productosCantidadTotal}
+    precioFinal={precioFinal}
+    purchaseSteps={purchaseSteps}
+    setPurchaseSteps = {setPurchaseSteps}
+    setProducts = {setProducts}
+    />
+    )
+  }, [products])
 
   const [basketComponent, setBasketComponent] = useState(<SummaryPage
     products = {products}
@@ -145,7 +135,27 @@ export default function basketPage() {
         {basketComponent}
           <div className="mt-2 flex flex-[2] justify-center">
               <div id="totalPriceBasket0" className="fixed w-[25%] rounded border border-black">
-                  <p className="p-4">HOLAAAA</p>
+                  <div className="flex flex-col">
+                    <p className="mb-6 text-lg font-semibold text-center p-4">
+                      Summary of your delivery
+                    </p>
+                    <div className="max-h-[55vh] overflow-y-auto p-4">
+                      {products.map((product, i) => {
+                        return (
+                          <>
+                          <div key={i} className="mt-2 flex flex-row justify-between ">
+                            <p>{product.name}</p>
+                            <div className="flex flex-row w-24 justify-between">
+                            <p>x{product.ammount}&nbsp;</p>
+                            <p>{product.price}€</p>
+                            </div>
+                          </div>
+
+                          </>
+                        );
+                      })}
+                    </div>
+                  </div>
                   <div className="flex w-full flex-row justify-between p-4">
                     <p>{productosCantidadTotal} artículos</p>
                     <p>{precioFinal}€</p>

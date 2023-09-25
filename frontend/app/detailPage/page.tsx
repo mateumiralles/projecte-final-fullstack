@@ -9,6 +9,8 @@ import {
 import ProductSummary from "./productSummary";
 import axios, { AxiosError } from "axios";
 import { Article, ProductData, ProductGeneral } from "../classes";
+import { ProductSummary as ProductSummaryClass } from "../classes";
+import { useRouter } from "next/navigation";
 
 export default function detailPage() {
   const [product, setProduct] = useState<ProductData>();
@@ -25,7 +27,7 @@ export default function detailPage() {
     setLoadedImages((prevLoadedImages) => [...prevLoadedImages, index]);
   };
 
-  const setProductToClass = (product: any, productId: string) => {
+  const setProductToClass = (product: any, productId: string, local: boolean = false) => {
     let newProduct: ProductData = {
       code: product.code,
       name: product.name,
@@ -57,8 +59,9 @@ export default function detailPage() {
 
       let sizesOfArticle: any[] = [];
       let imagesOfArticle: any[] = [];
-      article.variantsList.forEach((size: any) => sizesOfArticle.push(size.size.name));
-      article.galleryDetails.forEach((image: any) => imagesOfArticle.push(image.baseUrl))
+      if(local) article.variantsList.forEach((size: any) => sizesOfArticle.push(size));
+      else article.variantsList.forEach((size: any) => sizesOfArticle.push(size.size.name));
+      article.galleryDetails.forEach((image: any) => {if(image!=null) imagesOfArticle.push(image.baseUrl)})
       
       newArticle.variantsList = sizesOfArticle;
       newArticle.galleryDetails = imagesOfArticle;
@@ -73,7 +76,10 @@ export default function detailPage() {
         article.galleryDetails.forEach((image: any) => {
           images.push(image.baseUrl)
         });
-        article.variantsList.forEach((variant: any) => {
+        if(local) article.variantsList.forEach((variant: any) => {
+          sizes.push(variant);
+        })
+        else article.variantsList.forEach((variant: any) => {
           sizes.push(variant.size.name);
         })
 
@@ -84,16 +90,27 @@ export default function detailPage() {
         newProduct.materialDetails=article.materialDetails;
       }
     });
-    console.log(newProduct as ProductData);
+    console.log(newProduct);
     return newProduct as ProductData;
   }
 
-  const uploadProductToDB = async (newProduct: any) => {
+  const uploadProductToDB = async (newProduct: ProductData) => {
     try{
-      const uploadProduct = axios.post("http://localhost:3333/api/products", newProduct);
-      console.log(uploadProduct);
+      let productSummary: ProductSummaryClass = {
+        img: newProduct.galleryDetails[0],
+        code: newProduct.code,
+        currency: newProduct.whitePrice.currency,
+        price: newProduct.whitePrice.price,
+        name: newProduct.name,
+      }
+
+
+      const uploadProduct = await axios.post("http://localhost:3333/api/products", newProduct);
+      const uploadSummary = await axios.post("http://localhost:3333/api/productSummaries", productSummary);
+      console.log("UPLOAD PRODUCT",uploadProduct);
+      console.log("UPLOAD SUMMARY", uploadSummary);
     }catch(error){
-      console.log(error);
+      console.log("ERROR ON UPLOAD PRODUCT",error);
     }
   }
 
@@ -134,14 +151,43 @@ export default function detailPage() {
     }
   };
 
-  const addProductToBasket = () => {
+
+  const {push, refresh} = useRouter();
+  const addProductToBasket = async () => {
       const valores = Object.values(productToAdd);
       if(valores.every(valor => valor !== undefined)){
         if(localStorage.getItem('user')){
-          console.log("logged-in");
+          const user = JSON.parse(localStorage.getItem('user')!);
+
+          try {
+            const localResponse = await axios.get(`http://localhost:3333/api/users/${user.id}/cart`);
+            try{
+              console.log(localResponse);
+              console.log(productToAdd);
+              const cartResponse = await axios.post(`http://localhost:3333/api/users/${user.id}/cart/add`, {
+                cartId: localResponse.data.id,
+                img: productToAdd.img,
+                productSummaryCode: productToAdd.code,
+                quantity: productToAdd.ammount,
+                size: productToAdd.size,
+                colorRgb: productToAdd.colorRgb,
+              });
+              
+              console.log(cartResponse);
+              if(cartResponse.status===201){
+                alert("Añadido a la cesta. vete a la cesta.")
+              }
+            } catch (error: any){
+              console.log(error);
+            }
+          } catch (error: any) {
+            console.log(error);
+          }
         }
         else{
           console.log("Not logged-in");
+          push("/usersPage");
+          refresh();
         }
       }
     }
@@ -169,6 +215,7 @@ export default function detailPage() {
     let productParent = params.get('productParent')!;
     const fetchData = async () => {
       try {
+        console.log(productParent+"001");
         const response = await getProduct(productParent+"001", productId);
         console.log(response);
         if (response !== null) {
@@ -179,7 +226,8 @@ export default function detailPage() {
               setProduct(product);
             }
             else {
-              setProductToClass(response[0].data, productId);
+              console.log(response[0].data);
+              setProductToClass(response[0].data, productId, true);
               setProduct(response[0].data);
             }
           } 
