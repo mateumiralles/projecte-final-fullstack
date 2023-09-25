@@ -4,6 +4,7 @@ const prisma = new PrismaClient();
 
 export async function addCartItem(
   cartId: number,
+  img: string,
   productSummaryCode: string,
   quantity: number,
   size: string,
@@ -13,6 +14,7 @@ export async function addCartItem(
     const cartItem = await prisma.cartItem.create({
       data: {
         cartId,
+        img,
         productSummaryCode,
         quantity,
         size,

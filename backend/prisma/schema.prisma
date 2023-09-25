@@ -92,6 +92,7 @@ model CartItem {
   productSummary     ProductSummary @relation(fields: [productSummaryCode], references: [code])
   productSummaryCode String
   quantity           Int
+  img                String
   size               String
   colorRgb           String
 

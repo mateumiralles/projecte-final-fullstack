@@ -7,9 +7,10 @@ import {
 
 export async function addCartItemController(req: Request, res: Response) {
   try {
-    const { cartId, productSummaryCode, quantity, size, colorRgb } =
+    const { cartId, img, productSummaryCode, quantity, size, colorRgb } =
       req.body as {
         cartId: number;
+        img: string,
         productSummaryCode: string;
         quantity: number;
         size: string;
@@ -18,6 +19,7 @@ export async function addCartItemController(req: Request, res: Response) {
 
     const cartItem = await addCartItem(
       cartId,
+      img,
       productSummaryCode,
       quantity,
       size,
