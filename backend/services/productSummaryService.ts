@@ -7,14 +7,7 @@ interface ProductSummaryData {
   price: number;
   currency: string;
   name: string;
-  colorRgb: string;
-  colorName: string;
-  size: string;
-  ammount: number;
   code: string;
-  cartId: number;
-  wishListId?: number;
-  orderId?: number;
 }
 
 async function createProductSummary(productSummaryData: ProductSummaryData) {
