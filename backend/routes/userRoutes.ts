@@ -31,6 +31,7 @@ import {
   createOrderController,
   getOrderByUserIdController,
 } from "../controllers/orderController";
+import { getUserPaymentsController } from "../controllers/paymentController";
 
 const router = express.Router();
 
@@ -48,6 +49,7 @@ router.get("/:id/cart", getCartByUserIdController);
 router.get("/:id/wishList", getWishListByUserIdController);
 router.post("/:id/order", createOrderController);
 router.get("/:id/order", getOrderByUserIdController);
+router.get("/:id/payments", getUserPaymentsController);
 
 // cart
 router.post("/:id/cart/add", addCartItemController);

@@ -1,34 +1,40 @@
-// import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
-// const prisma = new PrismaClient();
+const prisma = new PrismaClient();
 
-// interface PaymentData {
-//   paymentMethodId: number;
-//   totalAmount: number;
-//   paymentTime: Date;
-//   userId: number;
-// }
+interface PaymentData {
+  paymentMethodId: number;
+  totalAmount: number;
+  paymentTime: Date;
+  userId: number;
+  orderId: number;
+}
 
-// async function createPayment(paymentData: PaymentData) {
-//   try {
-//     const newPayment = await prisma.payment.create({
-//       data: {
-//         paymentMethodId: paymentData.paymentMethodId,
-//         totalAmount: paymentData.totalAmount,
-//         paymentTime: paymentData.paymentTime,
-//         user: {
-//           connect: {
-//             id: paymentData.userId, // Connect the payment to a user by their ID
-//           },
-//         },
-//       },
-//     });
+async function createPayment(paymentData: PaymentData) {
+  try {
+    const newPayment = await prisma.payment.create({
+      data: paymentData,
+    });
 
-//     return newPayment;
-//   } catch (error) {
-//     console.error(error);
-//     throw new Error("Failed to create payment");
-//   }
-// }
+    return newPayment;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to create payment");
+  }
+}
 
-// export { createPayment };
+async function getUserPayments(userId: number) {
+  try {
+    const payments = await prisma.payment.findMany({
+      where: {
+        userId: userId,
+      },
+    });
+    return payments;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to fetch user payments");
+  }
+}
+
+export { createPayment, getUserPayments };
