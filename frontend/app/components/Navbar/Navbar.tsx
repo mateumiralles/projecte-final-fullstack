@@ -8,13 +8,15 @@ import { useState } from "react";
 export default function Navbar() {
   const user = localStorage.getItem('user');
   const [profile, setProfile] = useState<boolean>(false);
+
+  
   
 
   return (
-    <div className="group flex flex-row items-center pt-4 transition duration-300  hover:-translate-y-3  hover:bg-slate-100">
+    <div className="group flex flex-row items-center pt-4 transition duration-300  hover:-translate-y-3  hover:bg-slate-100 hover:opacity-90">
       <div className="lg:px8 flex h-16 flex-1 items-center px-4 sm:px-6 ">
-        <Link href="/" className="mx-4 flex gap-x-2 lg:ml-0">
-          <p className="text-xl font-bold">PULLANDBEAR</p>
+        <Link href="/mainPage" className="mx-4 flex gap-x-2 lg:ml-0">
+          <p className="text-xl font-bold">DRIPPIN'POPE</p>
         </Link>
 
         <NavbarTile title="Sneakers" link="/Sneakers" />
@@ -22,9 +24,7 @@ export default function Navbar() {
         <NavbarTile title="Trousers" link="/Trousers" />
       </div>
       <div className="flex-4 mr-14 flex flex-row gap-5 ">
-        <Link href="/basketPage">
-          <NavbarIconButton svgName="/shoppingBagIcon.svg" />
-        </Link>
+        
         {user ? 
         <button onClick={() => setProfile(!profile)}>
           <NavbarIconButton svgName="/userIcon.svg" /> 
@@ -36,7 +36,9 @@ export default function Navbar() {
         <Link href="/usersPage">          
           <NavbarIconButton svgName="/userIcon.svg" />
         </Link>} 
-
+        <Link href="/basketPage">
+          <NavbarIconButton svgName="/shoppingBagIcon.svg" />
+        </Link>
       </div>
     </div>
   );

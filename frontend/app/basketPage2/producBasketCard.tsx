@@ -73,7 +73,7 @@ export default function ProductInfo(props: {
           </div>
 
           <div
-            className="ml-2 flex h-5 w-5 cursor-pointer items-center justify-center rounded border border-black transition duration-150 ease-in-out hover:scale-95 hover:bg-black hover:text-white"
+            className="ml-2 flex h-5 w-5 cursor-pointer items-center justify-center rounded border border-black transition duration-150 ease-in-out hover:scale-95 hover:bg-red-500 hover:border-red-500 hover:text-white"
             onClick={() => deleteProduct()}
           >
             <p className="pb-1 font-bold">x</p>
