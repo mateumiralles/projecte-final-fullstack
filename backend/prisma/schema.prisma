@@ -32,11 +32,13 @@ model Product {
   description                String
   color                      Json?
   whitePrice                 Json?
+  articleList                Json?
   galleryDetails             Json[]
   careInstructions           String[]
   compositions               Json[]
   materialDetails            Json[]
   variantsList               Json[]
+  colors                     Json?
   articleCountryOfProduction String?
   categoryId                 Int?
   category                   Category? @relation(fields: [categoryId], references: [id])
@@ -50,8 +52,6 @@ model ProductSummary {
   price        Float
   currency     String
   name         String
-  colorRgb     String
-  colorName    String
   code         String         @unique
   product      Product        @relation(fields: [code], references: [code])
   CartItem     CartItem[]
@@ -93,6 +93,7 @@ model CartItem {
   productSummaryCode String
   quantity           Int
   size               String
+  colorRgb           String
 
   @@unique([cartId, productSummaryCode], name: "UniqueCartItem")
 }
