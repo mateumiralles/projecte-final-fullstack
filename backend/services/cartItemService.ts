@@ -6,7 +6,8 @@ export async function addCartItem(
   cartId: number,
   productSummaryCode: string,
   quantity: number,
-  size: string
+  size: string,
+  colorRgb: string
 ) {
   try {
     const cartItem = await prisma.cartItem.create({
@@ -15,6 +16,7 @@ export async function addCartItem(
         productSummaryCode,
         quantity,
         size,
+        colorRgb,
       },
     });
 
@@ -39,7 +41,8 @@ export async function deleteCartItem(cartItemId: number): Promise<void> {
 export async function modifyCartItem(
   cartItemId: number,
   newQuantity?: number,
-  newSize?: string
+  newSize?: string,
+  newColorRgb?: string
 ) {
   try {
     const updatedCartItem = await prisma.cartItem.update({
@@ -47,6 +50,7 @@ export async function modifyCartItem(
       data: {
         quantity: newQuantity,
         size: newSize,
+        colorRgb: newColorRgb,
       },
     });
 
