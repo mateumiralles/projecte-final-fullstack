@@ -78,11 +78,10 @@ model PaymentMethod {
 }
 
 model Cart {
-  id        Int         @id @default(autoincrement())
-  user      User        @relation(fields: [userId], references: [id])
-  userId    Int         @unique
-  CartItem  CartItem[]
-  OrderItem OrderItem[]
+  id       Int        @id @default(autoincrement())
+  user     User       @relation(fields: [userId], references: [id])
+  userId   Int        @unique
+  CartItem CartItem[]
 }
 
 model CartItem {
@@ -117,23 +116,24 @@ model WishListItem {
 }
 
 model Order {
-  id          Int       @id @default(autoincrement())
-  user        User      @relation(fields: [userId], references: [id])
-  userId      Int
-  paymentDate DateTime?
-  Payment     Payment[]
+  id        Int         @id @default(autoincrement())
+  user      User        @relation(fields: [userId], references: [id])
+  userId    Int
+  payment   Payment?
+  OrderItem OrderItem[]
 }
 
 model OrderItem {
   id                 Int            @id @default(autoincrement())
-  order              Cart           @relation(fields: [orderId], references: [id])
+  order              Order          @relation(fields: [orderId], references: [id])
   orderId            Int
   productSummary     ProductSummary @relation(fields: [productSummaryCode], references: [code])
   productSummaryCode String
   quantity           Int
   size               String
+  colorRgb           String
 
-  @@unique([orderId, productSummaryCode], name: "UniqueOrderItem")
+  @@unique([orderId, productSummaryCode, size, colorRgb], name: "UniqueOrderItem")
 }
 
 model Payment {
@@ -144,6 +144,6 @@ model Payment {
   paymentTime     DateTime
   user            User          @relation(fields: [userId], references: [id])
   userId          Int
+  orderId         Int           @unique
   order           Order         @relation(fields: [orderId], references: [id])
-  orderId         Int
 }

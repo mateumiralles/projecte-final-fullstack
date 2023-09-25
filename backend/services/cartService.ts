@@ -39,7 +39,6 @@ async function getCartByUserId(userId: number) {
 
 async function resetCart(userId: number) {
   try {
-    // Find the cart ID associated with the user ID
     const cart = await prisma.cart.findFirst({
       where: {
         userId: userId,
