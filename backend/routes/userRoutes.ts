@@ -14,12 +14,23 @@ import {
   resetCartController,
   // resetCartController,
 } from "../controllers/cartController";
-import {} from "../controllers/wishListController";
+import {
+  getWishListByUserIdController,
+  resetWishListController,
+} from "../controllers/wishListController";
 import {
   addCartItemController,
   deleteCartItemController,
   modifyCartItemController,
 } from "../controllers/cartItemController";
+import {
+  addWishListItemController,
+  deleteWishListItemController,
+} from "../controllers/wishListItemController";
+import {
+  createOrderController,
+  getOrderByUserIdController,
+} from "../controllers/orderController";
 
 const router = express.Router();
 
@@ -34,10 +45,23 @@ router.post("/login", loginController);
 router.get("/:id/payment-methods", getPaymentMethodsController);
 router.post("/:id/cart", createCartController);
 router.get("/:id/cart", getCartByUserIdController);
+router.get("/:id/wishList", getWishListByUserIdController);
+router.post("/:id/order", createOrderController);
+router.get("/:id/order", getOrderByUserIdController);
 
+// cart
 router.post("/:id/cart/add", addCartItemController);
 router.delete("/:id/cart/delete/:cartItemId", deleteCartItemController);
 router.put("/:id/cart/modify/:cartItemId", modifyCartItemController);
 router.post("/:id/cart/reset", resetCartController);
+
+// wishList
+
+router.post("/:id/wishList/add", addWishListItemController);
+router.delete(
+  "/:id/wishList/delete/:wishListItemId",
+  deleteWishListItemController
+);
+router.post("/:id/wishList/reset", resetWishListController);
 
 export default router;
