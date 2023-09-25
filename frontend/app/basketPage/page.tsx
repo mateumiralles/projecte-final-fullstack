@@ -109,14 +109,14 @@ export default function basketPage() {
     switch(purchaseSteps){
       case 0:
         let productosSummary =  document.getElementById('summaryBasket0')!;
-        let precioTotal = document.getElementById('totalPriceBasket0')!;
+        // let precioTotal = document.getElementById('totalPriceBasket0')!;
 
         productosSummary.style.transition = '1s ease-in'; 
         productosSummary.style.transform = 'translateX(-300px)';
         productosSummary.style.opacity = '0';
-        precioTotal.style.transition = '1s ease-in'; 
-        precioTotal.style.transform = 'translateX(300px)';
-        precioTotal.style.opacity = '0';
+        // precioTotal.style.transition = '1s ease-in'; 
+        // precioTotal.style.transform = 'translateX(300px)';
+        // precioTotal.style.opacity = '0';
         setTimeout(() => {
             setBasketComponent(<ProcessPurchase 
             purchaseSteps = {purchaseSteps}
@@ -141,7 +141,25 @@ export default function basketPage() {
 
   return (
     <main className="flex justify-center">
-      {basketComponent}
+      <div id="products" className="flex w-[90%] flex-row justify-center">
+        {basketComponent}
+          <div className="mt-2 flex flex-[2] justify-center">
+              <div id="totalPriceBasket0" className="fixed w-[25%] rounded border border-black">
+                  <p className="p-4">HOLAAAA</p>
+                  <div className="flex w-full flex-row justify-between p-4">
+                    <p>{productosCantidadTotal} artículos</p>
+                    <p>{precioFinal}€</p>
+                  </div>
+                  <div className="flex w-full flex-row justify-between p-4">
+                    <p className="font-bold">TOTAL:</p>
+                    <p className="font-bold">{precioFinal}€</p>
+                  </div>
+                  <div onClick={() => setPurchaseSteps(purchaseSteps+1)} className="flex bg-black items-center justify-center border-t border-black p-4 transition-all hover:cursor-pointer hover:text-gray-600">
+                    <p className="text-white">TRAMITAR PEDIDO</p>
+                  </div>
+              </div>
+          </div>
+      </div>
     </main>
   );
 }

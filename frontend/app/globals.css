@@ -16,6 +16,22 @@
   }
 } */
 
+.grid-cols-auto {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+@media (min-width: 768px) {
+  .md\\:grid-cols-auto-fill {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\\:grid-cols-auto-fill {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
 
 @layer utilities {
     @variants responsive {
