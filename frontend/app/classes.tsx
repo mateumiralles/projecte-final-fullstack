@@ -79,6 +79,27 @@ export class ProductData {
     }
   }
 
+  export class ProductSummary {
+    img: string | undefined;
+    code: string | undefined;
+    price: number | undefined;
+    currency: string | undefined;
+    name: string | undefined;
+  
+    constructor(
+      img?: string,
+      code?: string,
+      price?: number,
+      currency?:string,
+      name?: string,
+    ) {
+      this.img = img;
+      this.code = code;
+      this.price = price;
+      this.currency = currency;
+      this.name = name;
+    }
+  }
 
 export class ProductGeneral {
   img: string | undefined;
