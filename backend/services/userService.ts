@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 import bcrypt from "bcrypt";
+import { v4 as uuidv4 } from "uuid";
 
 interface UserData {
   name: string;
@@ -19,9 +20,9 @@ async function createUser(data: UserData) {
         email: data.email,
       },
     });
-  
+
     if (existingUser) {
-      return Promise.reject('Account already exists');
+      return Promise.reject("Account already exists");
     }
 
     const hashedPassword = await hashPassword(password);
@@ -95,26 +96,46 @@ async function deleteUser(userId: number) {
 }
 
 async function login(email: string, password: string) {
-  const user = await prisma.user.findUnique({
-    where: {
-      email: email,
-    },
-  });
-
-  if (!user) {
-    return null;
-  }
-
-  const passwordMatch = await bcrypt.compare(password, user.password);
-  if (passwordMatch) {
-    const cart = await prisma.cart.findUnique({
+  try {
+    const user = await prisma.user.findUnique({
       where: {
-        userId: user.id,
+        email: email,
       },
     });
-    return { user, cart };
-  } else {
-    return null;
+
+    if (!user) {
+      return { error: "Incorrect email or password" };
+    }
+    if (user.token) {
+      return { error: "User already logged in" };
+    }
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (passwordMatch) {
+      const cart = await prisma.cart.findUnique({
+        where: {
+          userId: user.id,
+        },
+      });
+
+      const token = uuidv4();
+
+      await prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          token: token,
+        },
+      });
+
+      return { user, cart, token };
+    } else {
+      return { error: "Incorrect email or password" };
+    }
+  } catch (error) {
+    console.error(error);
+    return { error: "Internal server error" };
   }
 }
 
@@ -123,4 +144,20 @@ async function hashPassword(password: string): Promise<string> {
   return await bcrypt.hash(password, saltRounds);
 }
 
-export { createUser, getUserById, updateUser, deleteUser, login };
+async function logout(userId: number) {
+  try {
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        token: null,
+      },
+    });
+
+    return updatedUser;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to log out");
+  }
+}
+
+export { createUser, getUserById, updateUser, deleteUser, login, logout };

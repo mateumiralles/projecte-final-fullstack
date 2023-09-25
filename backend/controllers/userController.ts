@@ -4,6 +4,7 @@ import {
   deleteUser,
   getUserById,
   login,
+  logout,
   updateUser,
 } from "../services/userService";
 
@@ -82,11 +83,31 @@ export async function loginController(req: Request, res: Response) {
 
     const result = await login(email, password);
 
-    if (result) {
-      const { user, cart } = result;
-      return res.status(200).json({ message: "Login successful", user, cart });
+    if (result.error) {
+      return res.status(401).json({ message: result.error });
+    }
+
+    const { user, cart, token } = result;
+
+    return res
+      .status(200)
+      .json({ message: "Login successful", user, cart, token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+export async function logoutController(req: Request, res: Response) {
+  try {
+    const userId = parseInt(req.params.id);
+
+    const updatedUser = await logout(userId);
+
+    if (updatedUser) {
+      return res.status(200).json({ message: "Logged out successfully" });
     } else {
-      return res.status(401).json({ message: "Incorrect email or password" });
+      return res.status(404).json({ message: "User not found" });
     }
   } catch (error) {
     console.error(error);

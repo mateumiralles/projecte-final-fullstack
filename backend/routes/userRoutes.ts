@@ -5,6 +5,7 @@ import {
   deleteUserController,
   getUserByIdController,
   loginController,
+  logoutController,
   updateUserController,
 } from "../controllers/userController";
 import { getPaymentMethodsController } from "../controllers/paymentMethodController";
@@ -40,6 +41,7 @@ router.get("/:id", getUserByIdController);
 router.put("/:id", updateUserController);
 router.delete("/:id", deleteUserController);
 router.post("/login", loginController);
+router.post("/:id/logout", logoutController);
 
 // payment methods
 

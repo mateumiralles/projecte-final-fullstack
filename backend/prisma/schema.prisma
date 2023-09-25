@@ -18,6 +18,7 @@ model User {
   password  String
   createdAt DateTime @default(now())
   address   String?
+  token     String?
 
   Order         Order[]
   Payment       Payment[]
