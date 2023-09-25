@@ -26,7 +26,7 @@ export default function Home() {
             LINK A DETAIL PAGE
           </p>
         </Link>
-        <Link href="/basketPage">
+        <Link href="/basketPage2">
           <p className="rounded border border-black p-4 text-5xl font-bold transition duration-500 hover:scale-110">
             LINK A BASKET PAGE
           </p>
