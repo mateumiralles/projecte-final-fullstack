@@ -32,16 +32,22 @@ export default function SummaryPage(props: {
           className="relative top-24 mb-20 flex h-5/6 w-10/12 flex-col justify-between"
         >
           <div className="flex flex-col">
-            <p className="font-semibold text-lg mb-6">Summary of your delivery</p>
-            {props.products.map((product, i)=>{
-              return <div key={i} className="flex flex-row mt-2 justify-between">
-                <p>{product.name}</p>
-                <p>x{product.ammount}</p>
-              </div>
-            })}
+            <p className="mb-6 text-lg font-semibold">
+              Summary of your delivery
+            </p>
+            <div className="h-[55vh] overflow-y-auto">
+              {props.products.map((product, i) => {
+                return (
+                  <div key={i} className="mt-2 flex flex-row justify-between">
+                    <p>{product.name}</p>
+                    <p>x{product.ammount}</p>
+                  </div>
+                );
+              })}
+            </div>
           </div>
           <div>
-            <div className="w-full ">
+            <div className="w-full">
               <p>
                 {props.productosCantidadTotal}{" "}
                 {props.productosCantidadTotal > 1 ? "pieces" : "piece"}{" "}
