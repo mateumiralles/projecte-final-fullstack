@@ -8,9 +8,10 @@ import NewCardForm from "./components/newCardForm";
 import ProcessPurchaseSlider from "./components/processPurchaseSlider";
 import SliderButton from "./components/sliderButton";
 import PopUpFormWindow from "./components/popUpFormWindow";
-export default function ProcessPurchase(props: { purchaseSteps: number }) {
+export default function ProcessPurchase(props: { purchaseSteps: number, selectedPaymentMethod: number | undefined, setSelectedPaymentMethod: React.Dispatch<React.SetStateAction<any>>}) {
   //const [user, setUser] = useState<>();
   const [paymentMethods, setPaymentMethods] = useState<any[]>([]);
+
   const [address, setAddress] = useState<string>();
   const [createNewPay, setCreateNewPay] = useState<boolean>(false);
   const [createNewAddress, setCreateNewAddress] = useState<boolean>(false);
@@ -101,6 +102,9 @@ export default function ProcessPurchase(props: { purchaseSteps: number }) {
                   <div className="grid justify-items-center gap-12 lg:grid-cols-2">
                     {paymentMethods.map((payment) => (
                       <CreditCard
+                        id={payment.id}
+                        selectedPaymentMethod={props.selectedPaymentMethod}
+                        setSelectedPaymentMethod={props.setSelectedPaymentMethod}
                         cardNumber={payment.cardNumber}
                         expirationDate={payment.expirationDate}
                         ownerName={payment.ownerName}

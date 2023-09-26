@@ -35,7 +35,7 @@ export default function basketPage() {
   let precioFinal = 0;
   const [purchaseSteps, setPurchaseSteps] = useState(-1);
   const [products, setProducts] = useState<Array<any>>([]);
-  
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<number>();
   products.forEach((product: any) => {
     productosCantidadTotal += product.ammount;
     precioFinal += product.price! * product.ammount;
@@ -78,6 +78,52 @@ export default function basketPage() {
     
   }
 
+  const createOrder = async () => {
+    const user = JSON.parse(localStorage.getItem('user')!);
+    if(selectedPaymentMethod!==undefined && selectedPaymentMethod!==0){
+      try {
+        const createOrder = await axios.post(`http://localhost:3333/api/users/${user.id}/order`);
+        console.log(createOrder)
+        if(createOrder.status===201){
+          try{
+            const getWishlist = await axios.get(`http://localhost:3333/api/users/${user.id}/wishList`);
+            console.log(getWishlist);
+            if(getWishlist.status===200){
+              createOrder.data.orderItems.forEach(async (item: any) => {
+                const matchingItem = getWishlist.data.WishListItem.find((bItem: any) => bItem.productSummaryCode === item.productSummaryCode);
+                if (matchingItem) {
+                  try {
+                    const deleteItemFromWishlist = await axios.delete(`http://localhost:3333/api/users/${user.id}/wishList/delete/${matchingItem.id}`);
+                    console.log(deleteItemFromWishlist);
+                    if(deleteItemFromWishlist.status===204){
+                      console.log("HOLAAA");
+                    }
+                  } catch (error) {
+                      console.log(error);
+                  }
+                }
+                console.log(item);
+              });
+            }
+          }catch(error: any){
+            console.log(error);
+          }
+          try {
+            createOrder.data.order.userId
+            const createPayment = await axios.post(`http://localhost:3333/api/payments`, {paymentMethodId: selectedPaymentMethod, totalAmount: precioFinal, paymentTime: new Date(), userId: createOrder.data.order.userId, orderId: createOrder.data.order.id});
+            console.log(createPayment);
+            if(createPayment.status===201){
+
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        } 
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
 
   useEffect(() => {
     switch(purchaseSteps){
@@ -95,6 +141,8 @@ export default function basketPage() {
         setTimeout(() => {
             setBasketComponent(<ProcessPurchase 
             purchaseSteps = {purchaseSteps}
+            selectedPaymentMethod={selectedPaymentMethod}
+            setSelectedPaymentMethod={setSelectedPaymentMethod}
             />);
         }, 1000);
 
@@ -102,10 +150,19 @@ export default function basketPage() {
       case 1:
         console.log(purchaseSteps);
         console.log("hola");
+        createOrder();
         break;
     }
 
   }, [purchaseSteps])
+
+  useEffect(() => {
+    setBasketComponent(<ProcessPurchase 
+      purchaseSteps = {purchaseSteps}
+      selectedPaymentMethod={selectedPaymentMethod}
+      setSelectedPaymentMethod={setSelectedPaymentMethod}
+      />);
+  }, [selectedPaymentMethod])
 
   useEffect(() => {
     setBasketComponent(
@@ -164,8 +221,8 @@ export default function basketPage() {
                     <p className="font-bold">TOTAL:</p>
                     <p className="font-bold">{precioFinal}€</p>
                   </div>
-                  <div onClick={() => setPurchaseSteps(purchaseSteps+1)} className="flex bg-black items-center justify-center border-t border-black p-4 transition-all hover:cursor-pointer hover:text-gray-600">
-                    <p className="text-white">TRAMITAR PEDIDO</p>
+                  <div onClick={() => setPurchaseSteps(purchaseSteps<1 ? purchaseSteps+1 : purchaseSteps)} className="flex bg-black items-center justify-center border-t border-black p-4 transition-all hover:cursor-pointer hover:text-gray-600">
+                    <p className="text-white">{purchaseSteps==-1 ? "Continue to checkout" : purchaseSteps===0 ? "Make an order" : "IDK"}</p>
                   </div>
               </div>
           </div>
