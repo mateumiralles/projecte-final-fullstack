@@ -62,6 +62,7 @@ export default function Navbar() {
   }
 
   useEffect(() => {
+    setProfile(false);
     getUser();
   }, [pathname, searchParams])
 
