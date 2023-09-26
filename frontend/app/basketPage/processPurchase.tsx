@@ -7,6 +7,7 @@ import NewAdressFrom from "./components/newAdressForm";
 import NewCardForm from "./components/newCardForm";
 import ProcessPurchaseSlider from "./components/processPurchaseSlider";
 import SliderButton from "./components/sliderButton";
+import PopUpFormWindow from "./components/popUpFormWindow";
 export default function ProcessPurchase(props: { purchaseSteps: number }) {
   //const [user, setUser] = useState<>();
   const [paymentMethods, setPaymentMethods] = useState<any[]>([]);
@@ -65,15 +66,25 @@ export default function ProcessPurchase(props: { purchaseSteps: number }) {
 
   return (
     <>
-      <NewCardForm
-        createNewPay={createNewPay}
-        getPaymentMethods={getPaymentMethods}
-        setCreateNewPay={setCreateNewPay}
+      <PopUpFormWindow
+        bool={createNewPay}
+        setBool={setCreateNewPay}
+        content={
+          <NewCardForm
+            getPaymentMethods={getPaymentMethods}
+            setCreateNewPay={setCreateNewPay}
+          />
+        }
       />
-      <NewAdressFrom
-        createNewAddress={createNewAddress}
-        setAddress={setAddress}
-        setCreateNewAddress={setCreateNewAddress}
+      <PopUpFormWindow
+        bool={createNewAddress}
+        setBool={setCreateNewAddress}
+        content={
+          <NewAdressFrom
+            setAddress={setAddress}
+            setCreateNewAddress={setCreateNewAddress}
+          />
+        }
       />
 
       <div className="mt-2 flex flex-grow flex-row gap-4">
@@ -117,16 +128,21 @@ export default function ProcessPurchase(props: { purchaseSteps: number }) {
               title="Address"
               content={
                 <>
-                  <div className="flex flex-row justify-between items-center">
+                  <div className="flex flex-row items-center justify-between">
                     <p>
                       {address === undefined
                         ? "There is no adress linked to your account yet!"
                         : address}
                     </p>
-                    
-                    <SliderButton text={address === undefined
-                        ? "Add new address"
-                        : "Change address"} func={setCreateNewAddress}/>
+
+                    <SliderButton
+                      text={
+                        address === undefined
+                          ? "Add new address"
+                          : "Change address"
+                      }
+                      func={setCreateNewAddress}
+                    />
                   </div>
                 </>
               }

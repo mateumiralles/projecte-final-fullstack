@@ -2,13 +2,11 @@ import axios from "axios";
 import { useState } from "react";
 
 type NewCardFormProps = {
-  createNewPay: boolean;
   setCreateNewPay: React.Dispatch<React.SetStateAction<boolean>>;
   getPaymentMethods: () => Promise<void>;
 };
 
 export default function NewCardForm({
-  createNewPay,
   setCreateNewPay,
   getPaymentMethods,
 }: NewCardFormProps) {
@@ -79,10 +77,7 @@ export default function NewCardForm({
   };
 
   return (
-    <div
-      style={createNewPay ? { display: "block" } : { display: "none" }}
-      className="absolute left-[50%] top-[50%] z-10 h-[50%] w-[50%] translate-x-[-50%] translate-y-[-50%] rounded border border-black bg-white"
-    >
+    <>
       <p>Add a new payment method</p>
       <input
         type="text"
@@ -107,7 +102,6 @@ export default function NewCardForm({
         onChange={handleInputChangeCard}
       />
       <button onClick={createPaymentMethod}>Add payment method</button>
-      <p onClick={() => setCreateNewPay(false)}>X</p>
-    </div>
+    </>
   );
 }
