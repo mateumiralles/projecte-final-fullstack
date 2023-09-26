@@ -2,7 +2,7 @@
 
 import { SetStateAction, useState } from "react";
 import CreditCard from "./creditCard";
-import handleSlidersExpand from "../handleSlidersExpandFunction";
+import handleSlidersExpand from "./handleSlidersExpandFunction";
 
 type PaymentMethodSliderProps = {
     paymentMethods : any[];

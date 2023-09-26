@@ -1,4 +1,4 @@
-import handleSlidersExpand from "../handleSlidersExpandFunction";
+import handleSlidersExpand from "./handleSlidersExpandFunction";
 
 type AdressSliderProps ={
     address: string | undefined,
