@@ -1,5 +1,5 @@
 import { ProductGeneral } from "../classes"
-import ProductInfo from "./productInfo"
+import ProductBasketCard from "./components/productBasketCard"
 
 
 export default function SummaryPage(props: {products: ProductGeneral[], productosCantidadTotal: number, precioFinal: number, purchaseSteps: number, setPurchaseSteps: React.Dispatch<React.SetStateAction<any>>, setProducts: React.Dispatch<React.SetStateAction<any>>}){
@@ -10,7 +10,7 @@ export default function SummaryPage(props: {products: ProductGeneral[], producto
       >
         {props.products.map((product, index) => (
           <div className="flex w-full justify-center" key={index}>
-            <ProductInfo
+            <ProductBasketCard
               product={product}
               index={index}
               products={props.products}

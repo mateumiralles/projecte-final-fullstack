@@ -1,9 +1,9 @@
 "use client";
 import { ProductGeneral } from "../classes";
 import { useState, useEffect } from "react";
-import ProductInfo from "./productInfo";
+import ProductInfo from "./components/productBasketCard";
 import SummaryPage from "./summaryPage";
-import ProcessPurchase from "./processPurhcase";
+import ProcessPurchase from "./processPurchase";
 import axios from "axios";
 
 export default function basketPage() {
