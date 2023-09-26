@@ -42,6 +42,8 @@ export default function LogInContainer({ bool }: LogUpContainerProps) {
 
         if(error.response.data.message==="Incorrect email or password") setErrorMsg("Account not found. Recheck your entries");
         setLoginError(true);
+        console.log(error);
+        setErrorMsg(error.response.data.message);
         console.log(error.response.data.message);
       }
     }
