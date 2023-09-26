@@ -8,6 +8,7 @@ import axios from "axios";
 
 export default function basketPage() {
   const makeNewProduct = (
+    id: number,
     code: string,
     price: number,
     currency: string,
@@ -19,6 +20,7 @@ export default function basketPage() {
   ) => {
     const product = new ProductGeneral();
     if (img) product.img = img;
+    product.id = id;
     product.code = code;
     product.price = price;
     product.currency = currency;
@@ -46,15 +48,14 @@ export default function basketPage() {
     const user = JSON.parse(localStorage.getItem('user')!);
     try{
       const userCart = await axios.get(`http://localhost:3333/api/users/${user.id}/cart`);
-      console.log(userCart.status);
       if(userCart.status===200){
         userCart.data.CartItem.forEach(async (cartItem:any) => {
-          console.log(cartItem);
           try{
             const productSummary = await axios.get(`http://localhost:3333/api/productSummaries/${cartItem.productSummaryCode}`);
             if(productSummary.status===200){
               const productSummaryEnd = productSummary.data;
               const newProduct = makeNewProduct(
+                cartItem.id,
                 cartItem.productSummaryCode,
                 productSummaryEnd.price,
                 productSummaryEnd.currency,
@@ -65,7 +66,6 @@ export default function basketPage() {
                 cartItem.img,
               )
               setProducts((prevProducts) => [...prevProducts, newProduct]);
-              console.log(productSummary);
             }
           } catch (error: any){
             console.log(error);

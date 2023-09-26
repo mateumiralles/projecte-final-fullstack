@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { ProductGeneral } from "../../classes";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export default function ProductInfo(props: {
 
@@ -20,37 +21,64 @@ export default function ProductInfo(props: {
     transition: "all 0.3s ease-in-out",
   };
 
-  const deleteProduct = () => {
-    setIsAnimating(true);
-    const nuevoArray = props.products.filter(
-      (_, index3) => index3 !== props.index,
-    );
-    setTimeout(() => {
-      props.setProducts((productos: ProductGeneral[]) => {
-        return nuevoArray;
-      });
-      setIsAnimating(false);
-    }, 500);
+  const deleteProduct = async () => {
+    const user = JSON.parse(localStorage.getItem('user')!);
+    try{
+
+      const deleteProduct = await axios.delete(`http://localhost:3333/api/users/${user.id}/cart/delete/${props.product.id}`);
+      console.log(deleteProduct);
+      if(deleteProduct.status===204){
+        setIsAnimating(true);
+        const nuevoArray = props.products.filter(
+          (_, index3) => index3 !== props.index,
+        );
+        setTimeout(() => {
+          props.setProducts((productos: ProductGeneral[]) => {
+            return nuevoArray;
+          });
+          setIsAnimating(false);
+        }, 500);
+      }
+    } catch (error: any){
+      console.log(error);
+    }
   };
 
-  const addOrSubtract = (subtract: boolean) => {
+  const addOrSubtract = async (subtract: boolean) => {
+    const user = JSON.parse(localStorage.getItem('user')!);
     if (!subtract) {
-      props.setProducts((productos: ProductGeneral[]) => {
-        const updatedProductos = [...productos];
+      try{
+        const changeProduct = await axios.put(`http://localhost:3333/api/users/${user.id}/cart/modify/${props.product.id}`, {quantity: props.product.ammount+1});
+        console.log(changeProduct);
+        if(changeProduct.status===200){
+          props.setProducts((productos: ProductGeneral[]) => {
+            const updatedProductos = [...productos];
+    
+            updatedProductos[props.index].ammount++;
+    
+            return updatedProductos;
+          });
+        }
+      } catch (error: any){
+        console.log(error)
+      }
 
-        updatedProductos[props.index].ammount++;
-
-        return updatedProductos;
-      });
     } else {
       if (props.products[props.index].ammount !== 1) {
-        props.setProducts((productos: ProductGeneral[]) => {
-          const updatedProductos = [...productos];
-
-          updatedProductos[props.index].ammount--;
-
-          return updatedProductos;
-        });
+        try {
+          const changeProduct = await axios.put(`http://localhost:3333/api/users/${user.id}/cart/modify/${props.product.id}`, {quantity: props.product.ammount-1});
+          if(changeProduct.status===200){
+            props.setProducts((productos: ProductGeneral[]) => {
+              const updatedProductos = [...productos];
+    
+              updatedProductos[props.index].ammount--;
+    
+              return updatedProductos;
+            });
+          }
+        } catch (error: any) {
+          console.log(error);
+        }
       }
     }
   };
