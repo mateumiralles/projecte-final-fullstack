@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import PaymentMethodSlider from "./components/paymentMethodSlider";
 import AdressSlider from "./components/adressSlider";
+import NewAdressFrom from "./components/newAdressForm";
 export default function ProcessPurchase(props: { purchaseSteps: number }) {
   //const [user, setUser] = useState<>();
   const [paymentMethods, setPaymentMethods] = useState<any[]>([]);
@@ -15,31 +16,6 @@ export default function ProcessPurchase(props: { purchaseSteps: number }) {
     expirationDate: "",
     ownerName: "",
   });
-  const [newAddress, setNewAddress] = useState<any>({
-    streetName: "",
-    doorBell: "",
-    postalCode: 0,
-    city: "",
-    country: "",
-  });
-
-  const createAddress = async () => {
-    const user = JSON.parse(localStorage.getItem("user")!);
-    const finalAddress = `${newAddress.streetName}, ${newAddress.doorBell}, ${newAddress.postalCode}, ${newAddress.city}, ${newAddress.country}`;
-    try {
-      const response = await axios.put(
-        `http://localhost:3333/api/users/${user.id}`,
-        { address: finalAddress },
-      );
-      console.log(response.status === 200);
-      if (response.status === 200) {
-        setCreateNewAddress(false);
-        setAddress(response.data.address);
-      }
-    } catch (error: any) {
-      console.log(error);
-    }
-  };
 
   const handleCardNumberChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -56,43 +32,6 @@ export default function ProcessPurchase(props: { purchaseSteps: number }) {
     setNewPaymentMethod({
       ...newPaymentMethod,
       ["cardNumber"]: formattedNumero,
-    });
-  };
-
-  const handleSectionDetail = (type: number) => {
-    console.log("handlesectionDetail");
-    let contentHeight;
-    switch (type) {
-      case 0:
-        const expandMethods = document.getElementById("expandMethods")!;
-        contentHeight = expandMethods.scrollHeight + "px";
-        console.log(expandMethods.style.maxHeight != "");
-        if (expandMethods.style.maxHeight === contentHeight) {
-          expandMethods.style.maxHeight = "0px";
-        } else {
-          expandMethods.style.maxHeight = contentHeight;
-        }
-        break;
-      case 1:
-        const expandAddress = document.getElementById("expandAddress")!;
-        contentHeight = expandAddress.scrollHeight + "px";
-        console.log(expandAddress.style.maxHeight != "");
-        if (expandAddress.style.maxHeight === contentHeight) {
-          expandAddress.style.maxHeight = "0px";
-        } else {
-          expandAddress.style.maxHeight = contentHeight;
-        }
-        break;
-    }
-  };
-
-  const handleInputChangeAddress = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const { name, value } = event.target;
-    setNewAddress({
-      ...newAddress,
-      [name]: value,
     });
   };
 
@@ -189,51 +128,8 @@ export default function ProcessPurchase(props: { purchaseSteps: number }) {
 
   return (
     <>
-      <div
-        style={createNewAddress ? { display: "block" } : { display: "none" }}
-        className="absolute left-[50%] top-[50%] z-10 h-[50%] w-[50%] translate-x-[-50%] translate-y-[-50%] rounded border border-black bg-white"
-      >
-        <p>Create a new address</p>
-        <input
-          type="text"
-          name="streetName"
-          placeholder="Street name"
-          value={newAddress.streetName}
-          onChange={handleInputChangeAddress}
-        />
-        <input
-          type="text"
-          name="doorBell"
-          placeholder="Doorbell"
-          value={newAddress.doorBell}
-          onChange={handleInputChangeAddress}
-          maxLength={10}
-        />
-        <input
-          type="number"
-          name="postalCode"
-          placeholder="Postal code"
-          value={newAddress.postalCode}
-          onChange={handleInputChangeAddress}
-          maxLength={6}
-        />
-        <input
-          type="text"
-          name="city"
-          placeholder="City"
-          value={newAddress.city}
-          onChange={handleInputChangeAddress}
-        />
-        <input
-          type="text"
-          name="country"
-          placeholder="Country"
-          value={newAddress.country}
-          onChange={handleInputChangeAddress}
-        />
-        <button onClick={createAddress}>Add address</button>
-        <p onClick={() => setCreateNewAddress(false)}>X</p>
-      </div>
+     <NewAdressFrom createNewAddress={createNewAddress} setAddress={setAddress} setCreateNewAddress={setCreateNewAddress}/>
+      
       <div
         style={createNewPay ? { display: "block" } : { display: "none" }}
         className="absolute left-[50%] top-[50%] z-10 h-[50%] w-[50%] translate-x-[-50%] translate-y-[-50%] rounded border border-black bg-white"
