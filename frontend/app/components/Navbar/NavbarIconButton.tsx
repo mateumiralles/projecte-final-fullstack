@@ -2,10 +2,10 @@ import Image from "next/image";
 
 type svgProps = {
   svgName: string;
-  isBasket?: boolean;
+  numIndicator?:  React.ReactNode;
 };
 
-export default function NavbarIconButton({ svgName, isBasket }: svgProps) {
+export default function NavbarIconButton({ svgName, numIndicator }: svgProps) {
   return (
     <div className="group flex h-7 w-7 items-center justify-center rounded-full  transition  duration-200 hover:scale-125 hover:border hover:border-black">
       <Image
@@ -16,6 +16,7 @@ export default function NavbarIconButton({ svgName, isBasket }: svgProps) {
         height={20}
         priority
       />
+      {numIndicator}
     </div>
   );
 }
