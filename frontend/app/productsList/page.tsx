@@ -5,24 +5,24 @@ import { useEffect, useState } from "react";
 import ProductCard from "./productCard";
 
 export default function MainPage() {
-  const options = {
-    method: "GET",
-    url: "https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/list",
-    params: {
-      country: "es",
-      lang: "es",
-      currentpage: "0",
-      pagesize: "30",
-      categories: "men_all",
-      concepts: "H&M MAN",
-    },
-    headers: {
-      "X-RapidAPI-Key": "ca39b364a4msh5747570dc5634fbp18b7aejsn66c9149fcf5d",
-      "X-RapidAPI-Host": "apidojo-hm-hennes-mauritz-v1.p.rapidapi.com",
-    },
-  };
 
-  const getList = async () => {
+  const getList = async (category: string) => {
+    let options = {
+      method: "GET",
+      url: "https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/list",
+      params: {
+        country: "es",
+        lang: "es",
+        currentpage: "0",
+        pagesize: "30",
+        categories: category,
+      },
+      headers: {
+        "X-RapidAPI-Key": "ca39b364a4msh5747570dc5634fbp18b7aejsn66c9149fcf5d",
+        "X-RapidAPI-Host": "apidojo-hm-hennes-mauritz-v1.p.rapidapi.com",
+      },
+    };
+  
     try {
       const response = await axios.request(options);
       return response.data;
@@ -34,13 +34,18 @@ export default function MainPage() {
   const [list, setList] = useState<any>();
 
   useEffect(() => {
+    const currentUrl = window.location.href;
+    const url = new URL(currentUrl);
+    const params = url.searchParams;
+    let category = params.get('category')!;
+    console.log(category);
     const fetchData = async () => {
       const storedList = localStorage.getItem("list");
       if (storedList == null) {
         try {
-          const response = await getList();
+          const response = await getList(category);
           setList(response);
-          localStorage.setItem("list", JSON.stringify(response));
+          //localStorage.setItem("list", JSON.stringify(response));
         } catch (error) {
           console.error("Error fetching data:", error);
         }

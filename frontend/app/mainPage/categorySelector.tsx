@@ -2,24 +2,29 @@ import { useState, useRef, useLayoutEffect } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Link from "next/link";
 
 export default function CategorySelector() {
   const categories = [
     {
       title: "Woman",
       src: "https://lp2.hm.com/hmgoepprod?set=source[/d5/47/d547a64300c7941bf8d8ac521478046532c01d56.jpg],origin[dam],category[],type[LOOKBOOK],res[y],hmver[1]&call=url[file:/product/main]",
+      href: "ladies"
     },
     {
       title: "Man",
       src: "https://lp2.hm.com/hmgoepprod?set=source[/0c/51/0c5135cdc6097db5e658bdb40e245b246a872ef1.jpg],origin[dam],category[],type[LOOKBOOK],res[y],hmver[2]&call=url[file:/product/main]",
+      href: "men",
     },
     {
       title: "Kids",
       src: "https://lp2.hm.com/hmgoepprod?set=source[/9d/88/9d88daa168d904cc860373b86ef181d24480b29d.jpg],origin[dam],category[],type[LOOKBOOK],res[y],hmver[1]&call=url[file:/product/main]",
+      href: "kids",
     },
     {
-      title: "Sales",
+      title: "Outlet",
       src: "https://lp2.hm.com/hmgoepprod?set=source[/94/fe/94fef1eac71e8d7f26da30199d0f8499570ff135.jpg],origin[dam],category[],type[LOOKBOOK],res[y],hmver[1]&call=url[file:/product/main]",
+      href: "outlet"
     },
   ];
 
@@ -58,15 +63,17 @@ export default function CategorySelector() {
       <div className="z-10 ml-52 mr-16 flex flex-col">
         {categories.map((category, i) => {
           return (
-            <div
-              onMouseOver={() => setSelectedCategory(i)}
-              key={i}
-              className="group flex justify-end border-b border-black pt-10 text-3xl first-of-type:pt-3"
-            >
-              <p className="transition duration-300 group-hover:-translate-x-10">
-                {category.title}
-              </p>
-            </div>
+            <Link href={`/productsList?category=${category.href}`}>
+              <div
+                onMouseOver={() => setSelectedCategory(i)}
+                key={i}
+                className="group flex justify-end border-b border-black pt-10 text-3xl first-of-type:pt-3 cursor-pointer"
+              >
+                <p className="transition duration-300 group-hover:-translate-x-10">
+                  {category.title}
+                </p>
+              </div>
+            </Link>
           );
         })}
       </div>
