@@ -6,6 +6,7 @@ import CreditCard from "./components/creditCard";
 import NewAdressFrom from "./components/newAdressForm";
 import NewCardForm from "./components/newCardForm";
 import ProcessPurchaseSlider from "./components/processPurchaseSlider";
+import SliderButton from "./components/sliderButton";
 export default function ProcessPurchase(props: { purchaseSteps: number }) {
   //const [user, setUser] = useState<>();
   const [paymentMethods, setPaymentMethods] = useState<any[]>([]);
@@ -97,19 +98,16 @@ export default function ProcessPurchase(props: { purchaseSteps: number }) {
                       />
                     ))}
                   </div>
-                  <div className="flex flex-col ">
+                  <div className="mt-5 flex flex-col">
                     {paymentMethods.length < 1 ? (
                       <p>There is no card linked to your account yet!</p>
                     ) : (
                       <></>
                     )}
-
-                    <div
-                      onClick={() => setCreateNewPay(true)}
-                      className="my-5 flex cursor-pointer items-center justify-center rounded border border-black bg-black p-4 text-white transition duration-300 ease-in-out hover:scale-95"
-                    >
-                      ADD A NEW CARD
-                    </div>
+                    <SliderButton
+                      text="Add a new card"
+                      func={setCreateNewPay}
+                    />
                   </div>
                 </>
               }
@@ -119,19 +117,17 @@ export default function ProcessPurchase(props: { purchaseSteps: number }) {
               title="Address"
               content={
                 <>
-                  <div className="flex flex-row justify-between">
+                  <div className="flex flex-row justify-between items-center">
                     <p>
                       {address === undefined
-                        ? "No address is defined yet"
+                        ? "There is no adress linked to your account yet!"
                         : address}
                     </p>
-                    <p onClick={() => setCreateNewAddress(true)}>
-                      {address === undefined
+                    
+                    <SliderButton text={address === undefined
                         ? "Add new address"
-                        : "Change address"}
-                    </p>
+                        : "Change address"} func={setCreateNewAddress}/>
                   </div>
-                  <div className="h-7"></div>
                 </>
               }
             />
