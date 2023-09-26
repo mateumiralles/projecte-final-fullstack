@@ -59,7 +59,7 @@ export default function SummaryPage(props: {
             </div>
             <div
               onClick={() => props.setPurchaseSteps(props.purchaseSteps + 1)}
-              className="mt-4 flex cursor-pointer items-center justify-center rounded border  border-black p-4 transition hover:bg-black hover:text-white"
+              className="mt-4 flex cursor-pointer items-center justify-center rounded border  border-black p-4 transition hover:bg-black hover:text-white ease-in-out duration-300"
             >
               <p className="font-bold">NEXT</p>
             </div>
