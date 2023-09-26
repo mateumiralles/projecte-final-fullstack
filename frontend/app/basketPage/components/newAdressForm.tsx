@@ -41,7 +41,6 @@ export default function NewAdressFrom({
   const handleInputChangeAddress = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    console.log("eldukoestacabron");
     const { name, value } = event.target;
     setNewAddress({
       ...newAddress,

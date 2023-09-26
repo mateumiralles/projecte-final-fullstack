@@ -97,14 +97,15 @@ export default function NewCardForm({
           name="expirationDate"
           placeholder="Expiration Date"
           value={newPaymentMethod.expirationDate}
-          handler={handleCardNumberChange}
+          handler={handleInputChangeCard}
+          maxLength={5}
         />
       <InputPopUpWindow
           type="text"
           name="ownerName"
           placeholder="Owner's Name"
           value={newPaymentMethod.ownerName}
-          handler={handleCardNumberChange}
+          handler={handleInputChangeCard}
         />
         <SliderButton text="Confirm New Payment Method" func={createPaymentMethod}/>
       </div>
