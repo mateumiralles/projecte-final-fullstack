@@ -1,5 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
+import SliderButton from "./sliderButton";
+import InputPopUpWindow from "./inputPopUpWindow";
 
 type NewAdressFromProps = {
   setCreateNewAddress: React.Dispatch<React.SetStateAction<boolean>>;
@@ -39,6 +41,7 @@ export default function NewAdressFrom({
   const handleInputChangeAddress = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
+    console.log("eldukoestacabron");
     const { name, value } = event.target;
     setNewAddress({
       ...newAddress,
@@ -47,46 +50,53 @@ export default function NewAdressFrom({
   };
 
   return (
-    <>
-      <p>Create a new address</p>
-      <input
-        type="text"
-        name="streetName"
-        placeholder="Street name"
-        value={newAddress.streetName}
-        onChange={handleInputChangeAddress}
-      />
-      <input
-        type="text"
-        name="doorBell"
-        placeholder="Doorbell"
-        value={newAddress.doorBell}
-        onChange={handleInputChangeAddress}
-        maxLength={10}
-      />
-      <input
-        type="number"
-        name="postalCode"
-        placeholder="Postal code"
-        value={newAddress.postalCode}
-        onChange={handleInputChangeAddress}
-        maxLength={6}
-      />
-      <input
-        type="text"
-        name="city"
-        placeholder="City"
-        value={newAddress.city}
-        onChange={handleInputChangeAddress}
-      />
-      <input
-        type="text"
-        name="country"
-        placeholder="Country"
-        value={newAddress.country}
-        onChange={handleInputChangeAddress}
-      />
-      <button onClick={createAddress}>Add address</button>
-    </>
+    <div className="flex h-full w-full flex-col content-evenly justify-evenly px-32 py-20">
+      <p className="text-center text-2xl font-bold">Register a new Address</p>
+      <div className="grid grid-cols-3 gap-20">
+        {/* <InputPopUpWindow type="" name="" placeholder="" value={} handler={} maxLength={}/> */}
+        <InputPopUpWindow
+          type="text"
+          name="country"
+          placeholder="Country"
+          value={newAddress.country}
+          handler={handleInputChangeAddress}
+        />
+
+        <InputPopUpWindow
+          type="text"
+          name="city"
+          placeholder="City"
+          value={newAddress.city}
+          handler={handleInputChangeAddress}
+        />
+
+        <InputPopUpWindow
+          type="number"
+          name="postalCode"
+          placeholder="Postal code"
+          value={newAddress.postalCode === 0 ? null : newAddress.postalCode}
+          handler={handleInputChangeAddress}
+          maxLength={6}
+        />
+
+        <InputPopUpWindow
+          type="text"
+          name="streetName"
+          placeholder="Street name"
+          value={newAddress.streetName}
+          handler={handleInputChangeAddress}
+        />
+        <InputPopUpWindow
+          type="text"
+          name="doorBell"
+          placeholder="Doorbell"
+          value={newAddress.doorBell}
+          handler={handleInputChangeAddress}
+          maxLength={10}
+        />
+
+        <SliderButton text="Confirm New Adress" func={createAddress} />
+      </div>
+    </div>
   );
 }

@@ -1,5 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
+import InputPopUpWindow from "./inputPopUpWindow";
+import SliderButton from "./sliderButton";
 
 type NewCardFormProps = {
   setCreateNewPay: React.Dispatch<React.SetStateAction<boolean>>;
@@ -77,31 +79,35 @@ export default function NewCardForm({
   };
 
   return (
-    <>
-      <p>Add a new payment method</p>
-      <input
-        type="text"
-        name="cardNumber"
-        placeholder="Card Number"
-        value={newPaymentMethod.cardNumber}
-        onChange={handleCardNumberChange}
-        maxLength={19}
-      />
-      <input
-        type="text"
-        name="expirationDate"
-        placeholder="Expiration Date"
-        value={newPaymentMethod.expirationDate}
-        onChange={handleInputChangeCard}
-      />
-      <input
-        type="text"
-        name="ownerName"
-        placeholder="Owner Name"
-        value={newPaymentMethod.ownerName}
-        onChange={handleInputChangeCard}
-      />
-      <button onClick={createPaymentMethod}>Add payment method</button>
-    </>
+    <div className="flex h-full w-full flex-col content-evenly justify-evenly px-32 py-20">
+      <p className="text-center text-2xl font-bold">
+        Register a new Payment Method
+      </p>
+      <div className="grid grid-cols-2 gap-16">
+      <InputPopUpWindow
+          type="text"
+          name="cardNumber"
+          placeholder="Card Number"
+          value={newPaymentMethod.cardNumber}
+          handler={handleCardNumberChange}
+          maxLength={19}
+        />
+      <InputPopUpWindow
+          type="text"
+          name="expirationDate"
+          placeholder="Expiration Date"
+          value={newPaymentMethod.expirationDate}
+          handler={handleCardNumberChange}
+        />
+      <InputPopUpWindow
+          type="text"
+          name="ownerName"
+          placeholder="Owner's Name"
+          value={newPaymentMethod.ownerName}
+          handler={handleCardNumberChange}
+        />
+        <SliderButton text="Confirm New Payment Method" func={createPaymentMethod}/>
+      </div>
+    </div>
   );
 }
