@@ -23,8 +23,8 @@ export default function ProductSummary(props: {
 
   return (
     <div>
-      <div className=" flex h-[80%] flex-col justify-between p-8">
-        <div className="mb-8 flex flex-row items-center justify-between">
+      <div className="flex h-[80%] min-h-[300px] flex-col justify-around  p-8">
+        <div className="mb-8 flex h-2/6 flex-row items-center justify-between">
           <div>
             <p className="text-sm">{props.name}</p>
             <div>
@@ -32,15 +32,12 @@ export default function ProductSummary(props: {
               <p className="inline text-sm"> {props.price.currency}</p>
             </div>
           </div>
-          <div className="hover:cursor-pointer">
+          <div className="cursor-pointer">
             <FaRegBookmark />
           </div>
         </div>
+
         <p className="text-sm">{props.desc}</p>
-        <div>
-          <p className="mb-6 mt-6 text-[13px]">VER DISPONIBILIDAD EN TIENDA</p>
-          <p className="mt-6 text-[13px]">ENVÍOS, CAMBIOS Y DEVOLUCIONES</p>
-        </div>
       </div>
       <div className="flex  flex-col justify-between border-t border-black p-8">
         <div>
@@ -52,13 +49,11 @@ export default function ProductSummary(props: {
           <div className="mb-6 mt-6 flex flex-row">
             {props.colors?.map((element, index) => (
               <div
-                onClick={() =>{
-                    updateProduct(undefined),
-                    props.changeColor(element.name)
-                  }
-                }
+                onClick={() => {
+                  updateProduct(undefined), props.changeColor(element.name);
+                }}
                 style={{ backgroundColor: element.rgbColor }}
-                className={`h-5 w-5 border border-black rounded hover:-scale-90 ${
+                className={`h-5 w-5 rounded border border-black hover:-scale-90 ${
                   index === 0
                     ? `mr-2`
                     : index === props.colors?.length
@@ -73,7 +68,11 @@ export default function ProductSummary(props: {
         <div>
           <div
             className={`grid-cols grid ${
-              props.sizes?.length > 6 ? props.sizes?.length>9 ? 'grid-cols-4' : `grid-cols-3` : `grid-cols-2`
+              props.sizes?.length > 6
+                ? props.sizes?.length > 9
+                  ? "grid-cols-4"
+                  : `grid-cols-3`
+                : `grid-cols-2`
             } w-full gap-3`}
           >
             {props.sizes?.map((element, index) => (
@@ -85,29 +84,32 @@ export default function ProductSummary(props: {
                     : updateProduct(element)
                 }
                 className={`${
-                  props.productToAdd.size === element
-                    ? `selectedSize`
-                    : ``
-                } flex justify-center rounded border border-black p-2 text-sm transition duration-100 hover:scale-95 hover:cursor-pointer`}
+                  props.productToAdd.size === element ? `selectedSize` : ``
+                } flex cursor-pointer justify-center rounded border border-black p-2 text-sm transition duration-100 hover:scale-95`}
               >
                 {element}
               </div>
             ))}
-          </div>
-          <div className="mt-3 flex flex-row">
-            <p className="text-[13px]">ENCUENTRA TU TALLA</p>
-            <p className="text-[13px]">&nbsp;|&nbsp;</p>
-            <p className="text-[13px]">GUÍA DE MEDIDAS</p>
           </div>
         </div>
       </div>
       <div
         onClick={props.addProductToBasket}
         className={`${
-          props.productToAdd.size !== undefined ? `selectedSize` : null
-        } flex items-center justify-center border-t border-black p-2 transition-all hover:cursor-pointer hover:text-gray-600`}
+          props.productToAdd.size !== undefined
+            ? `selectedSize cursor-pointer`
+            : "cursor-default"
+        } group flex items-center justify-center border-t border-black p-2 transition-all `}
       >
-        <p>AÑADIR</p>
+        <p
+          className={`${
+            props.productToAdd.size !== undefined
+              ? "transition ease-in-out group-hover:scale-90"
+              : null
+          }`}
+        >
+          AÑADIR
+        </p>
       </div>
     </div>
   );
