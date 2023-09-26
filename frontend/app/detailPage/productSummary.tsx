@@ -13,6 +13,7 @@ export default function ProductSummary(props: {
   setProductToAdd: React.Dispatch<React.SetStateAction<any>>;
   changeColor: (colorName: string) => void;
   addProductToBasket: () => void;
+  addProductToWishlist: () => void;
 }) {
   const updateProduct = (size: string | undefined) => {
     props.setProductToAdd((prevProduct: any) => ({
@@ -32,7 +33,7 @@ export default function ProductSummary(props: {
               <p className="inline text-sm"> {props.price.currency}</p>
             </div>
           </div>
-          <div className="cursor-pointer">
+          <div onClick={() => props.addProductToWishlist()} className="cursor-pointer">
             <FaRegBookmark />
           </div>
         </div>

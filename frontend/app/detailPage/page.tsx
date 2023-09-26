@@ -13,12 +13,17 @@ import { ProductSummary as ProductSummaryClass } from "../classes";
 import { useRouter } from "next/navigation";
 import ProductInfo from "./productInfo";
 import ImagesScroll from "./imagesScroll";
+import PopupConfirm from "./popupConfirm";
 
 export default function detailPage() {
   const [product, setProduct] = useState<ProductData>();
   const [productToAdd, setProductToAdd] = useState<ProductGeneral>(
     new ProductGeneral(),
   );
+  const [productInWishlist, setProductInWishlist] = useState(false);
+  const [popupVisible, setPopupVisible] = useState(false);
+  const [popupType, setPopupType] = useState(0);
+  const [popupMessage, setPopupMessage] = useState<string>();
 
   const setProductToClass = (product: any, productId: string, local: boolean = false) => {
     let newProduct: ProductData = {
@@ -143,6 +148,41 @@ export default function detailPage() {
     }
   };
 
+  const addProductToWishList = async () => {
+    if(localStorage.getItem('user')){
+      const user = JSON.parse(localStorage.getItem('user')!);
+      try{
+        const getWishlist = await axios.get(`http://localhost:3333/api/users/${user.id}/wishList`);
+        let foundMatchingItem = false;
+        getWishlist.data.WishListItem.forEach((wishlistElement: any) => {
+          if(wishlistElement.productSummaryCode === productToAdd.code){
+            foundMatchingItem = true;
+            return;
+          }
+        });
+        if (foundMatchingItem) {
+          setPopupMessage("Product already in the wishlist");
+          setPopupType(2);
+          setPopupVisible(true);
+          return;
+        }
+        try{
+          const toWishlist = await axios.post(`http://localhost:3333/api/users/${user.id}/wishList/add`, {wishListId: getWishlist.data.id, productSummaryCode: productToAdd.code});
+          console.log(toWishlist);
+          if(toWishlist.status===200){
+            setPopupMessage("Product succesfully added to your wishlist!");
+            setPopupType(1);
+            setPopupVisible(true);
+          }
+        }catch (error: any){
+          console.log(error);
+        }
+      } catch (error: any){
+        console.log(error);
+      }
+    }
+  }
+
 
   const {push, refresh} = useRouter();
   const addProductToBasket = async () => {
@@ -150,12 +190,24 @@ export default function detailPage() {
       if(valores.every(valor => valor !== undefined)){
         if(localStorage.getItem('user')){
           const user = JSON.parse(localStorage.getItem('user')!);
-
           try {
             const localResponse = await axios.get(`http://localhost:3333/api/users/${user.id}/cart`);
             try{
               console.log(localResponse);
               console.log(productToAdd);
+              let foundMatchingItem = false;
+              localResponse.data.CartItem.forEach((cartItem: any) => {
+                if(cartItem.productSummaryCode === productToAdd.code){
+                  foundMatchingItem = true;
+                  return;
+                }
+              });
+              if (foundMatchingItem) {
+                setPopupMessage("Product already in the cart");
+                setPopupType(2);
+                setPopupVisible(true);
+                return;
+              }
               const cartResponse = await axios.post(`http://localhost:3333/api/users/${user.id}/cart/add`, {
                 cartId: localResponse.data.id,
                 img: productToAdd.img,
@@ -165,9 +217,10 @@ export default function detailPage() {
                 colorRgb: productToAdd.colorRgb,
               });
               
-              console.log(cartResponse);
               if(cartResponse.status===201){
-                alert("Añadido a la cesta. vete a la cesta.")
+                setPopupVisible(true);
+                setPopupMessage("Product succesfully added to your cart!");
+                setPopupType(0);
               }
             } catch (error: any){
               console.log(error);
@@ -197,6 +250,14 @@ export default function detailPage() {
       }
     })
   };
+
+  useEffect(() => {
+    if(popupType){
+      setTimeout(() => {
+        setPopupVisible(false);
+      }, 5000);
+    }
+  }, [popupVisible])
 
 
   useEffect(() => {
@@ -254,10 +315,6 @@ export default function detailPage() {
       productInfo.style.maxHeight = `${productDetail?.clientHeight}px`;
   }, [product]);
 
-
-
-
-
   return (
     <>
       <main className="flex flex-row items-start justify-center gap-5 p-20">
@@ -265,6 +322,12 @@ export default function detailPage() {
           <h1>Loading...</h1>
         ) : (
           <>
+            <PopupConfirm 
+              message={popupMessage}
+              type={popupType}
+              visible={popupVisible}
+              setVisible={setPopupVisible}
+            />
             <ProductInfo 
             product={product}
             />
@@ -286,6 +349,7 @@ export default function detailPage() {
                 setProductToAdd={setProductToAdd}
                 changeColor={updateColor}
                 addProductToBasket={addProductToBasket}
+                addProductToWishlist={addProductToWishList}
               />
             </div>
           </>
