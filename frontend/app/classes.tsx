@@ -114,7 +114,7 @@ export class ProductGeneral {
   ammount: number;
 
   constructor(
-    id?: number,
+    id: number = -1,
     img?: string,
     code?: string,
     price?: number,
