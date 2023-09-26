@@ -102,6 +102,7 @@ export class ProductData {
   }
 
 export class ProductGeneral {
+  id: number | undefined;
   img: string | undefined;
   code: string | undefined;
   price: number | undefined;
@@ -113,6 +114,7 @@ export class ProductGeneral {
   ammount: number;
 
   constructor(
+    id?: number,
     img?: string,
     code?: string,
     price?: number,
@@ -123,6 +125,7 @@ export class ProductGeneral {
     size?: string,
     ammount: number=1
   ) {
+    this.id = id;
     this.img = img;
     this.code = code;
     this.price = price;
