@@ -1,15 +1,14 @@
 "use client";
+import axios from "axios";
 import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import NavbarIconButton from "./NavbarIconButton";
 import NavbarTile from "./NavbarTile";
 import UserProfile from "./UserProfile";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { Klee_One } from "next/font/google";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
 export default function Navbar() {
 
-  const {push, refresh,  replace} = useRouter();
+  const {replace} = useRouter();
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
@@ -23,7 +22,7 @@ export default function Navbar() {
         if(logout.status===200){
             localStorage.removeItem('user');
             setProfile(false);
-            replace("/mainPage");
+            replace("/");
         }
     }catch(error: any){
       console.log(error);
@@ -69,13 +68,14 @@ export default function Navbar() {
   return (
     <div className="group flex flex-row items-center pt-4 transition duration-300  hover:-translate-y-3  hover:bg-slate-100 hover:opacity-90">
       <div className="lg:px8 flex h-16 flex-1 items-center px-4 sm:px-6 ">
-        <Link href="/mainPage" className="mx-4 flex gap-x-2 lg:ml-0">
+        <Link href="/" className="mx-4 flex gap-x-2 lg:ml-0">
           <p className="text-xl font-bold">DRIPPIN'POPE</p>
         </Link>
 
-        <NavbarTile title="Sneakers" link="/Sneakers" />
-        <NavbarTile title="Sweatshirt" link="/Sweatshirts" />
-        <NavbarTile title="Trousers" link="/Trousers" />
+        <NavbarTile title="Woman" category="/ladies" />
+        <NavbarTile title="Man" category="/men" />
+        <NavbarTile title="Kids" category="/kids" />
+        <NavbarTile title="Outlet" category="/outlet" />
       </div>
       <div className="flex-4 mr-14 flex flex-row gap-5 ">
         {user ? (
