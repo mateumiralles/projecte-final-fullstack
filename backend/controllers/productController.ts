@@ -39,7 +39,7 @@ export async function getProductController(req: Request, res: Response) {
     const product = await getProductByCode(code);
 
     if (!product) {
-      return res.status(404).json({ message: 'Product does not exist' });
+      return res.status(404).json({ message: "Product does not exist" });
     }
 
     res.status(200).json(product);
@@ -89,9 +89,9 @@ export async function getProductsByCategoryController(
   res: Response
 ) {
   try {
-    const { categoryId } = req.params;
+    const { categoryName } = req.params;
 
-    const products = await getProductsByCategory(parseInt(categoryId, 10));
+    const products = await getProductsByCategory(categoryName);
 
     res.status(200).json(products);
   } catch (error) {

@@ -20,11 +20,11 @@ async function createCategory(data: CategoryData) {
   }
 }
 
-async function getCategoryById(categoryId: number) {
+async function getCategoryByName(categoryName: string) {
   try {
     const category = await prisma.category.findUnique({
       where: {
-        id: categoryId,
+        name: categoryName,
       },
     });
 
@@ -35,31 +35,38 @@ async function getCategoryById(categoryId: number) {
   }
 }
 
-async function updateCategory(categoryId: number, categoryData: CategoryData) {
+async function updateCategory(
+  categoryName: string,
+  categoryData: CategoryData
+) {
   try {
     const updatedCategory = await prisma.category.update({
       where: {
-        id: categoryId,
+        name: categoryName,
       },
       data: categoryData,
     });
+
     return updatedCategory;
   } catch (error) {
+    console.error(error);
     throw error;
   }
 }
 
-async function deleteCategory(categoryId: number) {
+async function deleteCategory(categoryName: string) {
   try {
     const deletedCategory = await prisma.category.delete({
       where: {
-        id: categoryId,
+        name: categoryName,
       },
     });
+
     return deletedCategory;
   } catch (error) {
+    console.error(error);
     throw error;
   }
 }
 
-export { createCategory, getCategoryById, updateCategory, deleteCategory };
+export { createCategory, getCategoryByName, updateCategory, deleteCategory };
