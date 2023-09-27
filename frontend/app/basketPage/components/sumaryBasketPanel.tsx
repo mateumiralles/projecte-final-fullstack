@@ -66,11 +66,10 @@ export default function SummaryBasketPanel({
             className="mt-4 flex cursor-pointer items-center justify-center rounded border  border-black p-4 transition duration-300 ease-in-out hover:bg-black hover:text-white"
           >
             <p className="font-bold">
-              {purchaseSteps == -1
+              {purchaseSteps === -1
                 ? "Continue to checkout"
-                : purchaseSteps === 0
-                ? "Make an order"
-                : "IDK"}
+                : "Make the order"
+                }
             </p>
           </div>
         </div>

@@ -8,9 +8,12 @@ import axios from "axios";
 import SummaryBasketPanel from "./components/sumaryBasketPanel";
 import PopupWarning from "./components/popUpWarning";
 import ReactLoading from "react-loading";
+import FinalBasketWindow from "./components/finalBasketWindow";
+import { useRouter } from "next/navigation";
 
 export default function basketPage() {
   const [isLoaded, setIsLoaded] = useState(false);
+  const { push } = useRouter();
 
   const makeNewProduct = (
     id: number,
@@ -180,6 +183,10 @@ export default function basketPage() {
         break;
       case 1:
         createOrder();
+
+        setTimeout(() => {
+          push("/");
+        }, 3000);
         break;
     }
   }, [purchaseSteps]);
@@ -237,6 +244,7 @@ export default function basketPage() {
 
   return (
     <main className="flex justify-center">
+      {purchaseSteps === 1 ? <FinalBasketWindow/> : null}
       <PopupWarning
         message={warningMsg}
         visible={popWarning}

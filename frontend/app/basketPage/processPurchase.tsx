@@ -82,13 +82,6 @@ export default function ProcessPurchase({
 
   return (
     <>
-    {purchaseSteps===1 ?       
-      <div className="absolute w-full h-full bg-white bg-opacity-90 top-0 z-50">
-        <div className="w-full h-full flex justify-center items-center p-36">
-          <p className="text-4xl text-center">Thank you for choosing <b>Drippin' Pope</b> for your shopping needs! We just want to let you know that we've received your order and will be processed with great care.</p>
-        </div>
-      </div> 
-      : null}
       <div className="w-8/12 justify-center ">
         <PopUpFormWindow
           bool={createNewPay}
