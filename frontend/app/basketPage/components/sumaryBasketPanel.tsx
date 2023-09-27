@@ -1,20 +1,36 @@
 type SummaryBasketPanelProps = {
+  selectedPaymentMethod: number | undefined;
   products: ProductGeneral[];
   productosCantidadTotal: number;
   precioFinal: number;
   purchaseSteps: number;
   setPurchaseSteps: React.Dispatch<React.SetStateAction<any>>;
+  setPopWarning: React.Dispatch<React.SetStateAction<any>>;
+  setWarningMsg:React.Dispatch<React.SetStateAction<any>>
 };
 
 import { ProductGeneral } from "../../classes";
 
 export default function SummaryBasketPanel({
+  selectedPaymentMethod,
   products,
   productosCantidadTotal,
   precioFinal,
   purchaseSteps,
   setPurchaseSteps,
+  setPopWarning,
+   setWarningMsg,
 }: SummaryBasketPanelProps) {
+
+  const manageStepPurchase = () => {
+    if(purchaseSteps===0 && selectedPaymentMethod===undefined){
+      setWarningMsg("You don't have a selected payment method.");
+      setPopWarning(true);
+    }
+    else {
+      setPurchaseSteps(purchaseSteps + 1)
+    }
+  }
   return (
     <div className="fixed right-0 top-0 flex h-[100vh] w-3/12  justify-center border-l border-black bg-gray-100">
       <div
@@ -46,7 +62,7 @@ export default function SummaryBasketPanel({
             <p className="font-bold">{precioFinal}€</p>
           </div>
           <div
-            onClick={() => setPurchaseSteps(purchaseSteps + 1)}
+            onClick={manageStepPurchase}
             className="mt-4 flex cursor-pointer items-center justify-center rounded border  border-black p-4 transition duration-300 ease-in-out hover:bg-black hover:text-white"
           >
             <p className="font-bold">
