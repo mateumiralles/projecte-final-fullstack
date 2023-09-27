@@ -15,9 +15,15 @@ export async function createProductController(req: Request, res: Response) {
     const newProduct = await createProduct(productData);
 
     res.status(201).json(newProduct);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+  } catch (error: any) {
+    if (error.message === "Product with the same code already exists") {
+      res
+        .status(400)
+        .json({ message: "Product with the same code already exists" });
+    } else {
+      console.error(error);
+      res.status(500).json({ message: "Internal server error" });
+    }
   }
 }
 

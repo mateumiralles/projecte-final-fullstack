@@ -7,11 +7,10 @@ import ProcessPurchase from "./processPurchase";
 import axios from "axios";
 import SummaryBasketPanel from "./components/sumaryBasketPanel";
 import PopupWarning from "./components/popUpWarning";
-import ReactLoading from 'react-loading';
+import ReactLoading from "react-loading";
 
 export default function basketPage() {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [emptyMsg, setEmptyMsg] = useState("");
 
   const makeNewProduct = (
     id: number,
@@ -198,7 +197,7 @@ export default function basketPage() {
 
   useEffect(() => {
     let timeoutId: any;
-  
+
     if (popWarning) {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
@@ -223,10 +222,6 @@ export default function basketPage() {
     );
     console.log(products);
     setIsLoaded(true);
-       setTimeout(() => {
-        setEmptyMsg("Your basket is empty!");
-       }, 200);
-    
   }, [products]);
 
   const [basketComponent, setBasketComponent] = useState(
@@ -241,18 +236,40 @@ export default function basketPage() {
   );
 
   return (
-    <main className="flex justify-center" >
-      <PopupWarning 
+    <main className="flex justify-center">
+      <PopupWarning
         message={warningMsg}
         visible={popWarning}
         setVisible={setPopWarning}
       />
-      {products.length === 0 ? <div className="flex justify-center items-center h-[90vh]">{isLoaded ? <p className="font-bold text-3xl">{emptyMsg}</p> : <ReactLoading type="bubbles" color="#000000" height={200} width={200} /> }</div> : <div id="products" className="flex w-[90%] flex-row justify-center">
-        {basketComponent}
-        <SummaryBasketPanel selectedPaymentMethod={selectedPaymentMethod} products={products} productosCantidadTotal={productosCantidadTotal} precioFinal={precioFinal}   purchaseSteps={purchaseSteps} setPurchaseSteps={setPurchaseSteps} setPopWarning={setPopWarning} setWarningMsg={setWarningMsg}/>
-        
-      </div>}
-      
+      {products.length === 0 ? (
+        <div className="flex h-[90vh] items-center justify-center">
+          {isLoaded ? (
+            <p className="text-3xl font-bold">Your basket is empty!</p>
+          ) : (
+            <ReactLoading
+              type="bubbles"
+              color="#000000"
+              height={200}
+              width={200}
+            />
+          )}
+        </div>
+      ) : (
+        <div id="products" className="flex w-[90%] flex-row justify-center">
+          {basketComponent}
+          <SummaryBasketPanel
+            selectedPaymentMethod={selectedPaymentMethod}
+            products={products}
+            productosCantidadTotal={productosCantidadTotal}
+            precioFinal={precioFinal}
+            purchaseSteps={purchaseSteps}
+            setPurchaseSteps={setPurchaseSteps}
+            setPopWarning={setPopWarning}
+            setWarningMsg={setWarningMsg}
+          />
+        </div>
+      )}
     </main>
   );
 }

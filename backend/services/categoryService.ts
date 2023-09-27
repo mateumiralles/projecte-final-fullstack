@@ -7,6 +7,16 @@ interface CategoryData {
 
 async function createCategory(data: CategoryData) {
   try {
+    const existingCategory = await prisma.category.findUnique({
+      where: {
+        name: data.name,
+      },
+    });
+
+    if (existingCategory) {
+      throw new Error("Category with the same name already exists");
+    }
+
     const newCategory = await prisma.category.create({
       data: {
         name: data.name,

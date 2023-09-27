@@ -11,6 +11,27 @@ export async function addCartItem(
   colorRgb: string
 ) {
   try {
+    const existingCartItem = await prisma.cartItem.findFirst({
+      where: {
+        cartId,
+        productSummaryCode,
+        size,
+        colorRgb,
+      },
+    });
+
+    if (existingCartItem) {
+      const updatedCartItem = await prisma.cartItem.update({
+        where: {
+          id: existingCartItem.id,
+        },
+        data: {
+          quantity: existingCartItem.quantity + quantity,
+        },
+      });
+
+      return updatedCartItem;
+    }
     const cartItem = await prisma.cartItem.create({
       data: {
         cartId,
