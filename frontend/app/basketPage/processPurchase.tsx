@@ -67,6 +67,7 @@ export default function ProcessPurchase(props: { purchaseSteps: number, selected
 
   return (
     <>
+    <div className="w-8/12 justify-center ">
       <PopUpFormWindow
         bool={createNewPay}
         setBool={setCreateNewPay}
@@ -88,10 +89,10 @@ export default function ProcessPurchase(props: { purchaseSteps: number, selected
         }
       />
 
-      <div className="mt-2 flex flex-grow flex-row gap-4">
+      <div className="mt-2 flex flex-grow flex-row gap-4 ">
         <div
           id="processPurchase"
-          className="flex w-[80%] flex-[3] translate-y-80 flex-col items-end opacity-0"
+          className="flex w-full translate-y-80 flex-col items-end opacity-0"
         >
           <div className="flex w-full flex-col gap-4">
             <ProcessPurchaseSlider
@@ -154,6 +155,8 @@ export default function ProcessPurchase(props: { purchaseSteps: number, selected
           </div>
         </div>
       </div>
+    </div>
+    <div className="w-4/12"></div>
     </>
   );
 }

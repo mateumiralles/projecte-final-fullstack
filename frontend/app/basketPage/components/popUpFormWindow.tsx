@@ -14,7 +14,7 @@ export default function PopUpFormWindow({
       style={{ backgroundColor: "rgba(0, 0, 0, 0.7)" }}
       className={`${
         bool ? "block" : "hidden"
-      } absolute top-0 z-20 h-full w-full cursor-pointer`}
+      } absolute top-0 left-0 z-20 h-full w-full cursor-pointer`}
       onClick={() => setBool(false)}
     >
       <div
