@@ -36,7 +36,9 @@ export default function ProcessPurchase({
         `http://localhost:3333/api/users/${user.id}`,
       );
       if (response.status === 200) {
-        setAddress(response.data.address);
+        setAddress(
+          response.data.address === null ? undefined : response.data.address,
+        );
       }
     } catch (error: any) {
       if (error.response.status === 404) {
@@ -110,14 +112,17 @@ export default function ProcessPurchase({
             <div className="flex w-full flex-col gap-4">
               <div className="flex flex-row items-baseline">
                 <BackArrowBtn func={setPurchaseSteps} type="processPurchase" />
-                <p className="relative right-7 bottom-1 w-full text-left text-xl font-bold">Go back</p>
+                <p className="relative bottom-1 right-7 w-full text-left text-xl font-bold">
+                  Go back
+                </p>
               </div>
               <ProcessPurchaseSlider
                 type="payment"
                 title="Payment Method"
                 content={
                   <>
-                    <div className="grid justify-items-center gap-12 lg:grid-cols-2">
+                    <div className=" bg-black"></div>
+                    <div className="my-5 grid justify-items-center gap-6 lg:grid-cols-2">
                       {paymentMethods.map((payment) => (
                         <CreditCard
                           id={payment.id}
@@ -152,14 +157,14 @@ export default function ProcessPurchase({
                   <>
                     <div className="flex flex-row items-center justify-between">
                       <p>
-                        {address === undefined
+                        {address === undefined || null
                           ? "There is no adress linked to your account yet!"
                           : address}
                       </p>
 
                       <SliderButton
                         text={
-                          address === undefined
+                          address === undefined || null
                             ? "Add new address"
                             : "Change address"
                         }

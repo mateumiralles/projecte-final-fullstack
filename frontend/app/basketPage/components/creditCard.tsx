@@ -11,7 +11,7 @@ type CreditCardProps = {
 
 export default function CreditCard({id, selectedPaymentMethod, setSelectedPaymentMethod, cardNumber, expirationDate, ownerName, type, isDefault }: CreditCardProps){
     return(
-        <div onClick={() => setSelectedPaymentMethod(id)} className={`${selectedPaymentMethod === id ? `border-red-500` : null} p-5 rounded-2xl min-w-[24rem] max-w-[28rem] aspect-[16/8] shadow-md flex flex-col justify-between hover:cursor-pointer border border-black`}>
+        <div onClick={() => setSelectedPaymentMethod(id)} className={`${selectedPaymentMethod === id ? `bg-gray-300` : null} p-5 rounded-2xl min-w-[24rem] max-w-[28rem] aspect-[16/8] shadow-md flex flex-col justify-between hover:cursor-pointer border border-black  ${selectedPaymentMethod === id ? `hover:bg-gray-300` : 'hover:bg-white'} hover:scale-95 transition ease-in-out`}>
             <div>
                 <p className="font-bold text-xl">{cardNumber}</p>
                 <p>{expirationDate}</p>
