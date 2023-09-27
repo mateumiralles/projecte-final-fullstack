@@ -45,7 +45,7 @@ export default function CategorySelector() {
   return (
     <div className="relative mt-[50vh]">
       <div className="display flex h-[700px] w-full justify-between">
-        <div ref={ImageContainer} className="relative ml-52">
+        <div ref={ImageContainer} className="relative ml-52 z-10">
           <Image
             className="border border-black rounded object-cover"
             src={`${categories[selectedCategory].src}`}
@@ -60,7 +60,7 @@ export default function CategorySelector() {
           </p>
         </div>
       </div>
-      <div className="z-10 ml-52 mr-16 flex flex-col">
+      <div className=" ml-52 mr-16 flex flex-col">
         {categories.map((category, i) => {
           return (
             <Link href={`/productsList?category=${category.href}`}>

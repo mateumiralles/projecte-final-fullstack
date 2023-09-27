@@ -77,7 +77,12 @@ const phrase = "Unleash your inner fashionista and discover hidden gems among ou
   });
 
   return (
-    <div className="p-44 mt-14 flex flex-col gap-10 overflow-hidden bg-[#001a33]" >
+    <div className="relative p-44 mt-14 flex flex-col gap-10 overflow-hidden bg-black" >
+      <Image  className="object-cover opacity-20"
+                  src={templateImg}
+                  alt="Denim Background"
+                  layout="fill"
+                  />
         <div className="flex h-full w-full" ref={phraseRef}>
           <p className="ml-96 my-40 text-4xl font-bold text-white">
          {phrase}
