@@ -186,7 +186,7 @@ export default function basketPage() {
 
         setTimeout(() => {
           push("/");
-        }, 3000);
+        }, 6000);
         break;
     }
   }, [purchaseSteps]);
