@@ -1,39 +1,15 @@
-import { useState, useRef, useLayoutEffect } from "react";
+import { useState, useRef, useEffect, useLayoutEffect } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import templateImg from "../../public/background.webp";
+import axios from "axios";
+import Link from "next/link";
 
 export default function SlidingProducts() {
-  const slider1 = [
-    {
-      src: templateImg,
-    },
-    {
-      src: templateImg,
-    },
-    {
-      src: templateImg,
-    },
-    {
-      src: templateImg,
-    },
-  ];
+  const [slider1, setSlider1] = useState<Array<{ src: string[]; href: string }>>([]);
 
-  const slider2 = [
-    {
-      src: templateImg,
-    },
-    {
-      src: templateImg,
-    },
-    {
-      src: templateImg,
-    },
-    {
-      src: templateImg,
-    },
-  ];
+  const [slider2, setSlider2] = useState<Array<{ src: string[]; href: string }>>([]);
 
 const phrase = "Unleash your inner fashionista and discover hidden gems among our curated selection of random products below!";
 
@@ -41,7 +17,58 @@ const phrase = "Unleash your inner fashionista and discover hidden gems among ou
   const sl1 = useRef(null);
   const sl2 = useRef(null);
 
+  function obtenerNumerosAleatorios(numerosDisponibles: number[], cantidad: number, productsResult: any) {
+    if (cantidad > numerosDisponibles.length) {
+      throw new Error("La cantidad deseada es mayor que la longitud del array.");
+    }
+  
+    // Copia del array original para no modificarlo
+    const availableProducts = [...numerosDisponibles];
+  
+    const products = [];
+  
+    for (let i = 0; i < cantidad; i++) {
+      const indiceAleatorio = Math.floor(Math.random() * availableProducts.length);
+      const randomProduct = availableProducts.splice(indiceAleatorio, 1)[0];
+
+      products.push(productsResult[randomProduct]);
+    }
+    return products;
+  }
+
+  const getProducts = async () => {
+    setSlider1([]);
+    setSlider2([]);
+    try {
+      const products = await axios.get(`http://localhost:3333/api/products/`); 
+      console.log(products.data);
+      if(products.status===200){
+        const productsAvailable = Array.from({ length: products.data.length-1 }, (_, i) => i + 1);
+        const randomProducts = obtenerNumerosAleatorios(productsAvailable, 8, products.data);
+        console.log(randomProducts);
+        for (let i = 0; i < randomProducts.length; i++) {
+          let productCode= randomProducts[i].code.slice(0, -3);
+          console.log(productCode);
+          if (i % 2 === 0) {
+            setSlider1(prevSlider => [...prevSlider, {src: [randomProducts[i].galleryDetails[0], randomProducts[i].galleryDetails[1]], href: `detailPage?productId=${randomProducts[i].code}&productParent=${productCode}`}]);
+          } else {
+            setSlider2(prevSlider => [...prevSlider, {src: [randomProducts[i].galleryDetails[0], randomProducts[i].galleryDetails[1]], href: `detailPage?productId=${randomProducts[i].code}&productParent=${productCode}`}]);
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
+
+  useEffect(() => {
+    getProducts();
+  }, [])
+
   useLayoutEffect(() => {
+
     gsap.registerPlugin(ScrollTrigger);
 
     gsap.from(phraseRef.current, {
@@ -74,6 +101,7 @@ const phrase = "Unleash your inner fashionista and discover hidden gems among ou
       },
       right: "300px",
     });
+
   });
 
   return (
@@ -89,43 +117,72 @@ const phrase = "Unleash your inner fashionista and discover hidden gems among ou
           </p>
         </div>
    
-      <div className="relative  flex w-full gap-7" ref={sl1}>
+      <div className="relative flex w-full gap-7" ref={sl1}>
         {slider1.map((product, i) => {
+            const handleImageError = () => {
+              // Clonar el estado anterior
+              const newSlider = [...slider1];
+          
+              // Cambiar la fuente de la imagen en caso de error
+              newSlider[i].src[0] = product.src[1];
+          
+              // Actualizar el estado slider1
+              setSlider1(newSlider);
+            };
           return (
-            <div
-              key={`s2_${i}`}
-              style={{ backgroundColor: '#D6DBDC' }}
-              className="flex h-80 w-1/4 items-center justify-center"
-            >
-              <div className="relative h-4/5 w-4/5">
-                <Image
-                  className="object-cover"
-                  src={product.src}
-                  alt="image"
-                  fill={true}
-                />
+
+              <div
+                key={`s2_${i}`}
+                style={{ backgroundColor: '#D6DBDC' }}
+                className="flex h-80 w-1/4 items-center justify-center"
+              >
+                <div className="relative h-4/5 w-4/5">
+                <Link href={product.href}>
+                  <Image
+                    className="object-cover"
+                    src={product.src[0]}
+                    alt="image"
+                    fill={true}
+                    onError={handleImageError}
+                  />
+                </Link>
+                </div>
               </div>
-            </div>
           );
         })}
       </div>
       <div className="relative  flex w-full gap-7" ref={sl2}>
         {slider2.map((product, i) => {
+          const handleImageError = () => {
+            // Clonar el estado anterior
+            const newSlider = [...slider2];
+        
+            // Cambiar la fuente de la imagen en caso de error
+            newSlider[i].src[0] = product.src[1];
+        
+            // Actualizar el estado slider1
+            setSlider2(newSlider);
+          };
           return (
-            <div
-              key={`s2_${i}`}
-              style={{ backgroundColor: '#D6DBDC' }}
-              className="flex h-80 w-1/4 items-center justify-center"
-            >
-              <div className="relative h-4/5 w-4/5">
-                <Image
-                  className="object-cover"
-                  src={product.src}
-                  alt="image"
-                  fill={true}
-                />
+
+              <div
+                key={`s2_${i}`}
+                style={{ backgroundColor: '#D6DBDC' }}
+                className="flex h-80 w-1/4 items-center justify-center"
+              >
+
+                <div className="relative h-4/5 w-4/5">
+                <Link href={product.href}>
+                  <Image
+                    className="object-cover"
+                    src={product.src[0]}
+                    alt="image"
+                    fill={true}
+                    onError={handleImageError}
+                  />
+                  </Link>
+                </div>
               </div>
-            </div>
           );
         })}
       </div>
