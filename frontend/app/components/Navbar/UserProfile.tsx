@@ -6,30 +6,30 @@ export default function UserProfile(props: {
 }) {
   return (
     <div className="absolute right-0 top-full flex w-96 cursor-default flex-col rounded border border-black bg-white">
-      <h1 className="my-5 text-lg font-bold">Hi, {props.user.name}</h1>
-      <div className="flex flex-col h-full gap-5 mb-5">
-      <Link href="/ordersPage">
-        <p
-          className="mx-5 flex cursor-pointer items-center justify-center rounded border border-black hover:bg-black p-4 hover:text-white transition duration-300 ease-in-out hover:scale-95"
-          title="Go to previous orders"
-        >
-          Order history
-        </p>
-      </Link>
-      <Link href="/wishlistPage">
-        <p
-          className="mx-5 flex cursor-pointer items-center justify-center rounded border border-black hover:bg-black p-4 hover:text-white transition duration-300 ease-in-out hover:scale-95"
-          title="Go to wishlist"
-        >
-          Wishlist
-        </p>
-      </Link>
+      <h1 className="my-5 text-2xl font-bold">Hi, {props.user.name}</h1>
+      <div className="mb-5 flex h-full flex-col gap-5">
+        <Link href="/ordersPage">
+          <p
+            className="mx-5 flex cursor-pointer items-center justify-center rounded border border-black p-4 transition duration-300 ease-in-out hover:scale-95 hover:bg-black hover:text-white"
+            title="Go to previous orders"
+          >
+            Order history
+          </p>
+        </Link>
+        <Link href="/wishlistPage">
+          <p
+            className="mx-5 flex cursor-pointer items-center justify-center rounded border border-black p-4 transition duration-300 ease-in-out hover:scale-95 hover:bg-black hover:text-white"
+            title="Go to wishlist"
+          >
+            Wishlist
+          </p>
+        </Link>
       </div>
       <div
-        className="group mt-auto cursor-pointer rounded border-t border-black p-5 font-bold transition  duration-300 ease-in-out hover:bg-red-500 hover:text-white"
+        className="group cursor-pointer rounded border-t border-black  transition  duration-200 ease-in-out hover:bg-red-500 "
         onClick={() => props.logout(props.user.id)}
       >
-        <p className="transition duration-200 ease-in-out group-hover:scale-110">
+        <p className="p-5 text-lg font-bold transition duration-200  hover:scale-90 hover:text-white">
           Log Out
         </p>
       </div>
