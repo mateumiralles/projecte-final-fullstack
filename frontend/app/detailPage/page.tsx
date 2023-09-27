@@ -133,10 +133,11 @@ export default function detailPage() {
       if(error.response.status===404){
         try{
           const response = await axios.request(options);
-          if(response.data.responseStatusCode==="not-found"){
+          console.log(response.data.responseStatusCode=="not-found");
+          if(response.data.responseStatusCode=="not-found"){
             getProduct(productId, "");
-          }
-          else if(response.data.responseStatusCode==="ok"){
+          }      
+          else if(response.data.responseStatusCode=="ok"){
             return [response.data, true];
           }
           else{
