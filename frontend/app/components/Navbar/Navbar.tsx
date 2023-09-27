@@ -72,10 +72,10 @@ export default function Navbar() {
           <p className="text-xl font-bold">DRIPPIN'POPE</p>
         </Link>
 
-        <NavbarTile title="Woman" category="/ladies" />
-        <NavbarTile title="Man" category="/men" />
-        <NavbarTile title="Kids" category="/kids" />
-        <NavbarTile title="Outlet" category="/outlet" />
+        <NavbarTile title="Woman" category="ladies" />
+        <NavbarTile title="Man" category="men" />
+        <NavbarTile title="Kids" category="kids" />
+        <NavbarTile title="Outlet" category="outlet" />
       </div>
       <div className="flex-4 mr-14 flex flex-row gap-5 ">
         {user ? (

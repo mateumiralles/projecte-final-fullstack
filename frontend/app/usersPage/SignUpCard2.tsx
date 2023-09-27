@@ -21,14 +21,14 @@ export default function SignUpCard1({
       </p>
       <InputUserForm
         id={"password"}
-        type={"pasword"}
+        type={"password"}
         placeholder={"Password"}
         param={pass}
         setParam={setPass}
       />
       <InputUserForm
         id={"password2"}
-        type={"pasword"}
+        type={"password"}
         placeholder={"Confrim Password"}
         param={pass2}
         setParam={setPass2}
