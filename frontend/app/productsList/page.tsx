@@ -93,7 +93,7 @@ export default function ProductsList() {
 
   return (
       <>
-      {list.length===0 ? (
+      {list===null || list.length===0 ? (
         <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[90svw] h-[90svh] flex justify-center items-center">
             <ReactLoading type="bubbles" color="#000000" height={200} width={200} />
         </div>

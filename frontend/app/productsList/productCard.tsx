@@ -14,15 +14,18 @@ type ProductCardProps = {
 export default function ProductCard({ code, title, price, image }: ProductCardProps) {
 
   const partes = code.split("_group_");
-  let codigoAntesDelGroup = partes[0];
-  let codigoDespuesDelGroup = partes[1];
-  let codigoEnteroSinGroup = codigoAntesDelGroup + codigoDespuesDelGroup;
+  let codigoAntesDelGroup;
+  let codigoDespuesDelGroup;
+  let codigoEnteroSinGroup;
 
   if (partes.length === 2) {
     codigoAntesDelGroup = partes[0];
     codigoDespuesDelGroup = partes[1];
     codigoEnteroSinGroup = codigoAntesDelGroup + codigoDespuesDelGroup;
   } else {
+    codigoAntesDelGroup = code.slice(0, -3); // Obtener los primeros caracteres
+    codigoDespuesDelGroup = code.slice(-3);  
+    codigoEnteroSinGroup = code;
     console.log("No se encontró un formato válido en el string.");
   }
   return (
