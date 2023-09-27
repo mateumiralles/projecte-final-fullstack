@@ -36,7 +36,7 @@ export default function ordersPage() {
         <>
             <p>HOLAAAA</p>
             {orders.map((order: any) => (
-                order.order.OrderItem.map((orderSpecific: any) => (
+                                order.order.OrderItem.map((orderSpecific: any) => (
                     console.log(orderSpecific)
                 ))
             ))}
