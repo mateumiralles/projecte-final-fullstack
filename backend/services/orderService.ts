@@ -46,7 +46,7 @@ async function createOrder(orderData: OrderData) {
 
 async function getOrderByUserId(userId: number) {
   try {
-    const order = await prisma.order.findFirst({
+    const order = await prisma.order.findMany({
       where: { userId },
       include: {
         OrderItem: true,
