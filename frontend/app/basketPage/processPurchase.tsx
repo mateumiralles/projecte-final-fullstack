@@ -8,7 +8,20 @@ import NewCardForm from "./components/newCardForm";
 import ProcessPurchaseSlider from "./components/processPurchaseSlider";
 import SliderButton from "./components/sliderButton";
 import PopUpFormWindow from "./components/popUpFormWindow";
-export default function ProcessPurchase(props: { purchaseSteps: number, selectedPaymentMethod: number | undefined, setSelectedPaymentMethod: React.Dispatch<React.SetStateAction<any>>}) {
+import BackArrowBtn from "../components/backArrowBtn";
+
+type ProcessPurchaseProps = {
+  purchaseSteps: number;
+  selectedPaymentMethod: number | undefined;
+  setSelectedPaymentMethod: React.Dispatch<React.SetStateAction<any>>;
+  setPurchaseSteps: React.Dispatch<React.SetStateAction<any>>;
+};
+export default function ProcessPurchase({
+  purchaseSteps,
+  selectedPaymentMethod,
+  setSelectedPaymentMethod,
+  setPurchaseSteps,
+}: ProcessPurchaseProps) {
   //const [user, setUser] = useState<>();
   const [paymentMethods, setPaymentMethods] = useState<any[]>([]);
 
@@ -49,8 +62,8 @@ export default function ProcessPurchase(props: { purchaseSteps: number, selected
 
   useEffect(() => {
     console.log("PROCESS PURCHASE");
-    console.log(props.purchaseSteps);
-    if (props.purchaseSteps == 0) {
+    console.log(purchaseSteps);
+    if (purchaseSteps == 0) {
       const user = JSON.parse(localStorage.getItem("user")!);
       //setUser(user);
       setTimeout(() => {
@@ -63,100 +76,104 @@ export default function ProcessPurchase(props: { purchaseSteps: number, selected
       getPaymentMethods();
       getAddress();
     }
-  }, [props.purchaseSteps]);
+  }, [purchaseSteps]);
 
   return (
     <>
-    <div className="w-8/12 justify-center ">
-      <PopUpFormWindow
-        bool={createNewPay}
-        setBool={setCreateNewPay}
-        content={
-          <NewCardForm
-            getPaymentMethods={getPaymentMethods}
-            setCreateNewPay={setCreateNewPay}
-          />
-        }
-      />
-      <PopUpFormWindow
-        bool={createNewAddress}
-        setBool={setCreateNewAddress}
-        content={
-          <NewAdressFrom
-            setAddress={setAddress}
-            setCreateNewAddress={setCreateNewAddress}
-          />
-        }
-      />
-<div></div>
-      <div className="mt-2 flex flex-grow flex-row gap-4 ">
-        <div
-          id="processPurchase"
-          className="flex w-full translate-y-80 flex-col items-end opacity-0"
-        >
-          <div className="flex w-full flex-col gap-4">
-            <ProcessPurchaseSlider
-              type="payment"
-              title="Payment Method"
-              content={
-                <>
-                  <div className="grid justify-items-center gap-12 lg:grid-cols-2">
-                    {paymentMethods.map((payment) => (
-                      <CreditCard
-                        id={payment.id}
-                        selectedPaymentMethod={props.selectedPaymentMethod}
-                        setSelectedPaymentMethod={props.setSelectedPaymentMethod}
-                        cardNumber={payment.cardNumber}
-                        expirationDate={payment.expirationDate}
-                        ownerName={payment.ownerName}
-                        type={payment.type}
-                        isDefault={payment.isDefault}
-                      />
-                    ))}
-                  </div>
-                  <div className="mt-5 flex flex-col">
-                    {paymentMethods.length < 1 ? (
-                      <p>There is no card linked to your account yet!</p>
-                    ) : (
-                      <></>
-                    )}
-                    <SliderButton
-                      text="Add a new card"
-                      func={setCreateNewPay}
-                    />
-                  </div>
-                </>
-              }
+      <div className="w-8/12 justify-center ">
+        <PopUpFormWindow
+          bool={createNewPay}
+          setBool={setCreateNewPay}
+          content={
+            <NewCardForm
+              getPaymentMethods={getPaymentMethods}
+              setCreateNewPay={setCreateNewPay}
             />
-            <ProcessPurchaseSlider
-              type="address"
-              title="Address"
-              content={
-                <>
-                  <div className="flex flex-row items-center justify-between">
-                    <p>
-                      {address === undefined
-                        ? "There is no adress linked to your account yet!"
-                        : address}
-                    </p>
+          }
+        />
+        <PopUpFormWindow
+          bool={createNewAddress}
+          setBool={setCreateNewAddress}
+          content={
+            <NewAdressFrom
+              setAddress={setAddress}
+              setCreateNewAddress={setCreateNewAddress}
+            />
+          }
+        />
 
-                    <SliderButton
-                      text={
-                        address === undefined
-                          ? "Add new address"
-                          : "Change address"
-                      }
-                      func={setCreateNewAddress}
-                    />
-                  </div>
-                </>
-              }
-            />
+        <div className="mt-2 flex flex-grow flex-row gap-4 ">
+          <div
+            id="processPurchase"
+            className="flex w-full translate-y-80 flex-col items-end opacity-0"
+          >
+            <div className="flex w-full flex-col gap-4">
+              <div className="flex flex-row items-baseline">
+                <BackArrowBtn func={setPurchaseSteps} type="processPurchase" />
+                <p className="relative right-7 bottom-1 w-full text-left text-xl font-bold">Go back</p>
+              </div>
+              <ProcessPurchaseSlider
+                type="payment"
+                title="Payment Method"
+                content={
+                  <>
+                    <div className="grid justify-items-center gap-12 lg:grid-cols-2">
+                      {paymentMethods.map((payment) => (
+                        <CreditCard
+                          id={payment.id}
+                          selectedPaymentMethod={selectedPaymentMethod}
+                          setSelectedPaymentMethod={setSelectedPaymentMethod}
+                          cardNumber={payment.cardNumber}
+                          expirationDate={payment.expirationDate}
+                          ownerName={payment.ownerName}
+                          type={payment.type}
+                          isDefault={payment.isDefault}
+                        />
+                      ))}
+                    </div>
+                    <div className="mt-5 flex flex-col">
+                      {paymentMethods.length < 1 ? (
+                        <p>There is no card linked to your account yet!</p>
+                      ) : (
+                        <></>
+                      )}
+                      <SliderButton
+                        text="Add a new card"
+                        func={setCreateNewPay}
+                      />
+                    </div>
+                  </>
+                }
+              />
+              <ProcessPurchaseSlider
+                type="address"
+                title="Address"
+                content={
+                  <>
+                    <div className="flex flex-row items-center justify-between">
+                      <p>
+                        {address === undefined
+                          ? "There is no adress linked to your account yet!"
+                          : address}
+                      </p>
+
+                      <SliderButton
+                        text={
+                          address === undefined
+                            ? "Add new address"
+                            : "Change address"
+                        }
+                        func={setCreateNewAddress}
+                      />
+                    </div>
+                  </>
+                }
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div className="w-4/12"></div>
+      <div className="w-4/12"></div>
     </>
   );
 }

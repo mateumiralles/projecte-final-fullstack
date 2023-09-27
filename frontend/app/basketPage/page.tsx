@@ -45,6 +45,7 @@ export default function basketPage() {
   });
 
   const getUserCart = async () => {
+    setProducts([]);
     const user = JSON.parse(localStorage.getItem("user")!);
     try {
       const userCart = await axios.get(
@@ -164,6 +165,8 @@ export default function basketPage() {
               purchaseSteps={purchaseSteps}
               selectedPaymentMethod={selectedPaymentMethod}
               setSelectedPaymentMethod={setSelectedPaymentMethod}
+              setPurchaseSteps={setPurchaseSteps}
+
             />,
           );
         }, 1000);
@@ -183,6 +186,7 @@ export default function basketPage() {
         purchaseSteps={purchaseSteps}
         selectedPaymentMethod={selectedPaymentMethod}
         setSelectedPaymentMethod={setSelectedPaymentMethod}
+        setPurchaseSteps={setPurchaseSteps}
       />,
     );
   }, [selectedPaymentMethod]);

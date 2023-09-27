@@ -5,6 +5,7 @@
   import SignUpCard2 from "./SignUpCard2";
   import { useRouter } from 'next/navigation';
   import axios from "axios";
+import BackArrowBtn from "../components/backArrowBtn";
 
   type SignUpContainerProps = {
     bool: Boolean;
@@ -82,22 +83,7 @@
             <p className="text-center text-4xl font-bold">Sign Up</p>
           ) : (
             <div className="flex flex-row items-baseline">
-              <button
-                type="button"
-                className={`relative -left-10 flex h-7 w-9 items-center justify-center  rounded-full transition duration-200 hover:scale-150 hover:border hover:border-black`}
-                onClick={() => {
-                  setSignUpToggle(!signUpToggle);
-                }}
-              >
-                <Image
-                  src="/left-arrow.svg"
-                  alt=""
-                  className=""
-                  width={20}
-                  height={20}
-                  priority
-                />
-              </button>
+              <BackArrowBtn func={setSignUpToggle} type="signUp"/>
               <p className="mb-4 mr-6 w-full  text-center text-4xl font-bold">
                 Sign Up
               </p>
