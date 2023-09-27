@@ -14,13 +14,14 @@ import { useRouter } from "next/navigation";
 import ProductInfo from "./productInfo";
 import ImagesScroll from "./imagesScroll";
 import PopupConfirm from "./popupConfirm";
+import ReactLoading from 'react-loading';
 
 export default function detailPage() {
   const [product, setProduct] = useState<ProductData>();
   const [productToAdd, setProductToAdd] = useState<ProductGeneral>(
     new ProductGeneral(),
   );
-  const [productInWishlist, setProductInWishlist] = useState(false);
+  const [isInWhislist, setIsInWhislist] = useState<boolean>(false);
   const [popupVisible, setPopupVisible] = useState(false);
   const [popupType, setPopupType] = useState(0);
   const [popupMessage, setPopupMessage] = useState<string>();
@@ -154,10 +155,19 @@ export default function detailPage() {
       try{
         const getWishlist = await axios.get(`http://localhost:3333/api/users/${user.id}/wishList`);
         let foundMatchingItem = false;
-        getWishlist.data.WishListItem.forEach((wishlistElement: any) => {
+        getWishlist.data.WishListItem.forEach(async (wishlistElement: any) => {
           if(wishlistElement.productSummaryCode === productToAdd.code){
-            foundMatchingItem = true;
-            return;
+            try {
+              const removeFromWishlist = await axios.delete(`http://localhost:3333/api/users/${user.id}/wishList/delete/${wishlistElement.id}`);
+              console.log(removeFromWishlist);
+              if(removeFromWishlist.status===204){
+                setIsInWhislist(false);
+                foundMatchingItem = true;
+                return;
+              }
+            } catch (error) {
+              console.log(error);
+            }
           }
         });
         if (foundMatchingItem) {
@@ -166,16 +176,20 @@ export default function detailPage() {
           setPopupVisible(true);
           return;
         }
-        try{
-          const toWishlist = await axios.post(`http://localhost:3333/api/users/${user.id}/wishList/add`, {wishListId: getWishlist.data.id, productSummaryCode: productToAdd.code});
-          console.log(toWishlist);
-          if(toWishlist.status===200){
-            setPopupMessage("Product succesfully added to your wishlist!");
-            setPopupType(1);
-            setPopupVisible(true);
+        if(!foundMatchingItem){
+          try{
+            const toWishlist = await axios.post(`http://localhost:3333/api/users/${user.id}/wishList/add`, {wishListId: getWishlist.data.id, productSummaryCode: productToAdd.code});
+            console.log(toWishlist);
+            setIsInWhislist(true);
+            if(toWishlist.status===200){
+              setPopupMessage("Product succesfully added to your wishlist!");
+              setPopupType(1);
+              setPopupVisible(true);
+  
+            }
+          }catch (error: any){
+            console.log(error);
           }
-        }catch (error: any){
-          console.log(error);
         }
       } catch (error: any){
         console.log(error);
@@ -251,6 +265,22 @@ export default function detailPage() {
     })
   };
 
+  const getIfWishlist = async() => {
+    const user = JSON.parse(localStorage.getItem('user')!);
+    try {
+      const wishlist = await axios.get(`http://localhost:3333/api/users/${user.id}/wishList`);
+      if(wishlist.status===200){
+        wishlist.data.WishListItem.forEach((item: any) => {
+          if(item.productSummaryCode===product?.code){
+            setIsInWhislist(true);
+          }
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     if(popupType){
       setTimeout(() => {
@@ -305,7 +335,7 @@ export default function detailPage() {
         colorName: product.color.text,
       }));
     }
-
+    getIfWishlist();
     const imageAndScroll = document.getElementById("imageAndScroll")!;
     const productDetail = document.getElementById("productSummary");
     const productInfo = document.getElementById("productInfo")!;
@@ -317,44 +347,48 @@ export default function detailPage() {
 
   return (
     <>
+    {!product ?           
+      <div className="w-[99svw] h-[90svh] flex justify-center items-center">
+        <ReactLoading type="bubbles" color="#000000" height={200} width={200} /> 
+      </div>
+      :  
       <main className="flex flex-row items-start justify-center gap-5 p-20">
-        {!product ? (
-          <h1>Loading...</h1>
-        ) : (
-          <>
-            <PopupConfirm 
-              message={popupMessage}
-              type={popupType}
-              visible={popupVisible}
-              setVisible={setPopupVisible}
-            />
-            <ProductInfo 
-            product={product}
-            />
-            <ImagesScroll 
-            imagesProp={product.galleryDetails}
-            />
-            <div
-              id="productSummary"
-              className="max-w-[35%] rounded border border-black"
-            >
-              <ProductSummary
-                name={product.name}
-                price={product.whitePrice}
-                color={product.color}
-                desc={product.description}
-                colors={product.colors}
-                sizes={product.variantsList!}
-                productToAdd={productToAdd}
-                setProductToAdd={setProductToAdd}
-                changeColor={updateColor}
-                addProductToBasket={addProductToBasket}
-                addProductToWishlist={addProductToWishList}
-              />
-            </div>
-          </>
-        )}
+
+        <PopupConfirm 
+          message={popupMessage}
+          type={popupType}
+          visible={popupVisible}
+          setVisible={setPopupVisible}
+        />
+        <ProductInfo 
+        product={product}
+        />
+        <ImagesScroll 
+        imagesProp={product.galleryDetails}
+        />
+        <div
+          id="productSummary"
+          className="max-w-[35%] rounded border border-black"
+        >
+          <ProductSummary
+            name={product.name}
+            price={product.whitePrice}
+            color={product.color}
+            desc={product.description}
+            colors={product.colors}
+            sizes={product.variantsList!}
+            productToAdd={productToAdd}
+            setProductToAdd={setProductToAdd}
+            isInWhislist={isInWhislist}
+            setIsInWhislist={setIsInWhislist}
+            changeColor={updateColor}
+            addProductToBasket={addProductToBasket}
+            addProductToWishlist={addProductToWishList}
+          />
+        </div>
       </main>
+    }
+
     </>
   );
 }

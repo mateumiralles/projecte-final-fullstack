@@ -9,12 +9,14 @@ export default function ProductSummary(props: {
   colors: Array<any> | null;
   sizes: Array<string>;
   productToAdd: ProductGeneral;
+  isInWhislist: boolean;
   setProductToAdd: React.Dispatch<React.SetStateAction<any>>;
+  setIsInWhislist:  React.Dispatch<React.SetStateAction<any>>;
   changeColor: (colorName: string) => void;
   addProductToBasket: () => void;
   addProductToWishlist: () => void;
 }) {
-  const [isInWhislist, setIsInWhislist] = useState<boolean>(false);
+ 
 
   const updateProduct = (size: string | undefined) => {
     props.setProductToAdd((prevProduct: any) => ({
@@ -37,12 +39,12 @@ export default function ProductSummary(props: {
           <div
             onClick={() => {
               props.addProductToWishlist();
-              setIsInWhislist(!isInWhislist);
+             
             }}
             className="mb-6 cursor-pointer transition ease-in-out hover:scale-150 duration-200"
           >
             <Image
-              src={`/bookmark${isInWhislist ? "Filled" : "Empty"}.svg`}
+              src={`/bookmark${props.isInWhislist ? "Filled" : "Empty"}.svg`}
               title="Whislist"
               alt="bookmarkIcon"
               width={20}

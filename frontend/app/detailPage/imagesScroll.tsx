@@ -58,7 +58,7 @@ export default function ImagesScroll({ imagesProp }: ImagesScrollProp){
     return(
         <div
         id="imageAndScroll"
-        className="relative aspect-[5001/7501] rounded"
+        className="relative aspect-[5001/7501] rounded overflow-hidden"
       >
         <div
           id="scrollLine"
