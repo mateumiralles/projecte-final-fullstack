@@ -7,7 +7,7 @@ import {
 
 export async function createCartController(req: Request, res: Response) {
   try {
-    const userId = parseInt(req.params.id, 10); // Parse userId from route params
+    const userId = parseInt(req.params.id, 10);
     const newCart = await createCart({ userId });
 
     return res.status(201).json(newCart);
@@ -30,8 +30,8 @@ export async function getCartByUserIdController(req: Request, res: Response) {
 
 export async function resetCartController(req: Request, res: Response) {
   try {
-    const { id } = req.params; // Assuming you're passing userId as a parameter in the route
-    const updatedCart = await resetCart(parseInt(id, 10)); // Parse userId to an integer
+    const { id } = req.params;
+    const updatedCart = await resetCart(parseInt(id, 10));
 
     if (updatedCart) {
       return res.status(200).json(updatedCart);
