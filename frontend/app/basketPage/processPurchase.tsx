@@ -88,7 +88,7 @@ export default function ProcessPurchase(props: { purchaseSteps: number, selected
           />
         }
       />
-
+<div></div>
       <div className="mt-2 flex flex-grow flex-row gap-4 ">
         <div
           id="processPurchase"
