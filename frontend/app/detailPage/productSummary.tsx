@@ -1,4 +1,5 @@
-import { FaRegBookmark } from "react-icons/fa";
+import Image from "next/image";
+import { useState } from "react";
 import { ProductGeneral } from "../classes";
 export default function ProductSummary(props: {
   name: string;
@@ -13,6 +14,8 @@ export default function ProductSummary(props: {
   addProductToBasket: () => void;
   addProductToWishlist: () => void;
 }) {
+  const [isInWhislist, setIsInWhislist] = useState<boolean>(false);
+
   const updateProduct = (size: string | undefined) => {
     props.setProductToAdd((prevProduct: any) => ({
       ...prevProduct, // Mantén las propiedades existentes
@@ -22,7 +25,7 @@ export default function ProductSummary(props: {
 
   return (
     <div>
-      <div className="flex h-[80%] min-h-[300px] flex-col justify-around  p-8">
+      <div className="flex h-[80%] min-h-[300px] flex-col justify-between p-8">
         <div className="mb-8 flex h-2/6 flex-row items-center justify-between">
           <div>
             <p className="text-sm">{props.name}</p>
@@ -31,8 +34,20 @@ export default function ProductSummary(props: {
               <p className="inline text-sm"> {props.price.currency}</p>
             </div>
           </div>
-          <div onClick={() => props.addProductToWishlist()} className="cursor-pointer">
-            <FaRegBookmark />
+          <div
+            onClick={() => {
+              props.addProductToWishlist();
+              setIsInWhislist(!isInWhislist);
+            }}
+            className="mb-6 cursor-pointer transition ease-in-out hover:scale-150 duration-200"
+          >
+            <Image
+              src={`/bookmark${isInWhislist ? "Filled" : "Empty"}.svg`}
+              title="Whislist"
+              alt="bookmarkIcon"
+              width={20}
+              height={20}
+            />
           </div>
         </div>
 
@@ -52,7 +67,7 @@ export default function ProductSummary(props: {
                   updateProduct(undefined), props.changeColor(element.name);
                 }}
                 style={{ backgroundColor: element.rgbColor }}
-                className={`p-2 rounded border border-black hover:scale-90 ${
+                className={`rounded border border-black p-2 hover:scale-90 ${
                   index === 0
                     ? `mr-2`
                     : index === props.colors?.length
@@ -104,7 +119,7 @@ export default function ProductSummary(props: {
           className={`${
             props.productToAdd.size !== undefined
               ? "transition ease-in-out group-hover:scale-90"
-              : null
+              : "text-gray-400"
           }`}
         >
           Add to Basket
