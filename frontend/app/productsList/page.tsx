@@ -3,18 +3,26 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import ProductCard from "./productCard";
+import { useRouter } from "next/navigation";
+import ReactLoading from 'react-loading';
 
 export default function ProductsList() {
-
-  const getList = async (category: string) => {
+  const [list, setList] = useState<any[]>([]);
+  const [moreItems, setMoreItems] = useState<boolean>(false);
+  const [category, setCategory] = useState<string>("");
+  const [page, setPage] = useState<number>(0);
+  const {refresh} = useRouter();
+  
+  const getList = async (category: string, pagesize: string = "30", currentPage: string = "0") => {
+    console.log(currentPage);
     let options = {
       method: "GET",
       url: "https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/list",
       params: {
         country: "es",
         lang: "es",
-        currentpage: "0",
-        pagesize: "30",
+        currentpage: currentPage,
+        pagesize: pagesize,
         categories: category,
       },
       headers: {
@@ -25,56 +33,93 @@ export default function ProductsList() {
   
     try {
       const response = await axios.request(options);
-      return response.data;
+      console.log(response.data);
+      return response.data.results; 
     } catch (error) {
-      return error;
+      console.log(error);
+      return null;
     }
   };
 
-  const [list, setList] = useState<any>();
+  useEffect(() => {
+
+    function handleScroll() {
+      const scrollHeight = document.documentElement.scrollHeight;
+      const clientHeight = window.innerHeight;
+      const currentScrollPercentage = (window.scrollY / (scrollHeight - clientHeight)) * 100;
+      if(page<=5){
+        if (currentScrollPercentage >= 60 && !moreItems) {
+          setMoreItems(true);
+          setPage(page+1);
+          getList(category, "30", page.toString())
+          .then((response) => {
+            if(response.length!=0) setList([...list, ...response]);
+            setMoreItems(false);
+          })
+          .catch((error) => {
+            console.error('Error en la solicitud a la API:', error);
+            setMoreItems(false);
+          });
+        }
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [moreItems]); 
+
+  const fetchData = async (category: string = "") => {
+    if(category!==""){
+      try {
+        const response = await getList(category);
+        setList(response);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+  }
 
   useEffect(() => {
     const currentUrl = window.location.href;
     const url = new URL(currentUrl);
     const params = url.searchParams;
-    let category = params.get('category')!;
-    console.log(category);
-    const fetchData = async () => {
-      const storedList = localStorage.getItem("list");
-      if (storedList == null) {
-        try {
-          const response = await getList(category);
-          setList(response);
-          //localStorage.setItem("list", JSON.stringify(response));
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      } else {
-        setList(JSON.parse(storedList));
-      }
-    };
-
-    fetchData();
+    let category = params.get('category')!
+    setCategory(category);
+    fetchData(category);
   }, []);
-  console.log(list);
+
   return (
-    <div className=" flex flex-col">
-      {list === undefined ? (
-        <p>Loading</p>
+      <>
+      {list.length===0 ? (
+        <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[90svw] h-[90svh] flex justify-center items-center">
+            <ReactLoading type="bubbles" color="#000000" height={200} width={200} />
+        </div>
       ) : (
-        <div className="mx-12 mt-8 grid grid-cols-5 gap-x-4 gap-y-10 ">
-          {list.results.map((p: any, index: number) => (
-            <div className="flex w-full justify-center" key={index}>
-              <ProductCard
-                code={p.code}
-                title={p.name}
-                price={p.price.value}
-                image={p.galleryImages[0].url}
-              />
-            </div>
-          ))}
+        <div className="relative flex flex-col">
+          <div className="mx-12 mt-8 grid grid-cols-5 gap-x-4 gap-y-10 ">
+            {list.map((p: any, index: number) => (
+              <div className="flex w-full justify-center" key={index}>
+                <ProductCard
+                  code={p.code}
+                  title={p.name}
+                  price={p.price.value}
+                  image={p.galleryImages[0].url}
+                />
+              </div>
+            ))}
+          </div>
+          {moreItems 
+          ? 
+          <div className="w-full flex justify-center items-center">
+            <ReactLoading type="bubbles" color="#000000" height={70} width={70} />
+          </div>
+          : null  
+          }
         </div>
       )}
-    </div>
+      </>
   );
 }
