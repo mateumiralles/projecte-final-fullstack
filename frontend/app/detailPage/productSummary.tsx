@@ -1,6 +1,4 @@
-import { SetStateAction } from "react";
 import { FaRegBookmark } from "react-icons/fa";
-import config from "@/tailwind.config";
 import { ProductGeneral } from "../classes";
 export default function ProductSummary(props: {
   name: string;
@@ -47,20 +45,20 @@ export default function ProductSummary(props: {
             <p>&nbsp;|&nbsp;</p>
             <p>{props.color.code}</p>
           </div>
-          <div className="mb-6 mt-6 flex flex-row">
+          <div className="my-6 flex flex-row overflow-x-auto pb-2">
             {props.colors?.map((element, index) => (
               <div
                 onClick={() => {
                   updateProduct(undefined), props.changeColor(element.name);
                 }}
                 style={{ backgroundColor: element.rgbColor }}
-                className={`h-5 w-5 rounded border border-black hover:-scale-90 ${
+                className={`p-2 rounded border border-black hover:scale-90 ${
                   index === 0
                     ? `mr-2`
                     : index === props.colors?.length
                     ? `ml-2`
                     : `ml-2 mr-2`
-                } hover: cursor-pointer`}
+                } cursor-pointer`}
                 key={index}
               ></div>
             ))}
@@ -109,7 +107,7 @@ export default function ProductSummary(props: {
               : null
           }`}
         >
-          AÑADIR
+          Add to Basket
         </p>
       </div>
     </div>
