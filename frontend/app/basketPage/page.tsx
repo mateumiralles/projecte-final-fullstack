@@ -8,6 +8,9 @@ import axios from "axios";
 import SummaryBasketPanel from "./components/sumaryBasketPanel";
 
 export default function basketPage() {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [emptyMsg, setEmptyMsg] = useState("");
+
   const makeNewProduct = (
     id: number,
     code: string,
@@ -202,6 +205,12 @@ export default function basketPage() {
         setProducts={setProducts}
       />,
     );
+    console.log(products);
+    setIsLoaded(true);
+       setTimeout(() => {
+        setEmptyMsg("Your basket is empty!");
+       }, 200);
+    
   }, [products]);
 
   const [basketComponent, setBasketComponent] = useState(
@@ -216,12 +225,13 @@ export default function basketPage() {
   );
 
   return (
-    <main className="flex justify-center">
-      <div id="products" className="flex w-[90%] flex-row justify-center">
+    <main className="flex justify-center" >
+      {products.length === 0 ? <div className="flex justify-center items-center h-[90vh]"> <p className="font-bold text-3xl">{isLoaded ? emptyMsg : "Loading" }</p></div> : <div id="products" className="flex w-[90%] flex-row justify-center">
         {basketComponent}
         <SummaryBasketPanel products={products} productosCantidadTotal={productosCantidadTotal} precioFinal={precioFinal}   purchaseSteps={purchaseSteps} setPurchaseSteps={setPurchaseSteps}/>
         
-      </div>
+      </div>}
+      
     </main>
   );
 }
