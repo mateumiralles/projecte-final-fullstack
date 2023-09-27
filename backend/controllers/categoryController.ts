@@ -11,9 +11,15 @@ export const createCategoryController = async (req: Request, res: Response) => {
     const categoryData = req.body;
     const newCategory = await createCategory(categoryData);
     res.status(201).json(newCategory);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+  } catch (error: any) {
+    if (error.message === "Category with the same name already exists") {
+      res
+        .status(400)
+        .json({ message: "Category with the same name already exists" });
+    } else {
+      console.error(error);
+      res.status(500).json({ message: "Internal server error" });
+    }
   }
 };
 
