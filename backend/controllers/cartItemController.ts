@@ -35,7 +35,7 @@ export async function deleteCartItemController(req: Request, res: Response) {
   try {
     const { cartItemId } = req.params;
     await deleteCartItem(parseInt(cartItemId, 10));
-    res.status(204).end(); // Respond with a success status code (204 No Content)
+    res.status(204).end();
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

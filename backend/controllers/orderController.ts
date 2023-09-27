@@ -3,7 +3,7 @@ import { createOrder, getOrderByUserId } from "../services/orderService";
 
 export async function createOrderController(req: Request, res: Response) {
   try {
-    const userId = parseInt(req.params.id, 10); // Parse userId from route params
+    const userId = parseInt(req.params.id, 10);
     const newOrder = await createOrder({ userId });
 
     return res.status(201).json(newOrder);

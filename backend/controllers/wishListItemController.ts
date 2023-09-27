@@ -14,9 +14,13 @@ export async function addWishListItemController(req: Request, res: Response) {
     const wishListItem = await addWishListItem(wishListId, productSummaryCode);
 
     res.status(201).json(wishListItem);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+  } catch (error: any) {
+    if (error.message === "Item already exists in the wishlist") {
+      res.status(400).json({ message: "Item already exists in the wishlist" });
+    } else {
+      console.error(error);
+      res.status(500).json({ message: "Internal server error" });
+    }
   }
 }
 
@@ -27,7 +31,7 @@ export async function deleteWishListItemController(
   try {
     const { wishListItemId } = req.params;
     await deleteWishListItem(parseInt(wishListItemId, 10));
-    res.status(204).end(); // Respond with a success status code (204 No Content)
+    res.status(204).end();
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

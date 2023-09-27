@@ -19,6 +19,15 @@ interface ProductData {
 
 async function createProduct(productData: ProductData) {
   try {
+    const existingProduct = await prisma.product.findUnique({
+      where: {
+        code: productData.code,
+      },
+    });
+
+    if (existingProduct) {
+      throw new Error("Product with the same code already exists");
+    }
     const newProduct = await prisma.product.create({
       data: productData,
     });

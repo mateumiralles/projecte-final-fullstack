@@ -7,6 +7,16 @@ export async function addWishListItem(
   productSummaryCode: string
 ) {
   try {
+    const existingWishListItem = await prisma.wishListItem.findFirst({
+      where: {
+        wishListId,
+        productSummaryCode,
+      },
+    });
+    if (existingWishListItem) {
+      throw new Error("Item already exists in the wishlist");
+    }
+
     const wishListItem = await prisma.wishListItem.create({
       data: {
         wishListId,
