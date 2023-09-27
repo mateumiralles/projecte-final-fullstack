@@ -1,20 +1,29 @@
 import Link from "next/link";
 
 type PopupProps = {
-    message: string | undefined,
-    visible: boolean;
-    setVisible: React.Dispatch<React.SetStateAction<any>>;
-  };
+  message: string | undefined;
+  visible: boolean;
+  setVisible: React.Dispatch<React.SetStateAction<any>>;
+};
 
-export default function PopupWarning({ message, visible, setVisible }: PopupProps){
-    return (
-        <>
-        {visible ?
-            <div className="absolute left-[50%] bottom-4 translate-x-[-50%] border border-black rounded flex flex-row p-5 w-[500px] justify-between">
-                <p className="text-red-500">{message}</p>
-                <p onClick={() => setVisible(false)} className="font-bold cursor-pointer hover:scale-90 transition">X</p>
+export default function PopupWarning({
+  message,
+  visible,
+  setVisible,
+}: PopupProps) {
+  return (
+    <>
+      {visible ? (
+        <div className="fixed bottom-4 left-[50%] z-30 flex w-[500px] translate-x-[-50%] flex-row justify-between rounded border border-black bg-white p-5">
+          <p className="text-red-500">{message}</p>
+          <p
+            onClick={() => setVisible(false)}
+            className="cursor-pointer font-bold transition hover:scale-90"
+          >
+            X
+          </p>
         </div>
-        : null}
-        </>
-    )
+      ) : null}
+    </>
+  );
 }
