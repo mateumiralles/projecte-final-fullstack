@@ -62,7 +62,7 @@ export default function ProductsList() {
       {list === undefined ? (
         <p>Loading</p>
       ) : (
-        <div className="mx-12 mt-8 grid grid-cols-4 gap-x-4 gap-y-10 ">
+        <div className="mx-12 mt-8 grid grid-cols-5 gap-x-4 gap-y-10 ">
           {list.results.map((p: any, index: number) => (
             <div className="flex w-full justify-center" key={index}>
               <ProductCard
