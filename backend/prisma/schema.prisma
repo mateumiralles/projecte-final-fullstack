@@ -41,8 +41,8 @@ model Product {
   variantsList               Json[]
   colors                     Json?
   articleCountryOfProduction String?
-  categoryId                 Int?
-  category                   Category? @relation(fields: [categoryId], references: [id])
+  categoryName               String?
+  category                   Category? @relation(fields: [categoryName], references: [name])
 
   ProductSummary ProductSummary?
 }
@@ -61,8 +61,7 @@ model ProductSummary {
 }
 
 model Category {
-  id      Int       @id @default(autoincrement())
-  name    String
+  name    String    @id
   Product Product[]
 }
 

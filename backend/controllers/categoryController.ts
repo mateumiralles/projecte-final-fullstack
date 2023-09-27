@@ -2,76 +2,69 @@ import { Request, Response } from "express";
 import {
   createCategory,
   deleteCategory,
-  getCategoryById,
+  getCategoryByName,
   updateCategory,
 } from "../services/categoryService";
 
-export async function createCategoryController(req: Request, res: Response) {
+export const createCategoryController = async (req: Request, res: Response) => {
   try {
-    if (!req.body) {
-      return res
-        .status(400)
-        .json({ message: "Request body is missing or empty" });
-    }
-
     const categoryData = req.body;
-
     const newCategory = await createCategory(categoryData);
-
     res.status(201).json(newCategory);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
-}
+};
 
-export async function getCategoryByIdController(req: Request, res: Response) {
+export const getCategoryByNameController = async (
+  req: Request,
+  res: Response
+) => {
   try {
-    const categoryId = parseInt(req.params.id);
-    const category = await getCategoryById(categoryId);
+    const categoryName = req.params.name;
+    const category = await getCategoryByName(categoryName);
 
     if (!category) {
-      res.status(404).json({ message: "Category not found" });
-    } else {
-      res.status(200).json(category);
+      return res.status(404).json({ message: "Category not found" });
     }
+
+    res.status(200).json(category);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
-}
+};
 
-export async function updateCategoryController(req: Request, res: Response) {
+export const updateCategoryController = async (req: Request, res: Response) => {
   try {
-    const categoryId = parseInt(req.params.id);
+    const categoryName = req.params.name;
     const categoryData = req.body;
-
-    const updatedCategory = await updateCategory(categoryId, categoryData);
+    const updatedCategory = await updateCategory(categoryName, categoryData);
 
     if (!updatedCategory) {
-      res.status(404).json({ message: "Category not found" });
-    } else {
-      res.status(200).json(updatedCategory);
+      return res.status(404).json({ message: "Category not found" });
     }
+
+    res.status(200).json(updatedCategory);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
-}
+};
 
-export async function deleteCategoryController(req: Request, res: Response) {
+export const deleteCategoryController = async (req: Request, res: Response) => {
   try {
-    const categoryId = parseInt(req.params.id);
-
-    const deletedCategory = await deleteCategory(categoryId);
+    const categoryName = req.params.name;
+    const deletedCategory = await deleteCategory(categoryName);
 
     if (!deletedCategory) {
-      res.status(404).json({ message: "Category not found" });
-    } else {
-      res.status(200).json({ message: "Category deleted successfully" });
+      return res.status(404).json({ message: "Category not found" });
     }
+
+    res.status(200).json({ message: "Category deleted successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
-}
+};

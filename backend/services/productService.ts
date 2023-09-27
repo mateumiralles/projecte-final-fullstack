@@ -81,11 +81,11 @@ async function deleteProduct(code: string) {
   }
 }
 
-async function getProductsByCategory(categoryId: number) {
+async function getProductsByCategory(categoryName: string) {
   try {
     const products = await prisma.product.findMany({
       where: {
-        categoryId: categoryId,
+        categoryName: categoryName,
       },
     });
     return products;
