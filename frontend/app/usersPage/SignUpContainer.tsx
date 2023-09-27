@@ -51,7 +51,7 @@
           console.log(respuesta);
           if(respuesta.statusText=="Created"){
             localStorage.setItem('user', JSON.stringify(respuesta.data));
-            push('/mainPage');
+            push('/');
             refresh();
           }
         } catch (error: any) {  

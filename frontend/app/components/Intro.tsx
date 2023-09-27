@@ -61,7 +61,7 @@ export default function Index() {
           data-scroll
           data-scroll-speed="0.7"
         >
-          DRIPPIN' POPE
+          DRIPPIN'POPE
         </h1>
       </div>
     </div>

@@ -4,7 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import ProductCard from "./productCard";
 
-export default function MainPage() {
+export default function ProductsList() {
 
   const getList = async (category: string) => {
     let options = {

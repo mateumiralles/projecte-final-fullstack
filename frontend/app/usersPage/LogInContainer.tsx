@@ -35,7 +35,7 @@ export default function LogInContainer({ bool }: LogUpContainerProps) {
         const respuesta = await axios.post("http://localhost:3333/api/users/login", {email: email, password: pass});
         if(respuesta.data.message=="Login successful"){
           localStorage.setItem('user', JSON.stringify(respuesta.data.user));
-          push('/mainPage');
+          push('/');
           refresh();
         }
       } catch (error: any) {  
