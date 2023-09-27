@@ -1,10 +1,17 @@
-import { ProductGeneral } from "../classes"
-import ProductBasketCard from "./components/productBasketCard"
+import { ProductGeneral } from "../classes";
+import ProductBasketCard from "./components/productBasketCard";
 
-
-export default function SummaryPage(props: {products: ProductGeneral[], productosCantidadTotal: number, precioFinal: number, purchaseSteps: number, setPurchaseSteps: React.Dispatch<React.SetStateAction<any>>, setProducts: React.Dispatch<React.SetStateAction<any>>}){
-    return(
-        <div
+export default function SummaryPage(props: {
+  products: ProductGeneral[];
+  productosCantidadTotal: number;
+  precioFinal: number;
+  purchaseSteps: number;
+  setPurchaseSteps: React.Dispatch<React.SetStateAction<any>>;
+  setProducts: React.Dispatch<React.SetStateAction<any>>;
+}) {
+  return (
+    <>
+      <div
         id="summaryBasket0"
         className="mb-20 mt-2 grid w-8/12 grid-cols-4 gap-10"
       >
@@ -19,6 +26,7 @@ export default function SummaryPage(props: {products: ProductGeneral[], producto
           </div>
         ))}
       </div>
-    )
+      <div className="w-4/12"></div>
+    </>
+  );
 }
-
