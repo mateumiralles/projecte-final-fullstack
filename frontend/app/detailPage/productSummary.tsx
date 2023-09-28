@@ -1,6 +1,8 @@
+import gsap from "gsap";
 import Image from "next/image";
-import { useState } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { ProductGeneral } from "../classes";
+
 export default function ProductSummary(props: {
   name: string;
   price: any;
@@ -11,12 +13,17 @@ export default function ProductSummary(props: {
   productToAdd: ProductGeneral;
   isInWhislist: boolean;
   setProductToAdd: React.Dispatch<React.SetStateAction<any>>;
-  setIsInWhislist:  React.Dispatch<React.SetStateAction<any>>;
+  setIsInWhislist: React.Dispatch<React.SetStateAction<any>>;
   changeColor: (colorName: string) => void;
   addProductToBasket: () => void;
   addProductToWishlist: () => void;
 }) {
- 
+  const panel = useRef(null);
+  useLayoutEffect(() => {
+    gsap.context(() => {
+      gsap.to(panel.current, { opacity: 1, duration: 1.5, x: 0 });
+    });
+  }, []);
 
   const updateProduct = (size: string | undefined) => {
     props.setProductToAdd((prevProduct: any) => ({
@@ -26,7 +33,7 @@ export default function ProductSummary(props: {
   };
 
   return (
-    <div>
+    <div ref={panel} className="w-full rounded border border-black opacity-0 translate-x-20">
       <div className="flex h-[80%] min-h-[300px] flex-col justify-between p-8">
         <div className="mb-8 flex h-2/6 flex-row items-center justify-between">
           <div>
@@ -39,9 +46,8 @@ export default function ProductSummary(props: {
           <div
             onClick={() => {
               props.addProductToWishlist();
-             
             }}
-            className="mb-6 cursor-pointer transition ease-in-out hover:scale-150 duration-200"
+            className="mb-6 cursor-pointer transition duration-200 ease-in-out hover:scale-150"
           >
             <Image
               src={`/bookmark${props.isInWhislist ? "Filled" : "Empty"}.svg`}

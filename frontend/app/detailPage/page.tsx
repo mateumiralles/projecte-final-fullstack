@@ -390,7 +390,7 @@ export default function detailPage() {
         />
         <div
           id="productSummary"
-          className="max-w-[35%] rounded border border-black"
+          className="max-w-[35%]"
         >
           <ProductSummary
             name={product.name}
