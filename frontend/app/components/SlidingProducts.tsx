@@ -123,8 +123,7 @@ const phrase = "Unleash your inner fashionista and discover hidden gems among ou
 
               <div
                 key={`s2_${i}`}
-                style={{ backgroundColor: '#D6DBDC' }}
-                className="flex h-80 w-1/4 items-center justify-center"
+                className="flex h-80 w-1/4 items-center justify-center bg-gray-300 rounded hover:scale-95 trasition ease-in-out duration-200"
               >
                 <div className="relative h-4/5 w-4/5">
                 <Link href={product.href}>
@@ -148,8 +147,7 @@ const phrase = "Unleash your inner fashionista and discover hidden gems among ou
 
               <div
                 key={`s2_${i}`}
-                style={{ backgroundColor: '#D6DBDC' }}
-                className="flex h-80 w-1/4 items-center justify-center"
+                className="flex h-80 w-1/4 items-center justify-center bg-gray-300 rounded hover:scale-95 trasition ease-in-out duration-200"
               >
 
                 <div className="relative h-4/5 w-4/5">
