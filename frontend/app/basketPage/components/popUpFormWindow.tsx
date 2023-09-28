@@ -1,3 +1,6 @@
+import { useLayoutEffect, useRef } from "react";
+import gsap from "gsap";
+
 type PopUpFormWindowProps = {
   bool: boolean;
   setBool: React.Dispatch<React.SetStateAction<boolean>>;
@@ -9,17 +12,36 @@ export default function PopUpFormWindow({
   setBool,
   content,
 }: PopUpFormWindowProps) {
+  const window = useRef(null);
+  const box = useRef(null);
+  if (bool) {
+    useLayoutEffect(() => {
+      gsap.context(() => {
+        gsap.to(window.current, { opacity: 1, duration: 0.3, ease: "power1.in" });
+        gsap.to(box.current, { opacity: 1, duration: 0.3, ease: "power1.in" });
+      });
+    }, [bool]);
+  } else {
+    useLayoutEffect(() => {
+      gsap.context(() => {
+        gsap.to(window.current, { opacity: 0 });
+        gsap.to(box.current, { opacity: 0 });
+      });
+    }, [bool]);
+  }
+
   return (
-    <div
+    <div ref={window}
       style={{ backgroundColor: "rgba(0, 0, 0, 0.7)" }}
       className={`${
         bool ? "block" : "hidden"
-      } absolute top-0 left-0 z-20 h-full w-full cursor-pointer`}
+      } absolute left-0 top-0 z-30 h-full w-full cursor-pointer `}
       onClick={() => setBool(false)}
     >
       <div
+        ref={box}
         onClick={(e) => e.stopPropagation()}
-        className="relative left-[50%] top-[50%] h-[60%] w-[70%] translate-x-[-50%] translate-y-[-50%] cursor-auto rounded border border-black bg-gray-300"
+        className="relative left-[50%] top-[50%] h-[60%] w-[70%] translate-x-[-50%] translate-y-[-50%] cursor-auto rounded border border-black bg-gray-300 opacity-0"
       >
         {content}
       </div>
