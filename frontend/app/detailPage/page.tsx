@@ -315,6 +315,27 @@ export default function detailPage() {
               setProduct(response[0].data);
             }
           } 
+          else if(response===undefined){
+            try{
+              const response2 = await getProduct(productId, "");
+              if(response2!==null){
+                if (Array.isArray(response2)) {
+                  if(response2[1]){
+                    let product = setProductToClass(response2[0].product, productId);
+                    uploadProductToDB(product);
+                    setProduct(product);
+                  }
+                  else {
+                    console.log(response2[0].data);
+                    setProductToClass(response2[0].data, productId, true);
+                    setProduct(response2[0].data);
+                  }
+                } 
+              }
+            } catch (error: any) {
+              console.log(error);
+            }
+          }
         }
       } catch (error) {
         console.error("Error fetching data:", error);

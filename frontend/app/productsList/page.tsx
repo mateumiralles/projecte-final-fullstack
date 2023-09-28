@@ -20,7 +20,7 @@ export default function ProductsList() {
       url: "https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/list",
       params: {
         country: "es",
-        lang: "es",
+        lang: "en",
         currentpage: currentPage,
         pagesize: pagesize,
         categories: category,
