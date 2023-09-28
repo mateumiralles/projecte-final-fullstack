@@ -143,7 +143,7 @@ export default function detailPage() {
       method: "GET",
       url: "https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/detail",
       params: {
-        lang: "es",
+        lang: "en",
         country: "es",
         productcode: `${productParentMain}`,
       },

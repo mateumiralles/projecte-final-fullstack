@@ -43,7 +43,7 @@ export default function ProductSummary(props: {
             <p className="text-sm">{props.name}</p>
             <div>
               <p className="inline text-sm">{props.price.price}</p>
-              <p className="inline text-sm"> {props.price.currency}</p>
+              <p className="inline text-sm"> EUR</p>
             </div>
           </div>
           <div
