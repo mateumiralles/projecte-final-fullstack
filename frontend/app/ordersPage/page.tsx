@@ -1,8 +1,7 @@
 "use client";
 
 import axios from "axios";
-import { useState, useEffect } from "react";
-import OrdersProductCard from "./components/ordersProductCard";
+import { useEffect, useState } from "react";
 import OrdersProductRow from "./components/orderProductsRow";
 export default function ordersPage() {
   const [orders, setOrders] = useState<any>([]);
