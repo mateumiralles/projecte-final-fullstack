@@ -132,7 +132,7 @@ export default function ProductBasketCard(props: {
             <p className="text-xl">
               {Number(props.product.price!.toFixed(2)) *
                 ((props.product?.ammount as number) ?? 0)}{" "}
-              {props.product?.currency}
+              {"€"}
             </p>
           </div>
           <div className="flex flex-row items-center">

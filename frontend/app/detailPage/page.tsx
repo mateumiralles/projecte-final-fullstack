@@ -263,7 +263,7 @@ export default function detailPage() {
               `http://localhost:3333/api/users/${user.id}/cart/add`,
               {
                 cartId: localResponse.data.id,
-                img: productToAdd.img,
+                img: product?.galleryDetails[loadedImages[0]],
                 productSummaryCode: productToAdd.code,
                 quantity: productToAdd.ammount,
                 size: productToAdd.size,
