@@ -54,8 +54,8 @@ export default function ProductCardOrders({
           <Image 
           alt="Product Image"
           src={productData?.img}
-          width={200}
-          height={400}
+          width={214}
+          height={320}
           />
           : null}
         </div>
