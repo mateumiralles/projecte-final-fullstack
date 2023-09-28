@@ -91,7 +91,7 @@ export default function ProductBasketCard(props: {
     <div
       key={props.index}
       id="product"
-      className={`flex w-full cursor-pointer flex-col rounded border p-4 transition duration-300 hover:border-black ${deleteProductAnim}`}
+      className={`flex w-full cursor-pointer flex-col rounded border p-4 transition duration-300 hover:border-black ${deleteProductAnim} hover:scale-95`}
       onClick={() => {
         let nuevaCadena = props.product.code!.slice(0, -3);
         push(

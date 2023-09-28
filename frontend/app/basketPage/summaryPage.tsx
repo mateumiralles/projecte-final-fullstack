@@ -1,5 +1,9 @@
 import { ProductGeneral } from "../classes";
 import ProductBasketCard from "./components/productBasketCard";
+import { useState, useEffect, useLayoutEffect, useRef } from "react";
+
+import gsap from "gsap";
+
 
 export default function SummaryPage(props: {
   products: ProductGeneral[];
@@ -9,11 +13,19 @@ export default function SummaryPage(props: {
   setPurchaseSteps: React.Dispatch<React.SetStateAction<any>>;
   setProducts: React.Dispatch<React.SetStateAction<any>>;
 }) {
+  const box = useRef(null);
+  useLayoutEffect(() => {
+    gsap.context(() => {
+      gsap.to(box.current, { opacity: 1, duration: 1.5,  y:0 });
+    });
+  }, []);
+
   return (
     <>
       <div
+      ref={box}
         id="summaryBasket0"
-        className="mb-20 mt-2 grid w-8/12 grid-cols-4 gap-10"
+        className="mb-20 mt-2 grid w-8/12 grid-cols-4 gap-10 opacity-0 -translate-y-10"
       >
         {props.products.map((product, index) => (
           <div className="flex w-full justify-center" key={index}>

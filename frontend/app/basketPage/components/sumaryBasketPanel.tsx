@@ -1,3 +1,8 @@
+import { useState, useEffect, useLayoutEffect, useRef } from "react";
+import gsap from "gsap";
+import { ProductGeneral } from "../../classes";
+
+
 type SummaryBasketPanelProps = {
   selectedPaymentMethod: number | undefined;
   products: ProductGeneral[];
@@ -9,7 +14,6 @@ type SummaryBasketPanelProps = {
   setWarningMsg:React.Dispatch<React.SetStateAction<any>>
 };
 
-import { ProductGeneral } from "../../classes";
 
 export default function SummaryBasketPanel({
   selectedPaymentMethod,
@@ -22,6 +26,13 @@ export default function SummaryBasketPanel({
    setWarningMsg,
 }: SummaryBasketPanelProps) {
 
+  const panel = useRef(null);
+  useLayoutEffect(() => {
+    gsap.context(() => {
+      gsap.to(panel.current, { opacity: 1, duration: 1.5,  x:0 });
+    });
+  }, []);
+
   const manageStepPurchase = () => {
     if(purchaseSteps===0 && selectedPaymentMethod===undefined){
       setWarningMsg("You don't have a selected payment method.");
@@ -32,7 +43,7 @@ export default function SummaryBasketPanel({
     }
   }
   return (
-    <div className="fixed right-0 top-0 flex h-[100vh] w-3/12  justify-center border-l border-black bg-gray-100">
+    <div className="fixed right-0 top-0 flex h-[100vh] w-3/12  justify-center border-l border-black bg-gray-100 opacity-0 translate-x-20"  ref={panel}>
       <div
         id="totalPriceBasket0"
         className="relative top-24 mb-20 flex h-5/6 w-10/12 flex-col justify-between"
