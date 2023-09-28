@@ -78,7 +78,7 @@ export default function Navbar() {
         <NavbarTile title="Woman" category="ladies" />
         <NavbarTile title="Man" category="men" />
         <NavbarTile title="Kids" category="kids" />
-        <NavbarTile title="Outlet" category="outlet" />
+        <NavbarTile title="Sports" category="sportswear" />
       </div>
       <div className="flex-4 mr-14 flex flex-row gap-5 ">
         {user ? (

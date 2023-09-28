@@ -22,9 +22,9 @@ export default function CategorySelector() {
       href: "kids",
     },
     {
-      title: "Outlet",
+      title: "Sports",
       src: "https://lp2.hm.com/hmgoepprod?set=source[/94/fe/94fef1eac71e8d7f26da30199d0f8499570ff135.jpg],origin[dam],category[],type[LOOKBOOK],res[y],hmver[1]&call=url[file:/product/main]",
-      href: "outlet",
+      href: "sportswear",
     },
   ];
 
