@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import ProductCard from "./productCard";
 import { useRouter } from "next/navigation";
 import ReactLoading from 'react-loading';
+import ProductsGrid from "./productsGrid";
 
 export default function ProductsList() {
   const [list, setList] = useState<any[]>([]);
@@ -99,18 +100,7 @@ export default function ProductsList() {
         </div>
       ) : (
         <div className="relative flex flex-col">
-          <div className="mx-12 mt-8 grid grid-cols-5 gap-x-4 gap-y-10 ">
-            {list.map((p: any, index: number) => (
-              <div className="flex w-full justify-center" key={index}>
-                <ProductCard
-                  code={p.code}
-                  title={p.name}
-                  price={p.price.value}
-                  image={p.galleryImages[0].url}
-                />
-              </div>
-            ))}
-          </div>
+          <ProductsGrid list={list}/>
           {moreItems 
           ? 
           <div className="w-full flex justify-center items-center">
