@@ -101,7 +101,7 @@ const phrase = "Unleash your inner fashionista and discover hidden gems among ou
       right: "300px",
     });
 
-  });
+  },[]);
 
   return (
     <div className="relative p-44 mt-14 flex flex-col gap-10 overflow-hidden bg-black" >
