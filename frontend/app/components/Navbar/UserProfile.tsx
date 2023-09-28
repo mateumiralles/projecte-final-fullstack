@@ -10,7 +10,7 @@ export default function UserProfile(props: {
   const box = useRef(null);
   useLayoutEffect(() => {
     gsap.context(() => {
-      gsap.to(box.current, { opacity: 1, duration: 1.5, y: 0 });
+      gsap.to(box.current, { opacity: 1, duration: 1, y: 0 });
     });
   }, []);
 
