@@ -1,15 +1,14 @@
-import { ScriptProps } from "next/script";
-import React, { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScriptProps } from "next/script";
+import { useLayoutEffect, useRef } from "react";
 
 export default function Description() {
   const textLines = [
-    "Welcome to our site,",  
+    "Welcome to our site,",
     "Where fashion meets convenience,",
     "and your wardrobe dreams come to life.",
-    "Designed to empower you with style and confidence."
-   
+    "Designed to empower you with style and confidence.",
   ];
 
   return (

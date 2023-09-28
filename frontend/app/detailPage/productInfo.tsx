@@ -1,7 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { ProductData } from "../classes";
-import { useState, useEffect } from "react";
 
 type ProductInfoProps = {
   product: ProductData;
@@ -54,9 +54,9 @@ export default function ProductInfo({ product }: ProductInfoProps) {
         Taking care of your clothes is taking care of the environment{" "}
       </p>
       <p className="mb-3 text-sm">
-        Washing at low temperatures and gentle spin programs
-        are more delicate with clothes, helping to maintain color,
-        shape and structure of the fabric.
+        Washing at low temperatures and gentle spin programs are more delicate
+        with clothes, helping to maintain color, shape and structure of the
+        fabric.
       </p>
       <ul>
         {product.careInstructions?.map((care, index) => (

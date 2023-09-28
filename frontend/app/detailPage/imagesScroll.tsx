@@ -75,7 +75,7 @@ export default function ImagesScroll({ imagesProp }: ImagesScrollProp){
           className="no-scrollbar relative h-[100%] w-[100%] overflow-y-auto"
         >
           {imagesProp?.map((img: string, index: number) => (
-            <img key={index} src={img} onLoad={() => handleImageLoad(index)} onError={() => console.log("TREMENDO BUG")} style={{ display: loadedImages.includes(index) ? 'block' : 'none' }}/>
+            <img key={index} src={img} onLoad={() => handleImageLoad(index)} onError={() => console.log("BUG")} style={{ display: loadedImages.includes(index) ? 'block' : 'none' }}/>
           ))}
         </div>
       </div>

@@ -51,13 +51,11 @@ export default function ProductCardOrders({
     >
       <div
         key={j}
-        className="flex min-w-[200px] flex-col items-center rounded p-5 transition  duration-200 ease-in-out hover:scale-95 border hover:border-black hover:bg-white"
+        className="flex min-w-[200px] flex-col items-center rounded border p-5  transition duration-200 ease-in-out hover:scale-95 hover:border-black hover:bg-white"
       >
-        <div className="w-full flex flex-row content-center items-center">
-          <p className="text-lg font-bold">
-            {productData?.name.split(" ")[0]}
-          </p>
-          <p className="text-sm font-normal ml-2">{` x${orderObject.quantity}`}</p>
+        <div className="flex w-full flex-row content-center items-center">
+          <p className="text-lg font-bold">{productData?.name.split(" ")[0]}</p>
+          <p className="ml-2 text-sm font-normal">{` x${orderObject.quantity}`}</p>
         </div>
         <p className="w-full text-left text-xs">{`Cloth code: ${orderObject.productSummaryCode}`}</p>
 

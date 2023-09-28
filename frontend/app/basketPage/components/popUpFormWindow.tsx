@@ -1,5 +1,5 @@
-import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
+import { useLayoutEffect, useRef } from "react";
 
 type PopUpFormWindowProps = {
   bool: boolean;

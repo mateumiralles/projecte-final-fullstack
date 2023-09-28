@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useLayoutEffect, useRef } from "react";
-import Image from "next/image";
-import background2 from "../../public/churchMainPage.jpg";
-import intro1 from "../../public/drippinPope.webp";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
+import { useLayoutEffect, useRef } from "react";
+import background2 from "../../public/churchMainPage.jpg";
+import intro1 from "../../public/drippinPope.webp";
 
 export default function Index() {
   const background = useRef(null);

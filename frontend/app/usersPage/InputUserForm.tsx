@@ -13,7 +13,7 @@ export default function InputUserForm({
   type,
   placeholder,
   param,
-  setParam
+  setParam,
 }: InputUserForm) {
   return (
     <input

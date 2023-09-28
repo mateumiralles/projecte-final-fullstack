@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
-import Intro from "./components/Intro";
 import Description from "./components/Description";
-import CategorySelector from "./components/categorySelector";
+import Intro from "./components/Intro";
 import SlidingProducts from "./components/SlidingProducts";
+import CategorySelector from "./components/categorySelector";
 
 export default function Home() {
   useEffect(() => {

@@ -2,13 +2,13 @@
 
 import axios from "axios";
 import { useEffect, useState } from "react";
+import BackArrowBtn from "../components/backArrowBtn";
 import CreditCard from "./components/creditCard";
 import NewAdressFrom from "./components/newAdressForm";
 import NewCardForm from "./components/newCardForm";
+import PopUpFormWindow from "./components/popUpFormWindow";
 import ProcessPurchaseSlider from "./components/processPurchaseSlider";
 import SliderButton from "./components/sliderButton";
-import PopUpFormWindow from "./components/popUpFormWindow";
-import BackArrowBtn from "../components/backArrowBtn";
 
 type ProcessPurchaseProps = {
   purchaseSteps: number;
@@ -63,13 +63,10 @@ export default function ProcessPurchase({
   };
 
   useEffect(() => {
-    console.log("PROCESS PURCHASE");
-    console.log(purchaseSteps);
     if (purchaseSteps == 0) {
       const user = JSON.parse(localStorage.getItem("user")!);
       //setUser(user);
       setTimeout(() => {
-        console.log("SE CAMBIA LA ANIMACIÓN");
         const element = document.getElementById("processPurchase")!;
         element.style.transition = "1s ease-out";
         element.style.transform = "translateY(0px)";

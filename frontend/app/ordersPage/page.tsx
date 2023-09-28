@@ -14,7 +14,7 @@ export default function ordersPage() {
       );
       console.log(payments.data);
       if (payments.status === 200) {
-       try {
+        try {
           const orders = await axios.get(
             `http://localhost:3333/api/users/${user.id}/order`,
           );
@@ -23,8 +23,8 @@ export default function ordersPage() {
             payments.data.forEach((payment: any, index: number) => {
               console.log(payment.orderId);
               orders.data.forEach((order: any) => {
-                if(payment.orderId === order.id){
-                    setOrders((prevOrders: any) => [
+                if (payment.orderId === order.id) {
+                  setOrders((prevOrders: any) => [
                     ...prevOrders,
                     { paymentMethod: payments.data[index], order: order },
                   ]);
@@ -49,9 +49,7 @@ export default function ordersPage() {
     <main className="ml-20 mt-5">
       <p className="text-2xl font-bold">Your order history</p>
       {orders.map((orderData: any, i: number) => {
-        return (
-          <OrdersProductRow key={i} orderData={orderData} i={i}/>
-        );
+        return <OrdersProductRow key={i} orderData={orderData} i={i} />;
       })}
     </main>
   );

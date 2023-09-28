@@ -1,11 +1,10 @@
 import InputUserForm from "./InputUserForm";
 type SignUpCard2 = {
   pass: string;
-  setPass: React.Dispatch<React.SetStateAction<any>>
+  setPass: React.Dispatch<React.SetStateAction<any>>;
   pass2: string;
-  setPass2: React.Dispatch<React.SetStateAction<any>>
+  setPass2: React.Dispatch<React.SetStateAction<any>>;
 };
-
 
 export default function SignUpCard1({
   pass,
@@ -13,9 +12,8 @@ export default function SignUpCard1({
   pass2,
   setPass2,
 }: SignUpCard2) {
-
   return (
-    <div className="mb-4 flex flex-col gap-4 w-full">
+    <div className="mb-4 flex w-full flex-col gap-4">
       <p className="text-center text-lg">
         Introduce a valid password to end the registration
       </p>

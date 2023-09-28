@@ -1,10 +1,9 @@
 "use client";
 
 import axios from "axios";
-import { useEffect, useState } from "react";
-import ProductCard from "./productCard";
 import { useRouter } from "next/navigation";
-import ReactLoading from 'react-loading';
+import { useEffect, useState } from "react";
+import ReactLoading from "react-loading";
 import ProductsGrid from "./productsGrid";
 
 export default function ProductsList() {
@@ -12,9 +11,13 @@ export default function ProductsList() {
   const [moreItems, setMoreItems] = useState<boolean>(false);
   const [category, setCategory] = useState<string>("");
   const [page, setPage] = useState<number>(0);
-  const {refresh} = useRouter();
-  
-  const getList = async (category: string, pagesize: string = "30", currentPage: string = "0") => {
+  const { refresh } = useRouter();
+
+  const getList = async (
+    category: string,
+    pagesize: string = "30",
+    currentPage: string = "0",
+  ) => {
     console.log(currentPage);
     let options = {
       method: "GET",
@@ -31,11 +34,11 @@ export default function ProductsList() {
         "X-RapidAPI-Host": "apidojo-hm-hennes-mauritz-v1.p.rapidapi.com",
       },
     };
-  
+
     try {
       const response = await axios.request(options);
       console.log(response.data);
-      return response.data.results; 
+      return response.data.results;
     } catch (error) {
       console.log(error);
       return null;
@@ -43,37 +46,37 @@ export default function ProductsList() {
   };
 
   useEffect(() => {
-
     function handleScroll() {
       const scrollHeight = document.documentElement.scrollHeight;
       const clientHeight = window.innerHeight;
-      const currentScrollPercentage = (window.scrollY / (scrollHeight - clientHeight)) * 100;
-      if(page<=5){
+      const currentScrollPercentage =
+        (window.scrollY / (scrollHeight - clientHeight)) * 100;
+      if (page <= 5) {
         if (currentScrollPercentage >= 60 && !moreItems) {
           setMoreItems(true);
-          setPage(page+1);
+          setPage(page + 1);
           getList(category, "30", page.toString())
-          .then((response) => {
-            if(response.length!=0) setList([...list, ...response]);
-            setMoreItems(false);
-          })
-          .catch((error) => {
-            console.error('Error en la solicitud a la API:', error);
-            setMoreItems(false);
-          });
+            .then((response) => {
+              if (response.length != 0) setList([...list, ...response]);
+              setMoreItems(false);
+            })
+            .catch((error) => {
+              console.error("Error en la solicitud a la API:", error);
+              setMoreItems(false);
+            });
         }
       }
     }
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
-  }, [moreItems]); 
+  }, [moreItems]);
 
   const fetchData = async (category: string = "") => {
-    if(category!==""){
+    if (category !== "") {
       try {
         const response = await getList(category);
         setList(response);
@@ -81,35 +84,43 @@ export default function ProductsList() {
         console.error("Error fetching data:", error);
       }
     }
-  }
+  };
 
   useEffect(() => {
     const currentUrl = window.location.href;
     const url = new URL(currentUrl);
     const params = url.searchParams;
-    let category = params.get('category')!
+    let category = params.get("category")!;
     setCategory(category);
     fetchData(category);
   }, []);
 
   return (
-      <>
-      {list===null || list.length===0 ? (
-        <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[90svw] h-[90svh] flex justify-center items-center">
-            <ReactLoading type="bubbles" color="#000000" height={200} width={200} />
+    <>
+      {list === null || list.length === 0 ? (
+        <div className="absolute left-[50%] top-[50%] flex h-[90svh] w-[90svw] translate-x-[-50%] translate-y-[-50%] items-center justify-center">
+          <ReactLoading
+            type="bubbles"
+            color="#000000"
+            height={200}
+            width={200}
+          />
         </div>
       ) : (
         <div className="relative flex flex-col">
-          <ProductsGrid list={list}/>
-          {moreItems 
-          ? 
-          <div className="w-full flex justify-center items-center">
-            <ReactLoading type="bubbles" color="#000000" height={70} width={70} />
-          </div>
-          : null  
-          }
+          <ProductsGrid list={list} />
+          {moreItems ? (
+            <div className="flex w-full items-center justify-center">
+              <ReactLoading
+                type="bubbles"
+                color="#000000"
+                height={70}
+                width={70}
+              />
+            </div>
+          ) : null}
         </div>
       )}
-      </>
+    </>
   );
 }

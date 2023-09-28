@@ -1,7 +1,7 @@
 "useClient";
 
-import React from "react";
 import Image from "next/image";
+import React from "react";
 
 type ProcessPurchaseSliderProps = {
   type: string;
@@ -33,7 +33,7 @@ export default function ProcessPurchaseSlider({
   return (
     <div className="overflow-hidden rounded border border-black  ">
       <div
-        className="flex  flex-row justify-between border-b border-black py-5 px-5 transition ease-in-out hover:cursor-pointer hover:bg-gray-300 "
+        className="flex  flex-row justify-between border-b border-black px-5 py-5 transition ease-in-out hover:cursor-pointer hover:bg-gray-300 "
         onClick={() => {
           handleSlidersExpand(type);
         }}

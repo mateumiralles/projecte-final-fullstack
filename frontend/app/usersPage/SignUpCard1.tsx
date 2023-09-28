@@ -2,9 +2,9 @@ import InputUserForm from "./InputUserForm";
 
 type SignUpCard1 = {
   name: string;
-  setName: React.Dispatch<React.SetStateAction<any>>
+  setName: React.Dispatch<React.SetStateAction<any>>;
   surname: string;
-  setSurname: React.Dispatch<React.SetStateAction<any>>
+  setSurname: React.Dispatch<React.SetStateAction<any>>;
   email: string;
   setEmail: React.Dispatch<React.SetStateAction<any>>;
 };
@@ -15,16 +15,31 @@ export default function SignUpCard1({
   surname,
   setSurname,
   email,
-  setEmail
+  setEmail,
 }: SignUpCard1) {
-
-
-
   return (
-    <div className="mb-4 w-full flex flex-col gap-4 ">
-      <InputUserForm id={"name"} type={"name"} placeholder={"Name"} param={name} setParam={setName} />
-      <InputUserForm id={"surname"} type={"text"} placeholder={"Surname"} param={surname} setParam={setSurname}/>
-      <InputUserForm id={"email"} type={"email"} placeholder={"Email"} param={email} setParam={setEmail}/>
+    <div className="mb-4 flex w-full flex-col gap-4 ">
+      <InputUserForm
+        id={"name"}
+        type={"name"}
+        placeholder={"Name"}
+        param={name}
+        setParam={setName}
+      />
+      <InputUserForm
+        id={"surname"}
+        type={"text"}
+        placeholder={"Surname"}
+        param={surname}
+        setParam={setSurname}
+      />
+      <InputUserForm
+        id={"email"}
+        type={"email"}
+        placeholder={"Email"}
+        param={email}
+        setParam={setEmail}
+      />
     </div>
   );
 }

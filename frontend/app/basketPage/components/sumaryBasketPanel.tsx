@@ -1,7 +1,6 @@
-import { useState, useEffect, useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
+import { useLayoutEffect, useRef } from "react";
 import { ProductGeneral } from "../../classes";
-
 
 type SummaryBasketPanelProps = {
   selectedPaymentMethod: number | undefined;
@@ -11,9 +10,8 @@ type SummaryBasketPanelProps = {
   purchaseSteps: number;
   setPurchaseSteps: React.Dispatch<React.SetStateAction<any>>;
   setPopWarning: React.Dispatch<React.SetStateAction<any>>;
-  setWarningMsg:React.Dispatch<React.SetStateAction<any>>
+  setWarningMsg: React.Dispatch<React.SetStateAction<any>>;
 };
-
 
 export default function SummaryBasketPanel({
   selectedPaymentMethod,
@@ -23,27 +21,28 @@ export default function SummaryBasketPanel({
   purchaseSteps,
   setPurchaseSteps,
   setPopWarning,
-   setWarningMsg,
+  setWarningMsg,
 }: SummaryBasketPanelProps) {
-
   const panel = useRef(null);
   useLayoutEffect(() => {
     gsap.context(() => {
-      gsap.to(panel.current, { opacity: 1, duration: 1.5,  x:0 });
+      gsap.to(panel.current, { opacity: 1, duration: 1.5, x: 0 });
     });
   }, []);
 
   const manageStepPurchase = () => {
-    if(purchaseSteps===0 && selectedPaymentMethod===undefined){
+    if (purchaseSteps === 0 && selectedPaymentMethod === undefined) {
       setWarningMsg("You don't have a selected payment method.");
       setPopWarning(true);
+    } else {
+      setPurchaseSteps(purchaseSteps + 1);
     }
-    else {
-      setPurchaseSteps(purchaseSteps + 1)
-    }
-  }
+  };
   return (
-    <div className="fixed right-0 top-0 flex h-[100vh] w-3/12  justify-center border-l border-black bg-gray-100 opacity-0 translate-x-20"  ref={panel}>
+    <div
+      className="fixed right-0 top-0 flex h-[100vh] w-3/12  translate-x-20 justify-center border-l border-black bg-gray-100 opacity-0"
+      ref={panel}
+    >
       <div
         id="totalPriceBasket0"
         className="relative top-24 mb-20 flex h-5/6 w-10/12 flex-col justify-between"
@@ -77,10 +76,7 @@ export default function SummaryBasketPanel({
             className="mt-4 flex cursor-pointer items-center justify-center rounded border  border-black p-4 transition duration-300 ease-in-out hover:bg-black hover:text-white"
           >
             <p className="font-bold">
-              {purchaseSteps === -1
-                ? "Continue to checkout"
-                : "Make the order"
-                }
+              {purchaseSteps === -1 ? "Continue to checkout" : "Make the order"}
             </p>
           </div>
         </div>

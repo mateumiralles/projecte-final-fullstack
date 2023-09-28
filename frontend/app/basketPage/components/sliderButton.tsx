@@ -1,9 +1,9 @@
 type SliderButtonProps = {
-    func: React.Dispatch<React.SetStateAction<boolean>>;
-    text: string;
+  func: React.Dispatch<React.SetStateAction<boolean>>;
+  text: string;
 };
 
-export default function SliderButton({func, text}:SliderButtonProps) {
+export default function SliderButton({ func, text }: SliderButtonProps) {
   return (
     <div
       onClick={() => func(true)}

@@ -17,7 +17,11 @@ export default function PopupConfirm({
     <>
       {visible ? (
         <div className="fixed  bottom-4 left-[50%] z-30 flex w-[500px] translate-x-[-50%] flex-row justify-between rounded border border-black bg-white p-5">
-          <p className={`${type === 2 ? "text-red-600 text-center w-full" : ""}`}>{message}</p>
+          <p
+            className={`${type === 2 ? "w-full text-center text-red-600" : ""}`}
+          >
+            {message}
+          </p>
           <Link
             href={
               type === 0 ? "/basketPage" : type === 1 ? "/wishlistPage" : ""

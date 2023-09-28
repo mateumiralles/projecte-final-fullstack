@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
-import SliderButton from "./sliderButton";
 import InputPopUpWindow from "./inputPopUpWindow";
+import SliderButton from "./sliderButton";
 
 type NewAdressFromProps = {
   setCreateNewAddress: React.Dispatch<React.SetStateAction<boolean>>;

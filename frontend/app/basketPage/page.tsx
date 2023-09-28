@@ -1,15 +1,14 @@
 "use client";
-import { ProductGeneral } from "../classes";
-import { useState, useEffect } from "react";
-import ProductInfo from "./components/productBasketCard";
-import SummaryPage from "./summaryPage";
-import ProcessPurchase from "./processPurchase";
 import axios from "axios";
-import SummaryBasketPanel from "./components/sumaryBasketPanel";
-import PopupWarning from "./components/popUpWarning";
-import ReactLoading from "react-loading";
-import FinalBasketWindow from "./components/finalBasketWindow";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import ReactLoading from "react-loading";
+import { ProductGeneral } from "../classes";
+import FinalBasketWindow from "./components/finalBasketWindow";
+import PopupWarning from "./components/popUpWarning";
+import SummaryBasketPanel from "./components/sumaryBasketPanel";
+import ProcessPurchase from "./processPurchase";
+import SummaryPage from "./summaryPage";
 
 export default function basketPage() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -119,7 +118,6 @@ export default function basketPage() {
                     );
                     console.log(deleteItemFromWishlist);
                     if (deleteItemFromWishlist.status === 204) {
-                      console.log("HOLAAA");
                     }
                   } catch (error) {
                     console.log(error);
@@ -244,7 +242,7 @@ export default function basketPage() {
 
   return (
     <main className="flex justify-center">
-      {purchaseSteps === 1 ? <FinalBasketWindow/> : null}
+      {purchaseSteps === 1 ? <FinalBasketWindow /> : null}
       <PopupWarning
         message={warningMsg}
         visible={popWarning}

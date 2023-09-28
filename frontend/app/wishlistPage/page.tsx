@@ -1,17 +1,17 @@
 "use client";
 import axios from "axios";
-import { useState, useEffect, useLayoutEffect, useRef } from "react";
-import { ProductSummary } from "../classes";
 import gsap from "gsap";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { ProductSummary } from "../classes";
 import ProductCard from "../productsList/productCard";
 
 export default function wishListPage() {
   const [wishlist, setWishlist] = useState<ProductSummary[]>([]);
-  
+
   const box = useRef(null);
   useLayoutEffect(() => {
     gsap.context(() => {
-      gsap.to(box.current, { opacity: 1, duration: 1.5,  y:0 });
+      gsap.to(box.current, { opacity: 1, duration: 1.5, y: 0 });
     });
   }, []);
 
@@ -54,7 +54,10 @@ export default function wishListPage() {
         });
       }}
     >
-      <div className="mx-12 mt-8 grid grid-cols-5 gap-x-4 gap-y-10 opacity-0 -translate-y-10" ref={box}>
+      <div
+        className="mx-12 mt-8 grid -translate-y-10 grid-cols-5 gap-x-4 gap-y-10 opacity-0"
+        ref={box}
+      >
         {wishlist.map((product, i) => {
           return (
             <div className="flex w-full justify-center" key={i}>

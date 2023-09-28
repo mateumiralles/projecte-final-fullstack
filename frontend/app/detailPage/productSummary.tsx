@@ -33,7 +33,10 @@ export default function ProductSummary(props: {
   };
 
   return (
-    <div ref={panel} className="w-full rounded border border-black opacity-0 translate-x-20">
+    <div
+      ref={panel}
+      className="w-full translate-x-20 rounded border border-black opacity-0"
+    >
       <div className="flex h-[80%] min-h-[300px] flex-col justify-between p-8">
         <div className="mb-8 flex h-2/6 flex-row items-center justify-between">
           <div>

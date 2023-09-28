@@ -1,5 +1,5 @@
-import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
+import { useLayoutEffect, useRef } from "react";
 
 export default function FinalBasketWindow() {
   const window = useRef(null);

@@ -1,6 +1,6 @@
+import gsap from "gsap";
 import Link from "next/link";
 import { useLayoutEffect, useRef } from "react";
-import gsap from "gsap";
 
 export default function UserProfile(props: {
   setProfile: React.Dispatch<React.SetStateAction<any>>;
@@ -16,7 +16,7 @@ export default function UserProfile(props: {
 
   return (
     <div
-      className="absolute right-0 top-full flex w-96 cursor-default flex-col rounded border border-black bg-white opacity-0 translate-y-5"
+      className="absolute right-0 top-full flex w-96 translate-y-5 cursor-default flex-col rounded border border-black bg-white opacity-0"
       ref={box}
     >
       <h1 className="my-5 text-2xl font-bold">Hi, {props.user.name}</h1>

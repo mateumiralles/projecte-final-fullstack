@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
-import SignUpContainer from "./SignUpContainer";
 import LogInContainer from "./LogInContainer";
 import OverlayContainer from "./Overlay";
+import SignUpContainer from "./SignUpContainer";
 
 export default function userPage() {
   const [signIn, toggle] = React.useState(true);
@@ -10,7 +10,7 @@ export default function userPage() {
   return (
     <main className="flex flex-row content-center justify-center gap-2">
       <div className="flex w-full flex-col  items-center">
-        <div className="relative -top-20 h-screen w-full overflow-hidden bg-white -mb-20">
+        <div className="relative -top-20 -mb-20 h-screen w-full overflow-hidden bg-white">
           <OverlayContainer
             bool={signIn}
             toggleFunction={toggle}

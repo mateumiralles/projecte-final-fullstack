@@ -16,9 +16,9 @@ export default function InputPopUpWindow({
   maxLength,
 }: InputPopUpWindowProps) {
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex items-center justify-center">
       <input
-        className="h-10 w-full pl-5 text-lg rounded border border-black"
+        className="h-10 w-full rounded border border-black pl-5 text-lg"
         type={type}
         name={name}
         placeholder={placeholder}

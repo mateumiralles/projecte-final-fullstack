@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 type PopupProps = {
   message: string | undefined;
   visible: boolean;

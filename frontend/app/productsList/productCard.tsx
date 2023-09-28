@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -11,8 +10,12 @@ type ProductCardProps = {
   image: string;
 };
 
-export default function ProductCard({ code, title, price, image }: ProductCardProps) {
-
+export default function ProductCard({
+  code,
+  title,
+  price,
+  image,
+}: ProductCardProps) {
   const partes = code.split("_group_");
   let codigoAntesDelGroup;
   let codigoDespuesDelGroup;
@@ -24,12 +27,14 @@ export default function ProductCard({ code, title, price, image }: ProductCardPr
     codigoEnteroSinGroup = codigoAntesDelGroup + codigoDespuesDelGroup;
   } else {
     codigoAntesDelGroup = code.slice(0, -3); // Obtener los primeros caracteres
-    codigoDespuesDelGroup = code.slice(-3);  
+    codigoDespuesDelGroup = code.slice(-3);
     codigoEnteroSinGroup = code;
     console.log("No se encontró un formato válido en el string.");
   }
   return (
-  <Link href={`/detailPage?productId=${codigoEnteroSinGroup}&productParent=${codigoAntesDelGroup}`}>
+    <Link
+      href={`/detailPage?productId=${codigoEnteroSinGroup}&productParent=${codigoAntesDelGroup}`}
+    >
       <div className="w-full justify-center rounded p-4 transition duration-500 hover:scale-95 hover:border hover:border-black">
         <Image src={image} width={500} height={500} alt="" />
         <div className="mt-2 flex flex-col">

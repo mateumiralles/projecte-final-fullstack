@@ -84,7 +84,7 @@ export default function NewCardForm({
         Register a new Payment Method
       </p>
       <div className="grid grid-cols-2 gap-16">
-      <InputPopUpWindow
+        <InputPopUpWindow
           type="text"
           name="cardNumber"
           placeholder="Card Number"
@@ -92,7 +92,7 @@ export default function NewCardForm({
           handler={handleCardNumberChange}
           maxLength={19}
         />
-      <InputPopUpWindow
+        <InputPopUpWindow
           type="text"
           name="expirationDate"
           placeholder="Expiration Date"
@@ -100,14 +100,17 @@ export default function NewCardForm({
           handler={handleInputChangeCard}
           maxLength={5}
         />
-      <InputPopUpWindow
+        <InputPopUpWindow
           type="text"
           name="ownerName"
           placeholder="Owner's Name"
           value={newPaymentMethod.ownerName}
           handler={handleInputChangeCard}
         />
-        <SliderButton text="Confirm New Payment Method" func={createPaymentMethod}/>
+        <SliderButton
+          text="Confirm New Payment Method"
+          func={createPaymentMethod}
+        />
       </div>
     </div>
   );

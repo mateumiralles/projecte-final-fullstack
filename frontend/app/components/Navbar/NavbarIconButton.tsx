@@ -2,7 +2,7 @@ import Image from "next/image";
 
 type svgProps = {
   svgName: string;
-  numIndicator?:  React.ReactNode;
+  numIndicator?: React.ReactNode;
 };
 
 export default function NavbarIconButton({ svgName, numIndicator }: svgProps) {
