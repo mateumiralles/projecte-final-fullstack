@@ -18,10 +18,12 @@ export default function detailPage() {
   const [productToAdd, setProductToAdd] = useState<ProductGeneral>(
     new ProductGeneral(),
   );
+  const [toAddToDB, setToAddToDB] = useState<boolean>(false);
   const [isInWhislist, setIsInWhislist] = useState<boolean>(false);
   const [popupVisible, setPopupVisible] = useState(false);
   const [popupType, setPopupType] = useState(0);
   const [popupMessage, setPopupMessage] = useState<string>();
+  const [loadedImages, setLoadedImages] = useState<number[]>([]);
 
   const setProductToClass = (
     product: any,
@@ -109,10 +111,12 @@ export default function detailPage() {
     return newProduct as ProductData;
   };
 
+  console.log(loadedImages);
+
   const uploadProductToDB = async (newProduct: ProductData) => {
     try {
       let productSummary: ProductSummaryClass = {
-        img: newProduct.galleryDetails[0],
+        img: newProduct.galleryDetails[loadedImages[0]],
         code: newProduct.code,
         currency: newProduct.whitePrice.currency,
         price: newProduct.whitePrice.price,
@@ -341,7 +345,8 @@ export default function detailPage() {
           if (Array.isArray(response)) {
             if (response[1]) {
               let product = setProductToClass(response[0].product, productId);
-              uploadProductToDB(product);
+              setToAddToDB(true);
+              //uploadProductToDB(product);
               setProduct(product);
             } else {
               console.log(response[0].data);
@@ -358,7 +363,8 @@ export default function detailPage() {
                       response2[0].product,
                       productId,
                     );
-                    uploadProductToDB(product);
+                    setToAddToDB(true);
+                    //uploadProductToDB(product);
                     setProduct(product);
                   } else {
                     console.log(response2[0].data);
@@ -378,6 +384,15 @@ export default function detailPage() {
     };
     fetchData();
   }, []);
+
+  console.log("to add to db ", toAddToDB);
+
+  useEffect(() => {
+    if (loadedImages.length === 1 && toAddToDB) {
+      console.log('El array cambió de longitud 0 a 1');
+      uploadProductToDB(product!);
+    }
+  }, [loadedImages, toAddToDB]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -423,7 +438,7 @@ export default function detailPage() {
             setVisible={setPopupVisible}
           />
           <ProductInfo product={product} />
-          <ImagesScroll imagesProp={product.galleryDetails} />
+          <ImagesScroll loadedImages={loadedImages} setLoadedImages={setLoadedImages} imagesProp={product.galleryDetails} />
           <div id="productSummary" className="max-w-[35%]">
             <ProductSummary
               name={product.name}

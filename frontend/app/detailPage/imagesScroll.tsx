@@ -3,16 +3,18 @@ import { useState, useEffect } from "react";
 
 
 type ImagesScrollProp = {
-    imagesProp: any[];
+  loadedImages: number[];
+  setLoadedImages: React.Dispatch<React.SetStateAction<any>>;
+  imagesProp: any[];
   };
 
-export default function ImagesScroll({ imagesProp }: ImagesScrollProp){
+export default function ImagesScroll({ loadedImages, setLoadedImages, imagesProp }: ImagesScrollProp){
     const [currentIndex, setCurrentIndex] = useState(1);
-    const [loadedImages, setLoadedImages] = useState<number[]>([]);
+
     
     const handleImageLoad = (index: number) => {
-        // Marca la imagen como cargada correctamente.
-        setLoadedImages((prevLoadedImages) => [...prevLoadedImages, index]);
+    
+        setLoadedImages((prevLoadedImages:any) => [...prevLoadedImages, index]);
     };
     
     let isScrollActive = false;

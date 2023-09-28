@@ -67,13 +67,13 @@ export default function ProductInfo({ product }: ProductInfoProps) {
       </ul>
       <p className="mb-5 mt-5 text-base">ORIGIN</p>
       <p className="mb-5 text-sm">
-        Hecho en {product.articleCountryOfProduction}
+        Made in {product.articleCountryOfProduction}
       </p>
       <p
         className="underline hover:cursor-pointer"
         onClick={() => setSeeMoreDetail(!seeMoreDetail)}
       >
-        {seeMoreDetail ? "Ver más" : "Ver menos"}
+        {seeMoreDetail ? "Show more" : "Show less"}
       </p>
     </div>
   );
