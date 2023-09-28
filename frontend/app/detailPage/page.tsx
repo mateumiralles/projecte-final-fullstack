@@ -374,7 +374,7 @@ export default function detailPage() {
         <ReactLoading type="bubbles" color="#000000" height={200} width={200} /> 
       </div>
       :  
-      <main className="flex flex-row items-start justify-center gap-5 p-20">
+      <main className="flex flex-row align-middle items-center justify-center gap-5 mt-5 pb-20 px-20">
 
         <PopupConfirm 
           message={popupMessage}

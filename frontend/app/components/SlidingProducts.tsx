@@ -48,7 +48,6 @@ const phrase = "Unleash your inner fashionista and discover hidden gems among ou
         console.log(randomProducts);
         for (let i = 0; i < randomProducts.length; i++) {
           let productCode= randomProducts[i].code.slice(0, -3);
-          console.log(productCode);
           if (i % 2 === 0) {
             setSlider1(prevSlider => [...prevSlider, {src: [randomProducts[i].galleryDetails[0], randomProducts[i].galleryDetails[1]], href: `detailPage?productId=${randomProducts[i].code}&productParent=${productCode}`}]);
           } else {
@@ -119,16 +118,7 @@ const phrase = "Unleash your inner fashionista and discover hidden gems among ou
    
       <div className="relative flex w-full gap-7" ref={sl1}>
         {slider1.map((product, i) => {
-            const handleImageError = () => {
-              // Clonar el estado anterior
-              const newSlider = [...slider1];
-          
-              // Cambiar la fuente de la imagen en caso de error
-              newSlider[i].src[0] = product.src[1];
-          
-              // Actualizar el estado slider1
-              setSlider1(newSlider);
-            };
+      
           return (
 
               <div
@@ -143,7 +133,7 @@ const phrase = "Unleash your inner fashionista and discover hidden gems among ou
                     src={product.src[0]}
                     alt="image"
                     fill={true}
-                    onError={handleImageError}
+                    
                   />
                 </Link>
                 </div>
@@ -153,16 +143,7 @@ const phrase = "Unleash your inner fashionista and discover hidden gems among ou
       </div>
       <div className="relative  flex w-full gap-7" ref={sl2}>
         {slider2.map((product, i) => {
-          const handleImageError = () => {
-            // Clonar el estado anterior
-            const newSlider = [...slider2];
-        
-            // Cambiar la fuente de la imagen en caso de error
-            newSlider[i].src[0] = product.src[1];
-        
-            // Actualizar el estado slider1
-            setSlider2(newSlider);
-          };
+       
           return (
 
               <div
@@ -178,7 +159,6 @@ const phrase = "Unleash your inner fashionista and discover hidden gems among ou
                     src={product.src[0]}
                     alt="image"
                     fill={true}
-                    onError={handleImageError}
                   />
                   </Link>
                 </div>
