@@ -25,7 +25,7 @@ export default function OrdersProductRow({
       <p className="mb-2 text-lg font-bold">
         Order #{i + 1}
         <span className="text-sm font-light">
-          - ({orderData.paymentMethod.paymentTime.split("T")[0]})
+        &nbsp;- ({orderData.paymentMethod==null ? null : orderData.paymentMethod.paymentTime.split("T")[0]})
         </span>
       </p>
       <div className="flex flex-row gap-5 overflow-x-auto " >
@@ -38,7 +38,7 @@ export default function OrdersProductRow({
         Total:
         <span className="font-bold ">
           {`
-                ${orderData.paymentMethod.totalAmount}€`}
+                ${orderData.paymentMethod==null ? null : orderData.paymentMethod.totalAmount}€`}
         </span>
       </p>
     </div>
