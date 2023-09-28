@@ -345,6 +345,7 @@ export default function detailPage() {
   }, []);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     if (product) {
       setProductToAdd((prevProduct) => ({
         ...prevProduct,
