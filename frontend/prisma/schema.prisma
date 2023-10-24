@@ -1,0 +1,150 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  lastName  String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  address   String?
+  token     String?
+
+  Order         Order[]
+  Payment       Payment[]
+  PaymentMethod PaymentMethod[]
+  Cart          Cart?
+  WishList      WishList?
+}
+
+model Product {
+  code                       String    @id
+  name                       String
+  description                String
+  color                      Json?
+  whitePrice                 Json?
+  articlesList               Json[]
+  galleryDetails             Json[]
+  careInstructions           String[]
+  compositions               Json[]
+  materialDetails            Json[]
+  variantsList               Json[]
+  colors                     Json[]
+  articleCountryOfProduction String?
+  categoryName               String?
+  category                   Category? @relation(fields: [categoryName], references: [name])
+
+  ProductSummary ProductSummary?
+}
+
+model ProductSummary {
+  id           Int            @id @default(autoincrement())
+  img          String
+  price        Float
+  currency     String
+  name         String
+  code         String         @unique
+  product      Product        @relation(fields: [code], references: [code])
+  CartItem     CartItem[]
+  WishListItem WishListItem[]
+  OrderItem    OrderItem[]
+}
+
+model Category {
+  name    String    @id
+  Product Product[]
+}
+
+model PaymentMethod {
+  id             Int       @id @default(autoincrement())
+  isDefault      Boolean   @default(false)
+  type           Int // 0=VISA, 1=MasterCard, 2=Paypal
+  cardNumber     String    @unique
+  expirationDate String // Format: MM/YY
+  ownerName      String
+  user           User      @relation(fields: [userId], references: [id])
+  userId         Int
+  Payment        Payment[]
+}
+
+model Cart {
+  id       Int        @id @default(autoincrement())
+  user     User       @relation(fields: [userId], references: [id])
+  userId   Int        @unique
+  CartItem CartItem[]
+}
+
+model CartItem {
+  id                 Int            @id @default(autoincrement())
+  cart               Cart           @relation(fields: [cartId], references: [id])
+  cartId             Int
+  productSummary     ProductSummary @relation(fields: [productSummaryCode], references: [code])
+  productSummaryCode String
+  quantity           Int
+  img                String
+  size               String
+  colorRgb           String
+
+  @@unique([cartId, productSummaryCode], name: "UniqueCartItem")
+}
+
+model WishList {
+  id           Int            @id @default(autoincrement())
+  user         User           @relation(fields: [userId], references: [id])
+  userId       Int            @unique
+  WishListItem WishListItem[]
+}
+
+model WishListItem {
+  id                 Int            @id @default(autoincrement())
+  wishList           WishList       @relation(fields: [wishListId], references: [id])
+  wishListId         Int
+  productSummary     ProductSummary @relation(fields: [productSummaryCode], references: [code])
+  productSummaryCode String
+
+  @@unique([wishListId, productSummaryCode], name: "UniqueWishListItem")
+}
+
+model Order {
+  id        Int         @id @default(autoincrement())
+  user      User        @relation(fields: [userId], references: [id])
+  userId    Int
+  payment   Payment?
+  OrderItem OrderItem[]
+}
+
+model OrderItem {
+  id                 Int            @id @default(autoincrement())
+  order              Order          @relation(fields: [orderId], references: [id])
+  orderId            Int
+  productSummary     ProductSummary @relation(fields: [productSummaryCode], references: [code])
+  productSummaryCode String
+  quantity           Int
+  size               String
+  colorRgb           String
+
+  @@unique([orderId, productSummaryCode, size, colorRgb], name: "UniqueOrderItem")
+}
+
+model Payment {
+  id              Int           @id @default(autoincrement())
+  paymentMethod   PaymentMethod @relation(fields: [paymentMethodId], references: [id])
+  paymentMethodId Int
+  totalAmount     Float
+  paymentTime     DateTime
+  user            User          @relation(fields: [userId], references: [id])
+  userId          Int
+  orderId         Int           @unique
+  order           Order         @relation(fields: [orderId], references: [id])
+}
