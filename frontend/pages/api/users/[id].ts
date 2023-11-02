@@ -35,5 +35,7 @@ export default async function handler(
       console.error(error);
       res.status(500).json({ message: "Internal server error" });
     }
+  } else {
+    res.status(405).end();
   }
 }
