@@ -13,15 +13,15 @@ import PopupConfirm from "./popupConfirm";
 import ProductInfo from "./productInfo";
 import ProductSummary from "./productSummary";
 
-export default function detailPage() {
+export default function DetailPage() {
   const [product, setProduct] = useState<ProductData>();
   const [productToAdd, setProductToAdd] = useState<ProductGeneral>(
     new ProductGeneral(),
   );
   const [toAddToDB, setToAddToDB] = useState<boolean>(false);
   const [isInWhislist, setIsInWhislist] = useState<boolean>(false);
-  const [popupVisible, setPopupVisible] = useState(false);
-  const [popupType, setPopupType] = useState(0);
+  const [popupVisible, setPopupVisible] = useState<boolean>(false);
+  const [popupType, setPopupType] = useState<number>(0);
   const [popupMessage, setPopupMessage] = useState<string>();
   const [loadedImages, setLoadedImages] = useState<number[]>([]);
 

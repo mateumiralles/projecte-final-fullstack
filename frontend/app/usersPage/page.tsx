@@ -4,7 +4,7 @@ import LogInContainer from "./LogInContainer";
 import OverlayContainer from "./Overlay";
 import SignUpContainer from "./SignUpContainer";
 
-export default function userPage() {
+export default function UserPage() {
   const [signIn, toggle] = React.useState(true);
 
   return (

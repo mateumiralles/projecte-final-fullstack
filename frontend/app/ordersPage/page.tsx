@@ -3,7 +3,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import OrdersProductRow from "./components/orderProductsRow";
-export default function ordersPage() {
+export default function OrdersPage() {
   const [orders, setOrders] = useState<any>([]);
 
   const getOrders = async () => {

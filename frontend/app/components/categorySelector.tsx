@@ -62,7 +62,8 @@ export default function CategorySelector() {
       <div className=" ml-52 mr-16 flex flex-col">
         {categories.map((category, i) => {
           return (
-            <Link href={`/productsList?category=${category.href}`}>
+            <Link href={`/productsList?category=${category.href}`}
+            key={i}>
               <div
                 onMouseOver={() => setSelectedCategory(i)}
                 key={i}

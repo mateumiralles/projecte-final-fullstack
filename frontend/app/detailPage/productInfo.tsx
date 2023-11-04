@@ -32,8 +32,8 @@ export default function ProductInfo({ product }: ProductInfoProps) {
         <div className="mb-2">
           {product.compositions?.map((element, index) =>
             element.materials.map((material: any, index: number) => (
-              <div>
-                <p key={index} className="inline-block text-sm">
+              <div key={index} >
+                <p className="inline-block text-sm">
                   {material.percentage}%
                 </p>
                 &nbsp;

@@ -33,7 +33,7 @@ export default function FinalBasketWindow() {
           Your order is being processed...
         </p>
         <p className="text-center text-4xl opacity-0" ref={text2}>
-          Thank you trusting in <b>Drippin' Pope</b>!
+          Thank you trusting in <b>Drippin&apos; Pope</b>!
         </p>
       </div>
     </div>

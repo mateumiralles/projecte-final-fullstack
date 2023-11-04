@@ -122,6 +122,7 @@ export default function ProcessPurchase({
                     <div className="mb-5 grid justify-items-center gap-6 lg:grid-cols-2">
                       {paymentMethods.map((payment) => (
                         <CreditCard
+                          key={payment.id}
                           id={payment.id}
                           selectedPaymentMethod={selectedPaymentMethod}
                           setSelectedPaymentMethod={setSelectedPaymentMethod}

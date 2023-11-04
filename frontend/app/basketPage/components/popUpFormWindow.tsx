@@ -14,21 +14,18 @@ export default function PopUpFormWindow({
 }: PopUpFormWindowProps) {
   const window = useRef(null);
   const box = useRef(null);
-  if (bool) {
-    useLayoutEffect(() => {
-      gsap.context(() => {
-        gsap.to(window.current, { opacity: 1, duration: 0.3, ease: "power1.in" });
-        gsap.to(box.current, { opacity: 1, duration: 0.3, ease: "power1.in" });
-      });
-    }, [bool]);
-  } else {
-    useLayoutEffect(() => {
-      gsap.context(() => {
-        gsap.to(window.current, { opacity: 0 });
-        gsap.to(box.current, { opacity: 0 });
-      });
-    }, [bool]);
-  }
+  bool ?  useLayoutEffect(() => {
+    gsap.context(() => {
+      gsap.to(window.current, { opacity: 1, duration: 0.3, ease: "power1.in" });
+      gsap.to(box.current, { opacity: 1, duration: 0.3, ease: "power1.in" });
+    });
+  }, [bool]) : useLayoutEffect(() => {
+    gsap.context(() => {
+      gsap.to(window.current, { opacity: 0 });
+      gsap.to(box.current, { opacity: 0 });
+    });
+  }, [bool]);
+
 
   return (
     <div ref={window}
