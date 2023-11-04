@@ -5,7 +5,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ProductSummary } from "../classes";
 import ProductCard from "../productsList/productCard";
 
-export default function wishListPage() {
+export default function WishListPage() {
   const [wishlist, setWishlist] = useState<ProductSummary[]>([]);
 
   const box = useRef(null);
