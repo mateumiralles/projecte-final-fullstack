@@ -10,7 +10,7 @@ import SummaryBasketPanel from "./components/sumaryBasketPanel";
 import ProcessPurchase from "./processPurchase";
 import SummaryPage from "./summaryPage";
 
-export default function basketPage() {
+export default function BasketPage() {
   const [isLoaded, setIsLoaded] = useState(false);
   const { push } = useRouter();
 
